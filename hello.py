@@ -1,5 +1,6 @@
 import requests
-from flask import Flask, render_template, jsonify, request
+import json
+from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
 
@@ -10,15 +11,31 @@ def hello_world():
     return render_template("index.html")
 
 @app.route('/consulta_ollama', methods=['POST'])
-def consulta_olama():
+def consulta_ollama():
     try:
-        # datos pasados por ejemplo, por consola con el curl
+        # Obtiene el prompt del request JSON
         data = request.get_json()
-        # print("Datos recibidos:", data) 
-        # post a ollama con el prompt
-        response = requests.post(ollama_url, json=data)
-        # obtenemos la respuesta de ollama
-        return jsonify(response.json())
-    except requests.exceptions.RequestException as e:
-        return jsonify({'error': str(e)})
+        prompt = data.get('prompt', '')
 
+        # Prepara la solicitud a ollama
+        ollama_data = {
+            'model': 'mistral',
+            'prompt': prompt,
+            'format': 'json',
+            'stream': False
+        }
+
+        # Envia la solicitud a ollama
+        response = requests.post(ollama_url, json=ollama_data)
+        response_json = response.json()
+
+        # Extrae el campo 'response' de la respuesta JSON
+        generated_text = response_json.get('response', 'No se genero respuesta')
+
+        # Devuelve el texto generado como JSON
+        return jsonify({'response': generated_text})
+    except requests.exceptions.RequestException as e:
+        return jsonify({'error': e})
+
+if __name__ == "__main__":
+    app.run(debug=True)
