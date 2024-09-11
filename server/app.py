@@ -5,10 +5,9 @@ from langchain_community.llms import Ollama
 app = Flask(__name__)
 cors = CORS(app, origins='*')
 
-# Inicializa el modelo Ollama
 ollama = Ollama(
     base_url='http://localhost:11434',
-    model="mistral"
+    model="gemma2:2b"
 )
 
 @app.route("/")
@@ -18,11 +17,9 @@ def hello_world():
 @app.route('/consulta_ollama', methods=['POST'])
 def consulta_ollama():
     try:
-        # Obtiene el prompt del request JSON
         data = request.get_json()
-        prompt = data.get('prompt', '')
+        prompt = data.get('prompt', '') + "Responde en español"
 
-        # Usa el modelo Ollama para obtener la respuesta
         generated_text = ollama.invoke(prompt)
 
         # Devuelve el texto generado como JSON

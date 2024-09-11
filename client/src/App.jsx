@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 import axios from 'axios'
-import ConsultaOllama from './ConsultaOllama'
+//import ConsultaOllama from './ConsultaOllama'
+import OllamaForm from './components/OllamaForm'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -18,7 +19,7 @@ function App() {
 
   return (
     <div>
-      <ConsultaOllama />
+      <OllamaForm />
     </div>
   )
 }
