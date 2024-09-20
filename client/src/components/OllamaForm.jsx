@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 const OllamaForm = () => {
   const [file, setFile] = useState(null);
+  const [text, setText] = useState('');
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState('');
   const [error, setError] = useState(null);
@@ -12,9 +13,17 @@ const OllamaForm = () => {
     setError(null);
     setResponse('');
 
-    // Crear un objeto FormData para enviar la imagen
+    // Crear un objeto FormData para enviar la imagen o el texto
     const formData = new FormData();
-    formData.append('image', file);
+    if (file) {
+      formData.append('image', file);
+    } else if (text) {
+      formData.append('text', text);
+    } else {
+      setError('Por favor, sube una imagen o ingresa un texto.');
+      setLoading(false);
+      return;
+    }
 
     try {
       const res = await fetch('http://localhost:5000/consulta_ollama', {
@@ -38,15 +47,31 @@ const OllamaForm = () => {
   return (
     <div>
       <h1>CookingWithAI</h1>
-      <h2>Sube una imagen para analizar los ingredientes</h2>
+      <h2>Sube una imagen o ingresa los ingredientes para obtener una receta</h2>
 
       <form onSubmit={handleSubmit}>
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setFile(e.target.files[0])}
-          required
-        />
+        <div>
+          <label>Subir imagen:</label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              setFile(e.target.files[0]);
+              setText(''); // Limpiar el campo de texto si se selecciona una imagen
+            }}
+          />
+        </div>
+        <div>
+          <label>O ingresa ingredientes:</label>
+          <input
+            type="text"
+            value={text}
+            onChange={(e) => {
+              setText(e.target.value);
+              setFile(null); // Limpiar el campo de imagen si se ingresa texto
+            }}
+          />
+        </div>
         <button type="submit">Enviar</button>
       </form>
 

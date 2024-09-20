@@ -1,0 +1,8 @@
+{
+    "database": {
+        "host": "localhost",
+        "username": "postgres",
+        "password": "181030",
+        "database": "CookingWithAI"
+    }
+}
