@@ -11,6 +11,8 @@ class Users(db.Model):
     password = db.Column(db.String(255), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now)
+    
+    chats = db.relationship('Chats', backref='user', lazy=True)
 
     def __repr__(self):
         return f'<Usuario {self.username}>'
@@ -18,3 +20,12 @@ class Users(db.Model):
     # Verifica si la contraseña es correcta
     def check_password(self, password):
         return Bcrypt.check_password_hash(self.password, password)
+
+class Chats(db.Model):
+    __tablename__ = 'chats'
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.String(1000), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now)
+    
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
