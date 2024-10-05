@@ -10,9 +10,9 @@ from database.models import Users
 from database.conexion import db, init_app
 from flask_bcrypt import Bcrypt
 
-csv_file = 'dataset_clean.csv'
+csv_file = 'dataset_clean_one_hot.csv'
 df = pd.read_csv(csv_file)
-class_labels = df['label'].unique()
+class_labels = df.columns[1:] # La primera columna es 'image', el resto son las etiquetas one-hot
 
 app = Flask(__name__)
 cors = CORS(app, origins='*')
@@ -21,7 +21,7 @@ bcrypt = Bcrypt(app)
 # Inicializar la base de datos
 init_app(app)
 
-model_path = '/mnt/c/Users/mat5b/Onedrive/Escritorio/Computacion/Proyecto/CookingWithAI/server/modeloEntrenado'
+model_path = '/home/erich/Universidad/CookingWithAI/server/modeloEntrenado'
 if os.path.exists(model_path):
     print(f'La ruta {model_path} es válida y existe.')
     # Cargar el modelo
@@ -35,23 +35,67 @@ ollama = Ollama(
     model="gemma2:2b"
 )
 
+# Función para preprocesar la imagen
 def preprocess_image(image):
-    image = image.resize((224, 224))  # Redimensionar al mismo tamaño usado en el entrenamiento
+    # Convertir cualquier imagen a RGB para garantizar que tenga 3 canales
+    if image.mode != 'RGB':
+        image = image.convert('RGB')
+        
+    # Redimensionar la imagen al tamaño usado en el entrenamiento
+    image = image.resize((224, 224))
+    
+    # Convertir la imagen a un array de NumPy
     img_array = np.array(image)
+    
+    # Asegurar que la imagen tenga las dimensiones correctas (224, 224, 3)
     img_array = np.expand_dims(img_array, axis=0)  # Añadir una dimensión extra para el batch
-    img_array = img_array / 255.0  # Normalizar como se hizo en el entrenamiento
+    
+    # Normalizar los valores de píxeles (0 a 255) a (0.0 a 1.0)
+    img_array = img_array / 255.0
+    
     return img_array
 
-# Obtener los ingredientes a partir de la imagen utilizando el modelo entrenado
+
+# # Obtener los ingredientes a partir de la imagen utilizando el modelo entrenado
+# def get_ingredients_from_image(image):
+#     img_array = preprocess_image(image)
+    
+#     # Realizar la predicción del modelo
+#     predictions = model.predict(img_array)
+    
+#     # Imprimir las predicciones para depurar
+#     print(f"Predicciones: {predictions}")
+    
+#     # Reducir el umbral a 0.3 para ver si el modelo detecta más ingredientes
+#     threshold = 0.01
+    
+#     # Convertir las probabilidades a etiquetas binarias (1 si la probabilidad es mayor que el umbral, 0 si no)
+#     predicted_labels = (predictions > threshold).astype(int)
+    
+#     # Imprimir las etiquetas predichas
+#     print(f"Etiquetas predichas: {predicted_labels}")
+    
+#     # Obtener los ingredientes correspondientes a las etiquetas con valor 1
+#     ingredients = [class_labels[i] for i in range(len(predicted_labels[0])) if predicted_labels[0][i] == 1]
+    
+#     # Si no se detectan ingredientes, imprimir un mensaje adicional para depuración
+#     if not ingredients:
+#         print("No se detectaron ingredientes con el umbral actual.")
+    
+#     return ingredients
+
 def get_ingredients_from_image(image):
     img_array = preprocess_image(image)
-    predictions = model.predict(img_array)  # predicción
+    predictions = model.predict(img_array)  # Hacer la predicción
     
-    # Obtener la clase con mayor probabilidad
-    predicted_class = np.argmax(predictions, axis=1)[0]  # Obtener el índice de la clase predicha
-    # Obtener el nombre de la clase predicha utilizando el índice
-    ingredient = class_labels[predicted_class]
-    return ingredient
+    # Obtener las etiquetas predichas usando un umbral
+    predicted_labels = (predictions > 0.1).astype(int)  # Umbral de 0.5 para convertir a etiquetas
+    print(f"Predicciones: {predictions}")
+    print(f"Etiquetas predichas: {predicted_labels}")
+
+    # Obtener los ingredientes correspondientes a las etiquetas predichas
+    ingredients = [class_labels[i] for i in range(len(predicted_labels[0])) if predicted_labels[0][i] == 1]
+    return ingredients  # Devolver la lista de ingredientes
 
 
 # Ruta principal de la app
