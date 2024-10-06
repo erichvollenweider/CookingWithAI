@@ -13,6 +13,7 @@
   height: 100%;
   width: 100%;
   background-color: plum;
+  overflow-y: auto;
 }
 
 .chatContainer img {
@@ -111,4 +112,18 @@
   margin-left: 10px;
   color: red;
   border: none;
+}
+
+.recipeContainer {
+  height: 100%;
+  padding: 20px;
+}
+
+.recipeContainer h2 {
+  text-transform: uppercase;
+}
+
+.cleanList {
+  list-style-type: none;
+  padding-left: 0;
 }

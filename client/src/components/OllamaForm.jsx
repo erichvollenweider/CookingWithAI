@@ -40,8 +40,6 @@ const OllamaForm = () => {
 
       if (data.error) {
         setError(data.error);
-      } else if (data.results) {
-        setResponse(data.results);
       } else if (data.response) {
         setResponse(data.response);
       }
@@ -50,6 +48,75 @@ const OllamaForm = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  // Función para formatear la respuesta de la receta
+  const renderRecipe = () => {
+    if (!response) return null;
+
+    // Aquí asumimos que la respuesta de Gemma2 está en un formato que podemos procesar
+    const recipeLines = response.split("\n");
+    let title = "";
+    let ingredients = [];
+    let preparation = [];
+    let consejos = [];
+    let currentSection = "";
+
+    // Recorremos cada línea para clasificarla en su sección correspondiente
+    recipeLines.forEach((line) => {
+      if (line.includes("Ingredientes:")) {
+        currentSection = "ingredients";
+      } else if (line.includes("Preparación:") || line.includes("Instrucciones:")) {
+        currentSection = "preparation";
+      } else if (line.includes("Consejos:")) {
+        currentSection = "consejos";
+      } else if (currentSection === "ingredients") {
+        ingredients.push(line.trim());
+      } else if (currentSection === "preparation") {
+        preparation.push(line.trim());
+      } else if (currentSection === "consejos") {
+        consejos.push(line.trim());
+      } else if (!title) {
+        title = line.replace("##", "").trim();  // Eliminamos el "##" del título
+      }
+    });
+
+    // Mostrar la receta formateada
+    return (
+      <div className={styles.recipeContainer}>
+        <h2>{title}</h2>
+        <h4>Ingredientes:</h4>
+        <ul className={styles.cleanList}>
+          {ingredients
+            .filter((ingredient) => ingredient.length > 0 && !ingredient.match(/^\d+$/)) // Filtramos los números y espacios en blanco
+            .map((ingredient, index) => (
+              <li key={index}>{ingredient}</li>
+            ))}
+        </ul>
+
+        <h4>Preparación:</h4>
+        <ul className={styles.cleanList}>
+          {preparation
+            .filter((step) => step.length > 0 && !step.match(/^\d+$/)) // Filtramos los números y espacios en blanco
+            .map((step, index) => (
+              <li key={index}>{step}</li>
+            ))}
+        </ul>
+
+        {consejos.length > 0 && (
+          <>
+            <h4>Consejos:</h4>
+            <ul className={styles.cleanList}>
+              {consejos
+                .filter((consejo) => consejo.length > 0 && !consejo.match(/^\d+$/)) // Filtramos los números y espacios en blanco
+                .map((consejo, index) => (
+                  <li key={index}>{consejo}</li>
+                ))}
+            </ul>
+          </>
+        )}
+      </div>
+    );
   };
 
   return (
@@ -68,9 +135,7 @@ const OllamaForm = () => {
       <div className={styles.chatContainer}>
         <img src="../../public/icon.png"></img>
         <h1>CookingWithAI</h1>
-        <h2>
-          Sube una imagen o ingresa los ingredientes para obtener una receta
-        </h2>
+        <h2>Sube una imagen o ingresa los ingredientes para obtener una receta</h2>
 
         <div className={styles.submits}>
           <form onSubmit={handleSubmit}>
@@ -109,7 +174,7 @@ const OllamaForm = () => {
         <div className={styles.aiResponse}>
           <h1>Zona de respuestas</h1>
           {loading && <p className={styles.x}>Cargando...</p>}
-          {response && <p className={styles.x}>Respuesta: {response}</p>}
+          {response && renderRecipe()}
           {error && <p className={styles.errorMessage}>Error: {error}</p>}
         </div>
       </div>
