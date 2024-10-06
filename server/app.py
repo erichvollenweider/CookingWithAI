@@ -149,7 +149,7 @@ def register():
     if Users.query.filter_by(username=username).first() is not None:
         return jsonify({'message': 'El nombre de usuario ya existe'}), 400
     if Users.query.filter_by(email=email).first() is not None:
-        return jsonify({'message': 'El correo electrónico ya está registrado'}), 400
+        return jsonify({'message': 'El correo electronico ya esta registrado'}), 400
     
     new_user = Users(username=username, email=email, password=password_hash)
     db.session.add(new_user)
@@ -195,14 +195,14 @@ def login():
     
     # Si las credenciales son correctas, iniciar sesión
     session['user_id'] = user.id
-    return jsonify({'message': 'Inicio de sesión exitoso'}), 200
+    return jsonify({'message': 'Inicio de sesion exitoso'}), 200
 
 
 @app.route('/logout', methods=['POST'])
 def logout():
     session.pop('user_id', None)
     session['logged_in'] = False
-    return jsonify({'message': 'Cierre de sesión exitoso'}), 200
+    return jsonify({'message': 'Cierre de sesion exitoso'}), 200
 
 @app.route('/check_session', methods=['GET'])
 def check_session():
