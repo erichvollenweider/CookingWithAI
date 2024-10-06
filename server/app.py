@@ -10,10 +10,6 @@ from database.models import Users
 from database.conexion import db, init_app
 from flask_bcrypt import Bcrypt
 
-csv_file = 'dataset_clean_one_hot.csv'
-df = pd.read_csv(csv_file)
-class_labels = df.columns[1:] # La primera columna es 'image', el resto son las etiquetas one-hot
-
 app = Flask(__name__)
 cors = CORS(app, origins='*')
 bcrypt = Bcrypt(app)
@@ -21,7 +17,23 @@ bcrypt = Bcrypt(app)
 # Inicializar la base de datos
 init_app(app)
 
-model_path = '/home/erich/Universidad/CookingWithAI/server/modeloEntrenado'
+# Obtener la ruta absoluta donde se encuentra app.py
+basedir = os.path.abspath(os.path.dirname(__file__))
+
+# Construir la ruta absoluta para el archivo CSV
+csv_file = os.path.join(basedir, 'dataset_clean_one_hot.csv')
+
+# Verificar si el archivo CSV existe
+if os.path.exists(csv_file):
+    df = pd.read_csv(csv_file)
+    class_labels = df.columns[1:] # La primera columna es 'image', el resto son las etiquetas one-hot
+    print("CSV cargado correctamente.")
+else:
+    print(f"El archivo CSV no se encuentra en la ruta: {csv_file}")
+    # Manejamos el error con una excepción
+    raise FileNotFoundError(f"El archivo CSV no se encuentra en la ruta: {csv_file}")
+
+model_path = os.path.join(basedir, 'modeloEntrenado')
 if os.path.exists(model_path):
     print(f'La ruta {model_path} es válida y existe.')
     # Cargar el modelo
@@ -29,6 +41,8 @@ if os.path.exists(model_path):
     print("Modelo cargado correctamente.")
 else:
     print(f'La ruta {model_path} no existe o es incorrecta.')
+    # Manejamos el error con una excepción
+    raise FileNotFoundError(f'La ruta {model_path} no existe o es incorrecta.')
 
 ollama = Ollama(
     base_url='http://localhost:11434',
