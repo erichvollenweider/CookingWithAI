@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import '../styles/ChatWithAI.css';
+import '../styles/ChatWithAI.module.css';
 
 const OllamaForm = () => {
   const [files, setFiles] = useState([]);

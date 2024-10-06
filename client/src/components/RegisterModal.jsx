@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import '../styles/AuthModals.css';
-
+import styles from '../styles/AuthModals.module.css'; // Importa los estilos correctamente
 
 const RegisterModal = ({ onClose, onRegister }) => {
   const [username, setUsername] = useState('');
@@ -36,8 +35,8 @@ const RegisterModal = ({ onClose, onRegister }) => {
   };
 
   return (
-    <div className="modal">
-      <div className="modal-content">
+    <div className={styles.modalOverlay}> {/* Cambiado para usar los estilos del fondo oscuro */}
+      <div className={styles.modalContent}> {/* Cambiado para usar los estilos del contenido del modal */}
         <h2>Registrarse</h2>
         {error && <p style={{ color: 'red' }}>{error}</p>} {/* Mostrar mensaje de error */}
         <form onSubmit={handleSubmit}>
@@ -48,6 +47,7 @@ const RegisterModal = ({ onClose, onRegister }) => {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
+              className={styles.inputField} 
             />
           </div>
           <div>
@@ -57,6 +57,7 @@ const RegisterModal = ({ onClose, onRegister }) => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              className={styles.inputField} 
             />
           </div>
           <div>
@@ -66,11 +67,12 @@ const RegisterModal = ({ onClose, onRegister }) => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              className={styles.inputField} 
             />
           </div>
-          <button type="submit">Registrar</button>
+          <button type="submit" className={styles.submitBtn}>Registrar</button> {/* Botón con estilos */}
         </form>
-        <button onClick={onClose}>Volver</button>
+        <button onClick={onClose} className={styles.closeBtn}>Volver</button> {/* Botón de cerrar */}
       </div>
     </div>
   );

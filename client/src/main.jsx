@@ -3,7 +3,8 @@ import { createRoot } from 'react-dom/client';
 import App from './App';
 
 
-import './styles/AuthModals.css';
+import './styles/AuthModals.module.css';
+import './styles/ChatWithAI.module.css';
 import './index.css'
 
 

@@ -49,7 +49,7 @@ ollama = Ollama(
     model="gemma2:2b"
 )
 
-# Función para preprocesar la imagen
+
 def preprocess_image(image):
     # Convertir cualquier imagen a RGB para garantizar que tenga 3 canales
     if image.mode != 'RGB':
@@ -69,34 +69,6 @@ def preprocess_image(image):
     
     return img_array
 
-
-# # Obtener los ingredientes a partir de la imagen utilizando el modelo entrenado
-# def get_ingredients_from_image(image):
-#     img_array = preprocess_image(image)
-    
-#     # Realizar la predicción del modelo
-#     predictions = model.predict(img_array)
-    
-#     # Imprimir las predicciones para depurar
-#     print(f"Predicciones: {predictions}")
-    
-#     # Reducir el umbral a 0.3 para ver si el modelo detecta más ingredientes
-#     threshold = 0.01
-    
-#     # Convertir las probabilidades a etiquetas binarias (1 si la probabilidad es mayor que el umbral, 0 si no)
-#     predicted_labels = (predictions > threshold).astype(int)
-    
-#     # Imprimir las etiquetas predichas
-#     print(f"Etiquetas predichas: {predicted_labels}")
-    
-#     # Obtener los ingredientes correspondientes a las etiquetas con valor 1
-#     ingredients = [class_labels[i] for i in range(len(predicted_labels[0])) if predicted_labels[0][i] == 1]
-    
-#     # Si no se detectan ingredientes, imprimir un mensaje adicional para depuración
-#     if not ingredients:
-#         print("No se detectaron ingredientes con el umbral actual.")
-    
-#     return ingredients
 
 def get_ingredients_from_image(image):
     img_array = preprocess_image(image)
@@ -144,10 +116,10 @@ def consulta_ollama():
                 if not ingredients:
                     return jsonify({'error': 'No se detectaron ingredientes en una o más imágenes.'})
 
-                # Agregar ingredientes detectados a la lista total
+                
                 all_ingredients.extend(ingredients)
             
-            # Eliminar duplicados
+            
             all_ingredients = list(set(all_ingredients))
 
             if all_ingredients:
@@ -166,22 +138,19 @@ def consulta_ollama():
 
 @app.route('/register', methods=['POST'])
 def register():
-    data = request.get_json()  # Obtener los datos en formato JSON desde el frontend
+    data = request.get_json()  
     
     username = data.get('username')
     email = data.get('email')
     password = data.get('password')
     
-    # Encriptamos la contraseña
     password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
     
-    # Verificamos si el usuario ya existe
     if Users.query.filter_by(username=username).first() is not None:
         return jsonify({'message': 'El nombre de usuario ya existe'}), 400
     if Users.query.filter_by(email=email).first() is not None:
         return jsonify({'message': 'El correo electrónico ya está registrado'}), 400
     
-    # Creamos y agregamos el nuevo usuario a la base de datos
     new_user = Users(username=username, email=email, password=password_hash)
     db.session.add(new_user)
     db.session.commit()
@@ -190,8 +159,7 @@ def register():
 
 
 # Ruta para listar los usuarios registrados dentro de la bdd
-# no tiene uso, sirve para verificar que los usuarios se crean
-# y se agregan de manera correcta
+# Para verificar que los usuarios se crean
 @app.route('/usuarios')
 def get_usuarios():
     try:
@@ -222,6 +190,8 @@ def login():
     # Verificar si la contraseña es correcta
     if not bcrypt.check_password_hash(user.password, password):
         return jsonify({'message': 'Las credenciales no coinciden'}), 401  # Contraseña incorrecta
+    
+    session['logged_in'] = True  
     
     # Si las credenciales son correctas, iniciar sesión
     session['user_id'] = user.id

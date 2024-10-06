@@ -1,0 +1,61 @@
+/* AuthModals.module.css */
+
+/* Fondo oscuro transparente para la ventana emergente */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Fondo oscuro pero semi-transparente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999; /* Asegurarse de que esté en la capa superior */
+}
+
+/* Contenido del modal */
+.modalContent {
+  background-color: rgb(54, 52, 52);
+  padding: 2rem;
+  border-radius: 10px;
+  width: 300px;
+  text-align: center;
+}
+
+.modalContent h2 {
+  margin-bottom: 20px;
+}
+
+.modalContent input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #3c3939;
+  border-radius: 5px;
+}
+
+.modalContent button {
+  background-color: #24228d9d;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.modalContent button:hover {
+  background-color: #7247ff;
+}
+
+/* Botón cerrar */
+.closeBtn {
+  background-color: transparent;
+  color: #6c0d0d;
+  border: none;
+  font-size: 0.9rem;
+  margin-top: 15px;
+  cursor: pointer;
+}

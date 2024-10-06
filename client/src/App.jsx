@@ -52,14 +52,14 @@ function App() {
 
   // Abre el modal de registro
   const openRegisterModal = () => {
-    setShowLoginModal(false); // Cierra el modal de login
-    setShowRegisterModal(true); // Abre el modal de registro
+    setShowLoginModal(false); 
+    setShowRegisterModal(true);
   };
 
   // Maneja el registro
   const handleRegister = () => {
-    setShowRegisterModal(false); // Cierra el modal de registro
-    setShowLoginModal(true); // Abre el modal de login después de registrarse
+    setShowRegisterModal(false); 
+    setShowLoginModal(true); 
   };
 
   const handleCloseLoginModal = () => {

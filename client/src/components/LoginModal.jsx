@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import '../styles/AuthModals.css';
-
+import styles from '../styles/AuthModals.module.css';
 
 const LoginModal = ({ onClose, onLogin, onSwitchToRegister }) => {
   const [email, setEmail] = useState('');
@@ -33,8 +32,8 @@ const LoginModal = ({ onClose, onLogin, onSwitchToRegister }) => {
   };
 
   return (
-    <div className="modal">
-      <div className="modal-content">
+    <div className={styles.modalOverlay}>
+      <div className={styles.modalContent}>
         <h2>Iniciar Sesión</h2>
         {error && <p style={{ color: 'red' }}>{error}</p>} {/* Muestra el mensaje de error */}
         <form onSubmit={handleSubmit}>
@@ -58,7 +57,7 @@ const LoginModal = ({ onClose, onLogin, onSwitchToRegister }) => {
           </div>
           <button type="submit">Ingresar</button>
         </form>
-        <button onClick={onSwitchToRegister} className="switch-modal-button">Registrarse</button> {/* Botón para ir a registro */}
+        <button onClick={onSwitchToRegister} className={styles.closeBtn}>Registrarse</button> {/* Botón para ir a registro */}
       </div>
     </div>
   );

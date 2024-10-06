@@ -26,12 +26,11 @@ body {
   margin: 0;
   padding: 20px;
   display: flex;
-  flex-direction: column;  /* Añadir esta propiedad para centrar en columna */
-  justify-content: center; /* Asegura que todo el contenido esté centrado verticalmente */
-  align-items: center; /* Centra horizontalmente */
-  min-width: 320px;
+  flex-direction: column;    
+  justify-content: center;  
+  align-items: center;  
   min-height: 100vh;
-  background-color: #242424; /* Fondo oscuro */
+  background-color: #242424;  
 }
 
 h1 {
@@ -74,11 +73,10 @@ button:focus-visible {
 }
 
 
-/* From Uiverse.io by WhiteNervosa */ 
 .textInputWrapper {
   position: relative;
-  width: 350px; /* Ajusta el ancho del input */
-  margin: 12px 0; /* Cambia el margen para centrar */
+  width: 350px; 
+  margin: 12px 0;  
 }
 
 .textInputWrapper:before {
