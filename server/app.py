@@ -108,25 +108,47 @@ app.secret_key = os.urandom(24)
 @app.route('/consulta_ollama', methods=['POST'])
 def consulta_ollama():
     try:
-        # Verificar si hay una imagen en la solicitud
-        if 'image' in request.files:
-            image_file = request.files['image']
-            image = Image.open(image_file)
-
-            ingredient = get_ingredients_from_image(image)
-            print(f"Ingrediente predecido: {ingredient}")
-
-            if not ingredient:
-                return jsonify({'error': 'No se detectaron ingredientes en la imagen'})
-
-            prompt = f"Dame una receta sencilla con el siguiente ingrediente: {ingredient}. Evita incluir elementos no relacionados o creativos."
-            generated_text = ollama.invoke(prompt)
-            return jsonify({'response': generated_text})
-        else:
-            return jsonify({'error': 'No se encuentra imagen o texto'})
+        # Verificar si hay texto en la solicitud
+        text = request.form.get('text', '')
         
+        # Verificar si hay una imagen en la solicitud
+        images = request.files.getlist('images')
+
+        if text:
+            prompt = f"Dame una receta sencilla con el/los siguientes ingredientes: {text}. Evita incluir elementos no relacionados o creativos."
+            generated_text = ollama.invoke(prompt)
+            return jsonify({'results': f'Receta generada para los ingredientes: {generated_text}'})
+
+        elif images:
+            all_ingredients = []
+            
+            for image_file in images:
+                image = Image.open(image_file)
+                ingredients = get_ingredients_from_image(image)
+                print(f"Ingredientes predichos: {ingredients}")
+
+                if not ingredients:
+                    return jsonify({'error': 'No se detectaron ingredientes en una o más imágenes.'})
+
+                # Agregar ingredientes detectados a la lista total
+                all_ingredients.extend(ingredients)
+            
+            # Eliminar duplicados
+            all_ingredients = list(set(all_ingredients))
+
+            if all_ingredients:
+                prompt = f"Dame una receta sencilla con los siguientes ingredientes: {', '.join(all_ingredients)}. Evita incluir elementos no relacionados o creativos."
+                generated_text = ollama.invoke(prompt)
+                return jsonify({'response': generated_text})
+            else:
+                return jsonify({'error': 'No se detectaron ingredientes en las imágenes.'})
+
+        else:
+            return jsonify({'error': 'No se recibió ni texto ni imágenes.'})
+
     except Exception as e:
         return jsonify({'error': str(e)})
+
 
 @app.route('/register', methods=['POST'])
 def register():

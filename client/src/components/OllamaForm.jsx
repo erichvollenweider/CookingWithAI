@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import '../styles/ChatWithAI.css';
 
 const OllamaForm = () => {
-  const [file, setFile] = useState(null);
+  const [files, setFiles] = useState([]);
   const [text, setText] = useState('');
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState('');
@@ -17,12 +17,18 @@ const OllamaForm = () => {
 
     // Crear un objeto FormData para enviar la imagen o el texto
     const formData = new FormData();
-    if (file) {
-      formData.append('image', file);
-    } else if (text) {
+    if (files.length > 0) {
+      for (let i = 0; i < files.length; i++) {
+        formData.append('images', files[i]);  // Subir cada archivo de imagen
+      }
+    }
+    if (text) {
       formData.append('text', text);
-    } else {
-      setError('Por favor, sube una imagen o ingresa un texto.');
+    }
+    
+    // Verificar si no se envían ni texto ni imágenes
+    if (files.length === 0 && !text) {
+      setError('Por favor, sube una o más imágenes o ingresa un texto.');
       setLoading(false);
       return;
     }
@@ -34,11 +40,16 @@ const OllamaForm = () => {
       });
 
       const data = await res.json();
+
+      // Manejar el error desde el backend
       if (data.error) {
         setError(data.error);
-      } else {
-        setResponse(data.response);
+      } else if (data.results) {
+        setResponse(data.results);  // En caso de que haya un resultado para texto
+      } else if (data.response) {
+        setResponse(data.response);  // En caso de que haya un resultado para imágenes
       }
+
     } catch (err) {
       setError('Error en la solicitud al servidor.');
     } finally {
@@ -53,12 +64,13 @@ const OllamaForm = () => {
 
       <form onSubmit={handleSubmit}>
         <div>
-          <label>Subir imagen:</label>
+          <label>Subir imagenes:</label>
           <input
             type="file"
             accept="image/*"
+            multiple
             onChange={(e) => {
-              setFile(e.target.files[0]);
+              setFiles(Array.from(e.target.files));
               setText(''); // Limpiar el campo de texto si se selecciona una imagen
             }}
           />
@@ -70,7 +82,7 @@ const OllamaForm = () => {
             value={text}
             onChange={(e) => {
               setText(e.target.value);
-              setFile(null); // Limpiar el campo de imagen si se ingresa texto
+              setFiles([]); // Limpiar el campo de imagen si se ingresa texto
             }}
           />
         </div>
