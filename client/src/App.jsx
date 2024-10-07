@@ -76,6 +76,8 @@ function App() {
       {isLoggedIn ? (
         <div>
           <OllamaForm />
+          {/* <OllamaForm onLogout={handleLogout}/> 
+          ESTO DEBERIA DEJAR USAR LA FUNCIÓN EN OllamaForm PERO NO ANDA*/}
           <button onClick={handleLogout}>Cerrar sesión</button>
         </div>
       ) : (

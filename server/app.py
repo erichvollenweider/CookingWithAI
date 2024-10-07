@@ -103,7 +103,7 @@ def consulta_ollama():
         if text:
             prompt = f"Dame una receta sencilla con el/los siguientes ingredientes: {text}. Evita incluir elementos no relacionados o creativos."
             generated_text = ollama.invoke(prompt)
-            return jsonify({'results': f'Receta generada para los ingredientes: {generated_text}'})
+            return jsonify({'response': f'Receta generada para los ingredientes: {generated_text}'})
 
         elif images:
             all_ingredients = []

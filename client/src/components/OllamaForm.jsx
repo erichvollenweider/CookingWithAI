@@ -68,7 +68,7 @@ const OllamaForm = () => {
         currentSection = "ingredients";
       } else if (line.includes("Preparación:") || line.includes("Instrucciones:")) {
         currentSection = "preparation";
-      } else if (line.includes("Consejos:")) {
+      } else if (line.includes("Consejos:") || line.includes("Tips:")) {
         currentSection = "consejos";
       } else if (currentSection === "ingredients") {
         ingredients.push(line.trim());
@@ -78,6 +78,10 @@ const OllamaForm = () => {
         consejos.push(line.trim());
       } else if (!title) {
         title = line.replace("##", "").trim();  // Eliminamos el "##" del título
+      
+        if (title.includes("Receta generada para los ingredientes:")) {
+          title = title.replace("Receta generada para los ingredientes:", "").trim();
+        }
       }
     });
 
@@ -131,6 +135,12 @@ const OllamaForm = () => {
           <li>Receta 4</li>
           <li>Receta 5</li>
         </ul>
+        <div>
+          {/* <button onClick={onLogout}>
+            Cerrar sesión
+          </button> 
+          POR EL MOMENTO NO FUNCIONA, PONE TODA LA PANTALLA NEGRA*/}
+        </div>
       </div>
       <div className={styles.chatContainer}>
         <img src="../../public/icon.png"></img>
