@@ -36,43 +36,52 @@ const RegisterModal = ({ onClose, onRegister }) => {
 
   return (
     <div className={styles.modalOverlay}> {/* Cambiado para usar los estilos del fondo oscuro */}
-      <div className={styles.modalContent}> {/* Cambiado para usar los estilos del contenido del modal */}
-        <h2>Registrarse</h2>
-        {error && <p style={{ color: 'red' }}>{error}</p>} {/* Mostrar mensaje de error */}
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label>Usuario:</label>
-            <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-              className={styles.inputField} 
-            />
-          </div>
-          <div>
-            <label>Email:</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className={styles.inputField} 
-            />
-          </div>
-          <div>
-            <label>Contraseña:</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className={styles.inputField} 
-            />
-          </div>
-          <button type="submit" className={styles.submitBtn}>Registrar</button> {/* Botón con estilos */}
-        </form>
-        <button onClick={onClose} className={styles.closeBtn}>Volver</button> {/* Botón de cerrar */}
+      <div className={styles.modalContainer}>
+        <div className={styles.information}>
+        <h2>COOKING</h2>
+        <h2>WITH</h2>
+        <h2>AI</h2> 
+          <p>¡La nueva forma de cocinar!</p>
+          <p>Descubre nuevas recetas y cocina con facilidad</p>
+        </div>
+        <div className={styles.modalContent}> {/* Cambiado para usar los estilos del contenido del modal */}
+          <h2>Registrarse</h2>
+          {error && <p style={{ color: 'red' }}>{error}</p>} {/* Mostrar mensaje de error */}
+          <form onSubmit={handleSubmit}>
+            <div>
+              <label>Usuario:</label>
+              <input
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+                className={styles.inputField} 
+              />
+            </div>
+            <div>
+              <label>Email:</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className={styles.inputField} 
+              />
+            </div>
+            <div>
+              <label>Contraseña:</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className={styles.inputField} 
+              />
+            </div>
+            <button type="submit" className={styles.submitBtn}>Registrar</button> {/* Botón con estilos */}
+            <button onClick={onClose} className={styles.closeBtn}>Volver</button> {/* Botón de cerrar */}
+          </form>
+        </div>
       </div>
     </div>
   );

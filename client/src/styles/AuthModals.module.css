@@ -1,5 +1,6 @@
 /* AuthModals.module.css */
 
+
 /* Fondo oscuro transparente para la ventana emergente */
 .modalOverlay {
   position: fixed;
@@ -7,23 +8,53 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5); /* Fondo oscuro pero semi-transparente */
+  background: rgba(0, 0, 0, 0.7); 
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999; /* Asegurarse de que esté en la capa superior */
+  z-index: 999; 
+  backdrop-filter: blur(5px); 
+}
+
+/* Contenedor del modal */
+.modalContainer {
+  display: flex;
+  width: 800px;
+  height: 500px;
+  border-radius: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  background-color: rgba(255, 255, 255, 0.5); /* Fondo semi-transparente */
+}
+
+/* Información sobre CookingWithAI */
+.information {
+  width: 40%;
+  padding: 20px;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  background-color: #964B00; /* Color marrón oscuro */
+  color: #fff; /* Letras blancas */
+}
+
+.information h2 {
+  font-family: 'Pacifico', cursive;
+  font-size: 2rem;
+  margin-bottom: 20px;
 }
 
 /* Contenido del modal */
 .modalContent {
-  background-color: rgb(54, 52, 52);
-  padding: 2rem;
-  border-radius: 10px;
-  width: 300px;
-  text-align: center;
+  width: 60%;
+  padding: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  background-color: #5c3434; /* Color marrón claro */
+  color: #fff; /* Letras blancas */
 }
 
 .modalContent h2 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2rem;
   margin-bottom: 20px;
 }
 
@@ -33,10 +64,12 @@
   margin: 10px 0;
   border: 1px solid #3c3939;
   border-radius: 5px;
+  background-color: #317667; /* Color verde oscuro */
+  color: #fff; /* Letras blancas */
 }
 
 .modalContent button {
-  background-color: #24228d9d;
+  background-color: #8B0A0A; /* Color rojo intenso */
   border: none;
   color: white;
   padding: 10px 20px;
@@ -47,7 +80,7 @@
 }
 
 .modalContent button:hover {
-  background-color: #7247ff;
+  background-color: #FF3737; /* Color rojo claro */
 }
 
 /* Botón cerrar */
@@ -58,4 +91,66 @@
   font-size: 0.9rem;
   margin-top: 15px;
   cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+/* Icono de cocinero */
+.cocinero-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 50px;
+  color: #8B0A0A;
+}
+
+/* Estilos adicionales */
+.modalContent label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  border-radius: 20px;
+  padding: 0 10px;
+  background-color: #463939; /* Color marrón oscuro */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.modalContent label input {
+  width: 100%;
+  padding: 10px;
+  background-color: #fff;
+  border: none;
+  outline: none;
+  border-radius: 20px;
+  color: #333;
+}
+
+.modalContent label i {
+  color: #a7a7a7;
+}
+
+.modalContent .alertaError {
+  display: block;
+  background-color: #e81e1e;
+  padding: 0.5rem 1rem;
+  margin-top: 10px;
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+
+.modalContent .alertaExito {
+  display: block;
+  background-color: #0ca828;
+  padding: 0.5rem 1rem;
+  margin-top: 10px;
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+
+.modalContent form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

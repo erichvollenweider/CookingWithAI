@@ -1,35 +1,31 @@
 import { useState, useEffect } from 'react';
-import './App.css'
-import OllamaForm from './components/OllamaForm';; 
-import LoginModal from './components/LoginModal'; 
-import RegisterModal from './components/RegisterModal'; 
+import './App.css';
+import OllamaForm from './components/OllamaForm';
+import LoginModal from './components/LoginModal';
+import RegisterModal from './components/RegisterModal';
 
-function App() {  
+function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [showLoginModal, setShowLoginModal] = useState(true);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [hasClicked, setHasClicked] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
 
   useEffect(() => {
     const checkSession = async () => {
       const response = await fetch('http://localhost:5000/check_session');
       const data = await response.json();
-  
+
       if (data.logged_in) {
-        setIsLoggedIn(true);  // Usuario está logueado
-        setShowLoginModal(false);  // Oculta el modal de login si está logueado
-      } else {
-        setIsLoggedIn(false); // Usuario no está logueado
+        setIsLoggedIn(true);
       }
     };
-  
+
     checkSession();
   }, []);
-  
 
-  // Maneja el login
   const handleLogin = () => {
     setIsLoggedIn(true);
-    setShowLoginModal(false); // Cierra el modal de login al iniciar sesión
+    setShowLoginModal(false);
   };
 
   const handleLogout = async () => {
@@ -37,68 +33,62 @@ function App() {
       const response = await fetch('http://localhost:5000/logout', {
         method: 'POST',
       });
-  
+
       if (response.ok) {
-        console.log('Sesión cerrada correctamente');
-        setIsLoggedIn(false); // Actualiza el estado del usuario
-        setShowLoginModal(true);  // Muestra el modal de login nuevamente
-      } else {
-        console.error('Error al cerrar sesión');
+        setIsLoggedIn(false);
+        setShowLoginModal(true);
       }
     } catch (err) {
       console.error('Error al conectarse al servidor:', err);
     }
   };
 
-  // Abre el modal de registro
   const openRegisterModal = () => {
-    setShowLoginModal(false); 
+    setShowLoginModal(false);
     setShowRegisterModal(true);
   };
 
-  // Maneja el registro
+  const handleCloseLoginModal = () => {
+    setShowLoginModal(false);
+  };
+
   const handleRegister = () => {
     setShowRegisterModal(false); 
     setShowLoginModal(true); 
-  };
-
-  const handleCloseLoginModal = () => {
-    setShowLoginModal(false); // Cierra el modal de login
-  };
+  }
 
   const handleCloseRegisterModal = () => {
-    setShowRegisterModal(false); // Cierra el modal de registro
+    setShowRegisterModal(false);
     setShowLoginModal(true);
   };
 
+  const handleBackgroundClick = () => {
+    if (!isLoggedIn && !hasClicked) {
+      setShowLoginModal(true);
+      setHasClicked(true);
+    }
+  };
+
   return (
-    <div className={showLoginModal || showRegisterModal ? 'app-blur' : ''}>
-      {isLoggedIn ? (
-        <div>
-          <OllamaForm />
-          {/* <OllamaForm onLogout={handleLogout}/> 
-          ESTO DEBERIA DEJAR USAR LA FUNCIÓN EN OllamaForm PERO NO ANDA*/}
-          <button onClick={handleLogout}>Cerrar sesión</button>
-        </div>
-      ) : (
-        <>
-          {showLoginModal && (
-            <LoginModal
-              onClose={handleCloseLoginModal}
-              onLogin={handleLogin}
-              onSwitchToRegister={openRegisterModal} // Función para cambiar a modal de registro
-            />
-          )}
-          {showRegisterModal && (
-            <RegisterModal
-              onClose={handleCloseRegisterModal}
-              onRegister={handleRegister} // Función para manejar el registro exitoso
-            />
-          )}
-        </>
+    <div onClick={handleBackgroundClick}>
+      <OllamaForm />
+      <button onClick={handleLogout}>Cerrar sesión</button>
+      {showLoginModal && (
+        <LoginModal
+          onClose={handleCloseLoginModal}
+          onLogin={handleLogin}
+          onSwitchToRegister={openRegisterModal}
+        />
       )}
+      {showRegisterModal && (
+        <RegisterModal
+          onClose={handleCloseRegisterModal}
+          onRegister={handleRegister}
+        />
+    )}
     </div>
   );
 }
 
 export default App;
+
