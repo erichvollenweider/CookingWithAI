@@ -157,7 +157,6 @@ const OllamaForm = () => {
                 multiple
                 onChange={(e) => {
                   setFiles(Array.from(e.target.files));
-                  setText("");
                 }}
                 className={styles.uploadButton}
               />
@@ -170,7 +169,6 @@ const OllamaForm = () => {
                 value={text}
                 onChange={(e) => {
                   setText(e.target.value);
-                  setFiles([]);
                 }}
                 className={styles.uploadText}
               />

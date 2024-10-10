@@ -100,14 +100,12 @@ def consulta_ollama():
         # Verificar si hay una imagen en la solicitud
         images = request.files.getlist('images')
 
-        if text:
-            prompt = f"Dame una receta sencilla con el/los siguientes ingredientes: {text}. Evita incluir elementos no relacionados o creativos."
-            generated_text = ollama.invoke(prompt)
-            return jsonify({'response': f'Receta generada para los ingredientes: {generated_text}'})
+        all_ingredients = []
+        
+        print(f"Texto recibido: {text}")
+        print(f"Cantidad de imagenes recibidas: {len(images)}")
 
-        elif images:
-            all_ingredients = []
-            
+        if images:
             for image_file in images:
                 image = Image.open(image_file)
                 ingredients = get_ingredients_from_image(image)
@@ -116,21 +114,25 @@ def consulta_ollama():
                 if not ingredients:
                     return jsonify({'error': 'No se detectaron ingredientes en una o más imágenes.'})
 
-                
                 all_ingredients.extend(ingredients)
             
-            
+            # Eliminar duplicados
             all_ingredients = list(set(all_ingredients))
 
-            if all_ingredients:
-                prompt = f"Dame una receta sencilla con los siguientes ingredientes: {', '.join(all_ingredients)}. Evita incluir elementos no relacionados o creativos."
-                generated_text = ollama.invoke(prompt)
-                return jsonify({'response': generated_text})
-            else:
-                return jsonify({'error': 'No se detectaron ingredientes en las imágenes.'})
+        if text:
+            # Si hay texto, añadirlo a los ingredientes detectados
+            user_ingredients = text.split(',')
+            all_ingredients.extend([ingredient.strip() for ingredient in user_ingredients])
 
+            # Eliminar duplicados después de agregar los ingredientes del texto
+            all_ingredients = list(set(all_ingredients))
+
+        if all_ingredients:
+            prompt = f"Dame una receta sencilla con los siguientes ingredientes: {', '.join(all_ingredients)}. Evita incluir elementos no relacionados o creativos."
+            generated_text = ollama.invoke(prompt)
+            return jsonify({'response': generated_text})
         else:
-            return jsonify({'error': 'No se recibió ni texto ni imágenes.'})
+            return jsonify({'error': 'No se recibieron ingredientes ni en texto ni en imágenes.'})
 
     except Exception as e:
         return jsonify({'error': str(e)})
