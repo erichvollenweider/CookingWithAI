@@ -1,43 +1,26 @@
-import json
-import psycopg2
-from flask_sqlalchemy import SQLAlchemy
+import os
+from database.db import db
+import sqlite3
 
-# Inicializa la instancia de SQLAlchemy
-db = SQLAlchemy()
-
-# Carga la configuracions desde un JSON
-def get_config():
-    with open('database/config.json') as f:
-        config = json.load(f)
-    return config['database']
-
-# Crea la bdd si es que no existe ya, y las tablas necesarias
 def create_db():
-    config = get_config()
-    # Conexion a la bdd
-    conn = psycopg2.connect(
-        host=config["host"],
-        user=config["username"],
-        password=config["password"],
-        database=config["database"]
-    )
-    # Crea un cursor para ejecutar queries
+    basedir = os.path.abspath(os.path.dirname(__file__))
+    conn = sqlite3.connect(os.path.join(basedir, 'database.db'))
     cursor = conn.cursor()
-    # Lee el script SQL para crear las tablas
-    with open('database/init_db.sql', 'r') as f:
+    
+    with open('database/schema.sql', 'r') as f:
         sql = f.read()
         try:
-            # Ejecuta el script SQL
-            cursor.execute(sql)
+            cursor.executescript(sql)
             conn.commit()
-            print("Tabla creada con éxito")
-        except psycopg2.errors.DuplicateTable:
-            print("La tabla ya existe")
-    conn.close()
+            print("Base de datos y tablas creadas con exito")
+        except sqlite3.OperationalError as e:
+            print(f"Error: {e}")
 
+    conn.close()
+    
 def init_app(app):
-    config = get_config()
-    # Configura la bdd
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{config["username"]}:{config["password"]}@{config["host"]}/{config["database"]}'
+    basedir = os.path.abspath(os.path.dirname(__file__))
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{os.path.join(basedir, "database.db")}'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.init_app(app)
+

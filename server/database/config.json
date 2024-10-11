@@ -1,8 +1,0 @@
-{
-    "database": {
-        "host": "ep-silent-queen-a4kgf1dx-pooler.us-east-1.aws.neon.tech",
-        "username": "default",
-        "password": "Z8LjQz1bmCHX",
-        "database": "verceldb"
-    }
-}

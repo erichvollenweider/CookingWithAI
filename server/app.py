@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for, redirect, jsonify, session
+from flask import Flask, request, url_for, redirect, jsonify, session
 from flask_cors import CORS
 from PIL import Image
 import tensorflow as tf
@@ -6,8 +6,8 @@ import numpy as np
 import pandas as pd
 import os
 from langchain_community.llms import Ollama
-from database.models import Users
-from database.conexion import db, init_app
+from database.models import Users, Chats
+from database.conexion import db, init_app, create_db
 from flask_bcrypt import Bcrypt
 
 app = Flask(__name__)
@@ -215,7 +215,6 @@ def check_session():
 
 
 if __name__ == "__main__":
-    from database.conexion import create_db
     create_db()
     # Manejamos los errores con el metodo que creamos
     app.register_error_handler(404, pagina_no_encotrada)
