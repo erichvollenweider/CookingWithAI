@@ -71,8 +71,7 @@ function App() {
 
   return (
     <div onClick={handleBackgroundClick}>
-      <OllamaForm />
-      <button onClick={handleLogout}>Cerrar sesión</button>
+      <OllamaForm onLogout={handleLogout} />
       {showLoginModal && (
         <LoginModal
           onClose={handleCloseLoginModal}

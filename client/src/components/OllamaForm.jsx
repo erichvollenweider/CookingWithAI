@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "../styles/ChatWithAI.module.css";
 
-const OllamaForm = () => {
+const OllamaForm = ({ onLogout }) => {
   const [files, setFiles] = useState([]);
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
@@ -64,7 +64,7 @@ const OllamaForm = () => {
 
     // Recorremos cada línea para clasificarla en su sección correspondiente
     recipeLines.forEach((line) => {
-      if (line.includes("Ingredientes:")) {
+      if (line.includes("Ingredientes:") || line.includes("Receta de:")) {
         currentSection = "ingredients";
       } else if (line.includes("Preparación:") || line.includes("Instrucciones:")) {
         currentSection = "preparation";
@@ -135,11 +135,10 @@ const OllamaForm = () => {
           <li>Receta 4</li>
           <li>Receta 5</li>
         </ul>
-        <div>
-          {/* <button onClick={onLogout}>
+        <div className={styles.bottomButton}>
+          <button onClick={onLogout} className={styles.logoutButton}>
             Cerrar sesión
           </button> 
-          POR EL MOMENTO NO FUNCIONA, PONE TODA LA PANTALLA NEGRA*/}
         </div>
       </div>
       <div className={styles.chatContainer}>
@@ -180,8 +179,8 @@ const OllamaForm = () => {
         </div>
 
         <div className={styles.aiResponse}>
-          <h1>Zona de respuestas</h1>
-          {loading && <p className={styles.x}>Cargando...</p>}
+          <h1>Zona de respuestas (Quitar texto luego)</h1>
+          {loading && <p>Cargando...</p>}
           {response && renderRecipe()}
           {error && <p className={styles.errorMessage}>Error: {error}</p>}
         </div>

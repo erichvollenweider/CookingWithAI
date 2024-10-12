@@ -1,4 +1,8 @@
 /* Contenedor principal */
+body {
+  height: 95.7vh;
+}
+
 .main {
   display: flex;
   flex-direction: row;
@@ -12,7 +16,7 @@
   flex-direction: column;
   height: 100%;
   width: 100%;
-  background-color: grey;
+  background-color: #5c3434;
   overflow-y: auto;
 }
 
@@ -23,11 +27,16 @@
   height: 250px;
   margin-top: 50px;
   border-radius: 50%;
-  border-style: solid;
+  border-style: solid #964B00;
+  background-color: #964B00;
+}
+
+.chatContainer h2, .chatContainer label, .chatContainer h4 {
+  color: white;
 }
 
 .chatContainer h1 {
-  color: black;
+  color: white;
   font-family: Tahoma;
 }
 
@@ -37,7 +46,7 @@
   flex-direction: column;
   width: 20%;
   height: 100%;
-  background-color: #333;
+  background-color: #964B00;
   color: white;
   box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
 }
@@ -47,7 +56,7 @@
 }
 
 .sidebar p {
-  color: grey;
+  color: black;
 }
 
 .sidebar ul {
@@ -69,11 +78,17 @@
 
 .sendButton {
   padding: 10px 20px;
-  background-color: royalblue;
+  margin-top: 10px;
+  background-color: #6c0d0d;
+  color-scheme: light dark;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+}
+
+.sendButton:hover {
+  background-color: #964B00;
 }
 
 .sendButton:disabled {
@@ -81,13 +96,14 @@
 }
 
 .errorMessage {
-  color: black;
+  color: red;
   margin-top: 10px;
   text-align: center;
 }
 
 .aiResponse {
   height: 100%;
+  color: #964B00;
 }
 
 .submits {
@@ -98,7 +114,7 @@
 .uploadButton {
   padding: 10px 10px;
   margin-left: 10px;
-  color: royalblue;
+  color: black;
   border: none;
   border-radius: 10px;
   cursor: pointer;
@@ -107,7 +123,7 @@
 .uploadText {
   padding: 5px 0px;
   margin-left: 10px;
-  color: royalblue;
+  color: black;
   border: none;
 }
 
@@ -118,9 +134,41 @@
 
 .recipeContainer h2 {
   text-transform: uppercase;
+  color:#964B00;
 }
 
 .cleanList {
   list-style-type: none;
   padding-left: 0;
+  color: white;
+}
+
+.logoutButton {
+  display: flex;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: white;
+  cursor: pointer;
+  transition: border-color 0.25s;
+  margin: 10px;
+}
+
+.logoutButton:hover {
+  border-color: #6c0d0d;
+}
+
+.logoutButton:focus,
+.logoutButton:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+.bottomButton {
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  height: 100%;
 }
