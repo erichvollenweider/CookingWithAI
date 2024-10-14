@@ -68,7 +68,7 @@ const OllamaForm = ({ onLogout }) => {
         currentSection = "ingredients";
       } else if (line.includes("Preparación:") || line.includes("Instrucciones:")) {
         currentSection = "preparation";
-      } else if (line.includes("Consejos:") || line.includes("Tips:")) {
+      } else if (line.includes("Consejos:") || line.includes("Tips:") || line.includes("Notas:")) {
         currentSection = "consejos";
       } else if (currentSection === "ingredients") {
         ingredients.push(line.trim());
