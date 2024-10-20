@@ -3,10 +3,19 @@ import styles from "../styles/ChatWithAI.module.css";
 
 const OllamaForm = ({ onLogout }) => {
   const [files, setFiles] = useState([]);
+  const [previewUrls, setPreviewUrls] = useState([]);
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState("");
   const [error, setError] = useState(null);
+
+  const handleFileChange = (e) => {
+    const filesArray = Array.from(e.target.files);
+    setFiles(filesArray);
+
+    const urls = filesArray.map((file) => URL.createObjectURL(file));
+    setPreviewUrls(urls);
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -148,6 +157,11 @@ const OllamaForm = ({ onLogout }) => {
 
         <div className={styles.submits}>
           <form onSubmit={handleSubmit}>
+            <div className={styles.imagePreviewContainer}>
+              {previewUrls.map((url, index) => (
+                <img key={index} src={url} alt={`preview-${index}`} className={styles.imagePreview} />
+              ))}
+            </div>
 
             <div className={styles.messageBox}>
               <div className={styles.fileUploadWrapper}>
@@ -183,9 +197,7 @@ const OllamaForm = ({ onLogout }) => {
                   id="file"
                   accept="image/*"
                   multiple
-                  onChange={(e) => {
-                    setFiles(Array.from(e.target.files));
-                  }}
+                  onChange={handleFileChange}
                   className={styles.file}
                   name="file"
                 />

@@ -312,3 +312,19 @@ body {
   fill: #3c3c3c;
   stroke: white;
 }
+
+.imagePreviewContainer {
+  display: flex;  /* Alineación horizontal */
+  flex-wrap: wrap;  /* Permite que las imágenes pasen a otra línea si no caben */
+  gap: 10px;  /* Espacio entre las imágenes */
+  justify-content: center;  /* Centra las imágenes horizontalmente */
+  align-items: center;  /* Centra las imágenes verticalmente */
+}
+
+.imagePreviewContainer img {
+  width: 100px;  /* Ajuste del tamaño */
+  height: 100px;  /* Cuadrado */
+  object-fit: cover;  /* Asegura que la imagen se ajuste bien */
+  border-radius: 5px;  /* Sin bordes redondeados */
+  border: 1.5px solid #000000;  /* Borde opcional */
+}
