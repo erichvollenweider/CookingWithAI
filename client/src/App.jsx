@@ -7,9 +7,9 @@ import RegisterModal from './components/RegisterModal';
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [hasClicked, setHasClicked] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
 
+  // Al cargar la aplicación, verificamos si ya hubo clic usando localStorage
   useEffect(() => {
     const checkSession = async () => {
       const response = await fetch('http://localhost:5000/check_session');
@@ -17,6 +17,8 @@ function App() {
 
       if (data.logged_in) {
         setIsLoggedIn(true);
+        // Guardar en localStorage que ya se inició sesión para evitar mostrar el modal
+        localStorage.setItem('hasLoggedOnce', 'true');
       }
     };
 
@@ -26,6 +28,8 @@ function App() {
   const handleLogin = () => {
     setIsLoggedIn(true);
     setShowLoginModal(false);
+    // Guardar en localStorage que ya se inició sesión exitosamente
+    localStorage.setItem('hasLoggedOnce', 'true');
   };
 
   const handleLogout = async () => {
@@ -37,6 +41,8 @@ function App() {
       if (response.ok) {
         setIsLoggedIn(false);
         setShowLoginModal(true);
+        // Al cerrar sesión, eliminamos el estado del localStorage
+        localStorage.removeItem('hasLoggedOnce');
       }
     } catch (err) {
       console.error('Error al conectarse al servidor:', err);
@@ -53,9 +59,9 @@ function App() {
   };
 
   const handleRegister = () => {
-    setShowRegisterModal(false); 
-    setShowLoginModal(true); 
-  }
+    setShowRegisterModal(false);
+    setShowLoginModal(true);
+  };
 
   const handleCloseRegisterModal = () => {
     setShowRegisterModal(false);
@@ -63,9 +69,12 @@ function App() {
   };
 
   const handleBackgroundClick = () => {
-    if (!isLoggedIn && !hasClicked) {
+    // Verificar si ya se inició sesión al menos una vez (en localStorage)
+    const hasLoggedOnce = localStorage.getItem('hasLoggedOnce') === 'true';
+
+    // Mostrar el modal solo si NO se ha iniciado sesión y nunca se hizo clic antes
+    if (!isLoggedIn && !hasLoggedOnce) {
       setShowLoginModal(true);
-      setHasClicked(true);
     }
   };
 
@@ -84,10 +93,9 @@ function App() {
           onClose={handleCloseRegisterModal}
           onRegister={handleRegister}
         />
-    )}
+      )}
     </div>
   );
 }
 
 export default App;
-
