@@ -197,6 +197,7 @@ def login():
     
     # Si las credenciales son correctas, iniciar sesión
     session['user_id'] = user.id
+    session.permanent = True
     return jsonify({'message': 'Inicio de sesion exitoso'}), 200
 
 
