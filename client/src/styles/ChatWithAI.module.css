@@ -102,8 +102,16 @@ body {
 }
 
 .recipeContainer {
-  height: 100%;
-  padding: 20px;
+  position: relative;
+  left: 15%;
+  width: 70%;
+  background-color: #f9f9f9;  /* Fondo claro */
+  border: 1px solid #ddd;     /* Borde gris suave */
+  border-radius: 10px;        /* Bordes redondeados */
+  padding: 20px;              /* Espaciado interno */
+  margin: 20px 0;             /* Separación entre recetas */
+  text-align: left;           /* Alinear el texto a la izquierda */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para el rectángulo */
 }
 
 .recipeContainer h2 {
@@ -112,9 +120,12 @@ body {
 }
 
 .cleanList {
-  list-style-type: none;
-  padding-left: 0;
-  color: white;
+  list-style: none;           /* Elimina los bullets */
+  padding: 0;
+}
+
+.cleanList li {
+  margin: 8px 0;              /* Espaciado entre elementos */
 }
 
 .logoutButton {

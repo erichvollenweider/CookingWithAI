@@ -80,11 +80,11 @@ const OllamaForm = ({ onLogout }) => {
       } else if (line.includes("Consejos:") || line.includes("Tips:") || line.includes("Notas:")) {
         currentSection = "consejos";
       } else if (currentSection === "ingredients") {
-        ingredients.push(line.trim());
+        ingredients.push(line.replace(/\*/g, "").trim());  // Elimina los "*"
       } else if (currentSection === "preparation") {
-        preparation.push(line.trim());
+        preparation.push(line.replace(/\*/g, "").trim());  // Elimina los "*"
       } else if (currentSection === "consejos") {
-        consejos.push(line.trim());
+        consejos.push(line.replace(/\*/g, "").trim());     // Elimina los "*"
       } else if (!title) {
         title = line.replace("##", "").trim();  // Eliminamos el "##" del título
 
@@ -100,31 +100,25 @@ const OllamaForm = ({ onLogout }) => {
         <h2>{title}</h2>
         <h4>Ingredientes:</h4>
         <ul className={styles.cleanList}>
-          {ingredients
-            .filter((ingredient) => ingredient.length > 0 && !ingredient.match(/^\d+$/)) // Filtramos los números y espacios en blanco
-            .map((ingredient, index) => (
-              <li key={index}>{ingredient}</li>
-            ))}
+          {ingredients.map((ingredient, index) => (
+            <li key={index}>{ingredient}</li>
+          ))}
         </ul>
 
         <h4>Preparación:</h4>
         <ul className={styles.cleanList}>
-          {preparation
-            .filter((step) => step.length > 0 && !step.match(/^\d+$/)) // Filtramos los números y espacios en blanco
-            .map((step, index) => (
-              <li key={index}>{step}</li>
-            ))}
+          {preparation.map((step, index) => (
+            <li key={index}>{step}</li>
+          ))}
         </ul>
 
         {consejos.length > 0 && (
           <>
             <h4>Consejos:</h4>
             <ul className={styles.cleanList}>
-              {consejos
-                .filter((consejo) => consejo.length > 0 && !consejo.match(/^\d+$/)) // Filtramos los números y espacios en blanco
-                .map((consejo, index) => (
-                  <li key={index}>{consejo}</li>
-                ))}
+              {consejos.map((consejo, index) => (
+                <li key={index}>{consejo}</li>
+              ))}
             </ul>
           </>
         )}
