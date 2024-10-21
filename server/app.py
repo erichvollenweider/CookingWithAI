@@ -85,7 +85,7 @@ def get_ingredients_from_image(image):
 def index():
     return "Falta hacer el front..."
 
-app.secret_key = os.urandom(24)
+app.secret_key = os.getenv('SECRET_KEY') or 'clave-secreta'
 
 @app.route('/consulta_ollama', methods=['POST'])
 def consulta_ollama():
@@ -199,8 +199,7 @@ def login():
 
 @app.route('/logout', methods=['POST'])
 def logout():
-    session.pop('user_id', None)
-    session['logged_in'] = False
+    session.clear()
     return jsonify({'message': 'Cierre de sesion exitoso'}), 200
 
 @app.route('/check_session', methods=['GET'])
@@ -214,4 +213,4 @@ def check_session():
 if __name__ == "__main__":
     # Manejamos los errores con el metodo que creamos
     app.register_error_handler(404, pagina_no_encotrada)
-    app.run(debug=True)
+    app.run()

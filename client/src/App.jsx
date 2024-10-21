@@ -17,8 +17,12 @@ function App() {
 
       if (data.logged_in) {
         setIsLoggedIn(true);
+        setShowLoginModal(false);
         // Guardar en localStorage que ya se inició sesión para evitar mostrar el modal
         localStorage.setItem('hasLoggedOnce', 'true');
+      } else {
+        setIsLoggedIn(false);
+        setShowLoginModal(true);  // Mostrar el modal automaticamente si no esta logueado
       }
     };
 

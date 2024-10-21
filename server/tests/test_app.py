@@ -2,14 +2,11 @@ import pytest
 from flask import session
 from app import app, db
 from database.models import Users
-from flask_bcrypt import Bcrypt
-
-bcrypt = Bcrypt()
+from app import bcrypt
 
 @pytest.fixture
 def client():
-    app.config['TESTING'] = True
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
+    app.config.from_object('config.TestingConfig')
     with app.test_client() as client:
         with app.app_context():
             db.create_all()
@@ -127,7 +124,7 @@ def test_logout(client):
     assert b"Cierre de sesion exitoso" in response.data
 
     with app.app_context():
+        assert session.get('logged_in', False) is False
         assert 'user_id' not in session
-        assert session.get('logged_in') is False
 
 
