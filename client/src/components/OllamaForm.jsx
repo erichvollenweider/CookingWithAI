@@ -8,6 +8,7 @@ const OllamaForm = ({ onLogout }) => {
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState("");
   const [error, setError] = useState(null);
+  
 
   const handleFileChange = (e) => {
     const filesArray = Array.from(e.target.files);
@@ -145,9 +146,28 @@ const OllamaForm = ({ onLogout }) => {
         </div>
       </div>
       <div className={styles.chatContainer}>
-        <h1>CookingWithAI</h1>
-        <h3>Descubre recetas con ingredientes en casa</h3>
-        <img src="../../public/icon.png"></img>
+        <div className={styles.header}>
+          <img src="../../public/icon.png" className={styles.logo} />
+          <h2>CookingWithAI</h2>
+          <h3>¡ Las mejores y mas rapidas recetas !</h3>
+        </div>
+
+        <div className={styles.aiResponse}>
+          {loading &&
+            (<div className={styles.spinner}>
+              <span>C</span>
+              <span>O</span>
+              <span>C</span>
+              <span>I</span>
+              <span>N</span>
+              <span>A</span>
+              <span>N</span>
+              <span>D</span>
+              <span>O</span>
+            </div>)}
+          {response && renderRecipe()}
+          {error && <p className={styles.errorMessage}>Error: {error}</p>}
+        </div>
 
         <div className={styles.submits}>
           <form onSubmit={handleSubmit}>
@@ -166,7 +186,7 @@ const OllamaForm = ({ onLogout }) => {
                       stroke="#6c6c6c"
                       fill="none"
                       r="158.5"
-                      cy="168.5"
+                      cy="168.5"  
                       cx="168.5"
                     ></circle>
                     <path
@@ -222,23 +242,6 @@ const OllamaForm = ({ onLogout }) => {
               </button>
             </div>
           </form>
-        </div>
-
-        <div className={styles.aiResponse}>
-          {loading &&
-            (<div className={styles.spinner}>
-              <span>C</span>
-              <span>O</span>
-              <span>C</span>
-              <span>I</span>
-              <span>N</span>
-              <span>A</span>
-              <span>N</span>
-              <span>D</span>
-              <span>O</span>
-            </div>)}
-          {response && renderRecipe()}
-          {error && <p className={styles.errorMessage}>Error: {error}</p>}
         </div>
       </div>
     </div>
