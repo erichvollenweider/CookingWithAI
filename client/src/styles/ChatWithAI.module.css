@@ -108,6 +108,10 @@ body {
   padding: 0;
 }
 
+.bulletList {
+  padding: 15px;
+}
+
 .cleanList li {
   margin: 8px 0;
 }
@@ -135,7 +139,6 @@ body {
   background-color: #f5f5f5; /* Le da un efecto sutil al fondo */
 }
 
-
 /* Contenedor del mensaje */
 .messageBox {
   height: 60px;
@@ -159,6 +162,7 @@ body {
   font-weight: bold;
   padding-left: 10px;
   resize: vertical;
+  border: none;
 }
 
 .messageInput::placeholder {
@@ -264,13 +268,14 @@ body {
   height: 100px;
   object-fit: cover;
   border-radius: 5px;
+  margin-top: 30px;
 }
 
 /* Cargando */
 .spinner {
   display: flex;
   justify-content: center;
-  margin-top: 60px;
+  margin-top: 160px;
   margin-left: 42%;
   height: 50px;
   width: max-content;
@@ -325,7 +330,7 @@ body {
 /* Transición suave para header */
 .header {
   display: flex;
-  align-items: center;
+  align-items: start;
   justify-content: center;
   gap: 10px;
   transition: all 0.3s ease;
@@ -344,6 +349,19 @@ body {
   font-size: 40px;
   margin: 0;
   transition: all 0.3s ease;
+}
+
+.headerLetters {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  margin-top: 20px;
+}
+
+.headerLetters h3 {
+  color: white;
+  margin: 0;
+  font-size: 15px;
 }
 
 /* Compactar el header */

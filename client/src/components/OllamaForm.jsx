@@ -8,7 +8,6 @@ const OllamaForm = ({ onLogout }) => {
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState("");
   const [error, setError] = useState(null);
-  
 
   const handleFileChange = (e) => {
     const filesArray = Array.from(e.target.files);
@@ -74,55 +73,61 @@ const OllamaForm = ({ onLogout }) => {
 
     // Recorremos cada línea para clasificarla en su sección correspondiente
     recipeLines.forEach((line) => {
-      if (line.includes("Ingredientes:") || line.includes("Receta de:")) {
+      if (line.includes("Ingredientes:")) {
         currentSection = "ingredients";
-      } else if (line.includes("Preparación:") || line.includes("Instrucciones:")) {
+      } else if (
+        line.includes("Preparación:")
+      ) {
         currentSection = "preparation";
-      } else if (line.includes("Consejos:") || line.includes("Tips:") || line.includes("Notas:")) {
+      } else if (
+        line.includes("Consejos:")
+      ) {
         currentSection = "consejos";
       } else if (currentSection === "ingredients") {
-        ingredients.push(line.replace(/\*/g, "").trim());  // Elimina los "*"
+        ingredients.push(line.replace(/\*/g, "").trim()); // Elimina los "*"
       } else if (currentSection === "preparation") {
-        preparation.push(line.replace(/\*/g, "").trim());  // Elimina los "*"
+        preparation.push(line.replace(/\*/g, "").trim()); // Elimina los "*"
       } else if (currentSection === "consejos") {
-        consejos.push(line.replace(/\*/g, "").trim());     // Elimina los "*"
+        consejos.push(line.replace(/\*/g, "").trim()); // Elimina los "*"
       } else if (!title) {
-        title = line.replace("##", "").trim();  // Eliminamos el "##" del título
-
-        if (title.includes("Receta generada para los ingredientes:")) {
-          title = title.replace("Receta generada para los ingredientes:", "").trim();
-        }
+        title = line.replace("##", "").trim(); // Eliminamos el "##" del título
       }
     });
 
     // Mostrar la receta formateada
     return (
-      <div className={styles.recipeContainer}>
+      <div>
         <h2>{title}</h2>
-        <h4>Ingredientes:</h4>
-        <ul className={styles.cleanList}>
-          {ingredients.map((ingredient, index) => (
-            <li key={index}>{ingredient}</li>
-          ))}
-        </ul>
-
-        <h4>Preparación:</h4>
-        <ul className={styles.cleanList}>
-          {preparation.map((step, index) => (
-            <li key={index}>{step}</li>
-          ))}
-        </ul>
-
-        {consejos.length > 0 && (
-          <>
-            <h4>Consejos:</h4>
-            <ul className={styles.cleanList}>
-              {consejos.map((consejo, index) => (
-                <li key={index}>{consejo}</li>
+        <div className={styles.recipeContainer}>
+          <h4>Ingredientes</h4>
+          <ul className={styles.bulletList}>
+            {ingredients
+              .filter((ingredient) => ingredient.trim() !== "")
+              .map((ingredient, index) => (
+                <li key={index}>{ingredient}</li>
               ))}
-            </ul>
-          </>
-        )}
+          </ul>
+        </div>
+        <div className={styles.recipeContainer}>
+          <h4>Preparación</h4>
+          <ul className={styles.cleanList}>
+            {preparation.map((step, index) => (
+              <li key={index}>{step}</li>
+            ))}
+          </ul>
+        </div>
+        <div className={styles.recipeContainer}>
+          {consejos.length > 0 && (
+            <>
+              <h4>Consejos</h4>
+              <ul className={styles.cleanList}>
+                {consejos.map((consejo, index) => (
+                  <li key={index}>{consejo}</li>
+                ))}
+              </ul>
+            </>
+          )}
+        </div>
       </div>
     );
   };
@@ -148,13 +153,15 @@ const OllamaForm = ({ onLogout }) => {
       <div className={styles.chatContainer}>
         <div className={styles.header}>
           <img src="../../public/icon.png" className={styles.logo} />
-          <h2>CookingWithAI</h2>
-          <h3>¡ Las mejores y mas rapidas recetas !</h3>
+          <div className={styles.headerLetters}>
+            <h2>CookingWithAI</h2>
+            <h3>¡ Las mejores y mas rapidas recetas !</h3>
+          </div>
         </div>
 
         <div className={styles.aiResponse}>
-          {loading &&
-            (<div className={styles.spinner}>
+          {loading && (
+            <div className={styles.spinner}>
               <span>C</span>
               <span>O</span>
               <span>C</span>
@@ -164,7 +171,8 @@ const OllamaForm = ({ onLogout }) => {
               <span>N</span>
               <span>D</span>
               <span>O</span>
-            </div>)}
+            </div>
+          )}
           {response && renderRecipe()}
           {error && <p className={styles.errorMessage}>Error: {error}</p>}
         </div>
@@ -173,20 +181,29 @@ const OllamaForm = ({ onLogout }) => {
           <form onSubmit={handleSubmit}>
             <div className={styles.imagePreviewContainer}>
               {previewUrls.map((url, index) => (
-                <img key={index} src={url} alt={`preview-${index}`} className={styles.imagePreview} />
+                <img
+                  key={index}
+                  src={url}
+                  alt={`preview-${index}`}
+                  className={styles.imagePreview}
+                />
               ))}
             </div>
 
             <div className={styles.messageBox}>
               <div className={styles.fileUploadWrapper}>
                 <label htmlFor="file">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 337 337">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 337 337"
+                  >
                     <circle
                       stroke-width="20"
                       stroke="#6c6c6c"
                       fill="none"
                       r="158.5"
-                      cy="168.5"  
+                      cy="168.5"
                       cx="168.5"
                     ></circle>
                     <path
@@ -202,9 +219,7 @@ const OllamaForm = ({ onLogout }) => {
                       d="M79 167.138H259"
                     ></path>
                   </svg>
-                  <span
-                    className={styles.tooltip}>Add an image
-                  </span>
+                  <span className={styles.tooltip}>Add an image</span>
                 </label>
                 <input
                   type="file"
@@ -226,7 +241,11 @@ const OllamaForm = ({ onLogout }) => {
                 className={styles.messageInput}
               />
               <button className={styles.sendButton} type="submit">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 664 663">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 664 663"
+                >
                   <path
                     fill="none"
                     d="M646.293 331.888L17.7538 17.6187L155.245 331.888M646.293 331.888L17.753 646.157L155.245 331.888M646.293 331.888L318.735 330.228L155.245 331.888"
