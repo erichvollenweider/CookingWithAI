@@ -7,15 +7,11 @@ import pandas as pd
 import os
 from langchain_community.llms import Ollama
 from database.models import Users, Chats
-from database.conexion import db, init_app, create_db
+from database import db, create_app
 from flask_bcrypt import Bcrypt
 
-app = Flask(__name__)
-cors = CORS(app, origins='*')
+app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 bcrypt = Bcrypt(app)
-
-# Inicializar la base de datos
-init_app(app)
 
 # Obtener la ruta absoluta donde se encuentra app.py
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -216,7 +212,6 @@ def check_session():
 
 
 if __name__ == "__main__":
-    create_db()
     # Manejamos los errores con el metodo que creamos
     app.register_error_handler(404, pagina_no_encotrada)
     app.run(debug=True)

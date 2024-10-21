@@ -1,4 +1,4 @@
-from database.conexion import db
+from database import db
 from datetime import datetime
 from flask_bcrypt import Bcrypt
 
