@@ -8,6 +8,7 @@ const OllamaForm = ({ onLogout }) => {
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState("");
   const [error, setError] = useState(null);
+  const [showSubmits, setShowSubmits] = useState(true);
 
   const handleFileChange = (e) => {
     const filesArray = Array.from(e.target.files);
@@ -56,6 +57,7 @@ const OllamaForm = ({ onLogout }) => {
       setError("Error en la solicitud al servidor.");
     } finally {
       setLoading(false);
+      setShowSubmits(false);
     }
   };
 
@@ -75,13 +77,9 @@ const OllamaForm = ({ onLogout }) => {
     recipeLines.forEach((line) => {
       if (line.includes("Ingredientes:")) {
         currentSection = "ingredients";
-      } else if (
-        line.includes("Preparación:")
-      ) {
+      } else if (line.includes("Preparación:")) {
         currentSection = "preparation";
-      } else if (
-        line.includes("Consejos:")
-      ) {
+      } else if (line.includes("Consejos:")) {
         currentSection = "consejos";
       } else if (currentSection === "ingredients") {
         ingredients.push(line.replace(/\*/g, "").trim()); // Elimina los "*"
@@ -128,56 +126,7 @@ const OllamaForm = ({ onLogout }) => {
             </>
           )}
         </div>
-      </div>
-    );
-  };
-
-  return (
-    <div className={styles.main}>
-      <div className={styles.sidebar}>
-        <h1>Recetas</h1>
-        <p>Consultas previas</p>
-        <ul>
-          <li>Receta 1</li>
-          <li>Receta 2</li>
-          <li>Receta 3</li>
-          <li>Receta 4</li>
-          <li>Receta 5</li>
-        </ul>
-        <div className={styles.bottomButton}>
-          <button onClick={onLogout} className={styles.logoutButton}>
-            Cerrar sesión
-          </button>
-        </div>
-      </div>
-      <div className={styles.chatContainer}>
-        <div className={styles.header}>
-          <img src="../../public/icon.png" className={styles.logo} />
-          <div className={styles.headerLetters}>
-            <h2>CookingWithAI</h2>
-            <h3>¡ Las mejores y mas rapidas recetas !</h3>
-          </div>
-        </div>
-
-        <div className={styles.aiResponse}>
-          {loading && (
-            <div className={styles.spinner}>
-              <span>C</span>
-              <span>O</span>
-              <span>C</span>
-              <span>I</span>
-              <span>N</span>
-              <span>A</span>
-              <span>N</span>
-              <span>D</span>
-              <span>O</span>
-            </div>
-          )}
-          {response && renderRecipe()}
-          {error && <p className={styles.errorMessage}>Error: {error}</p>}
-        </div>
-
-        <div className={styles.submits}>
+        <div className={styles.submitsPost}>
           <form onSubmit={handleSubmit}>
             <div className={styles.imagePreviewContainer}>
               {previewUrls.map((url, index) => (
@@ -262,6 +211,142 @@ const OllamaForm = ({ onLogout }) => {
             </div>
           </form>
         </div>
+      </div>
+    );
+  };
+
+  return (
+    <div className={styles.main}>
+      <div className={styles.sidebar}>
+        <h1>Recetas</h1>
+        <p>Consultas previas</p>
+        <ul>
+          <li>Receta 1</li>
+          <li>Receta 2</li>
+          <li>Receta 3</li>
+          <li>Receta 4</li>
+          <li>Receta 5</li>
+        </ul>
+        <div className={styles.bottomButton}>
+          <button onClick={onLogout} className={styles.logoutButton}>
+            Cerrar sesión
+          </button>
+        </div>
+      </div>
+      <div className={styles.chatContainer}>
+        <div className={styles.header}>
+          <img src="../../public/icon.png" className={styles.logo} />
+          <div className={styles.headerLetters}>
+            <h2>CookingWithAI</h2>
+            <h3>¡ Las mejores y mas rapidas recetas !</h3>
+          </div>
+        </div>
+
+        <div className={styles.aiResponse}>
+          {loading && (
+            <div className={styles.spinner}>
+              <span>C</span>
+              <span>O</span>
+              <span>C</span>
+              <span>I</span>
+              <span>N</span>
+              <span>A</span>
+              <span>N</span>
+              <span>D</span>
+              <span>O</span>
+            </div>
+          )}
+          {response && renderRecipe()}
+          {error && <p className={styles.errorMessage}>Error: {error}</p>}
+        </div>
+
+        {showSubmits && (
+          <div className={styles.submits}>
+            <form onSubmit={handleSubmit}>
+              <div className={styles.imagePreviewContainer}>
+                {previewUrls.map((url, index) => (
+                  <img
+                    key={index}
+                    src={url}
+                    alt={`preview-${index}`}
+                    className={styles.imagePreview}
+                  />
+                ))}
+              </div>
+
+              <div className={styles.messageBox}>
+                <div className={styles.fileUploadWrapper}>
+                  <label htmlFor="file">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 337 337"
+                    >
+                      <circle
+                        stroke-width="20"
+                        stroke="#6c6c6c"
+                        fill="none"
+                        r="158.5"
+                        cy="168.5"
+                        cx="168.5"
+                      ></circle>
+                      <path
+                        stroke-linecap="round"
+                        stroke-width="25"
+                        stroke="#6c6c6c"
+                        d="M167.759 79V259"
+                      ></path>
+                      <path
+                        stroke-linecap="round"
+                        stroke-width="25"
+                        stroke="#6c6c6c"
+                        d="M79 167.138H259"
+                      ></path>
+                    </svg>
+                    <span className={styles.tooltip}>Add an image</span>
+                  </label>
+                  <input
+                    type="file"
+                    id="file"
+                    accept="image/*"
+                    multiple
+                    onChange={handleFileChange}
+                    className={styles.file}
+                    name="file"
+                  />
+                </div>
+                <input
+                  placeholder="Ingredientes..."
+                  type="text"
+                  value={text}
+                  onChange={(e) => {
+                    setText(e.target.value);
+                  }}
+                  className={styles.messageInput}
+                />
+                <button className={styles.sendButton} type="submit">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 664 663"
+                  >
+                    <path
+                      fill="none"
+                      d="M646.293 331.888L17.7538 17.6187L155.245 331.888M646.293 331.888L17.753 646.157L155.245 331.888M646.293 331.888L318.735 330.228L155.245 331.888"
+                    ></path>
+                    <path
+                      stroke-linejoin="round"
+                      stroke-linecap="round"
+                      stroke-width="33.67"
+                      stroke="#6c6c6c"
+                      d="M646.293 331.888L17.7538 17.6187L155.245 331.888M646.293 331.888L17.753 646.157L155.245 331.888M646.293 331.888L318.735 330.228L155.245 331.888"
+                    ></path>
+                  </svg>
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
       </div>
     </div>
   );

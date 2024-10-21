@@ -384,3 +384,7 @@ body {
 .chatContainer.compact .header h3 {
   font-size: 16px;
 }
+
+.submitsPost {
+  margin-bottom: 20px;
+}
