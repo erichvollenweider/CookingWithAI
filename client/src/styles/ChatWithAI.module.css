@@ -287,6 +287,14 @@ body {
   animation-delay: 1.5s;
  }
  
+ .spinner span:nth-child(8) {
+  animation-delay: 1.75s;
+ }
+
+ .spinner span:nth-child(9) {
+  animation-delay: 2s;
+ }
+
  @keyframes loading6454 {
   0%, 100% {
    transform: translateY(0);

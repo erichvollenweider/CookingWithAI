@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 import os
 from langchain_community.llms import Ollama
-from database.models import Users, Chats
+from database.models import Users, Recetas
 from database import db, create_app
 from flask_bcrypt import Bcrypt
 
@@ -126,12 +126,35 @@ def consulta_ollama():
         if all_ingredients:
             prompt = f"Dame una receta sencilla con los siguientes ingredientes: {', '.join(all_ingredients)}. Evita incluir elementos no relacionados o creativos. Quiero que me dividas la respuesta en 4 categorias (Titulo, Ingredientes, Preparación y Consejos) donde cada una de ellas tienen que comenzar con las siguientes exactas palabras segun corresponda a cada una de ellas: 'Titulo', 'Ingredientes:', 'Peparación:' y 'Consejos'."
             generated_text = ollama.invoke(prompt)
+            titulo = parse_receta(generated_text)
+            # Recuperar el user_id del usuario logueado
+            user_id = session.get('user_id')
+
+            # Recuperar el usuario desde la base de datos usando el user_id
+            user = Users.query.get(user_id)
+           # Guardar toda la receta en la columna 'descripcion'
+            nueva_receta = Recetas(titulo=titulo, descripcion=generated_text, user_id=user.id)
+            db.session.add(nueva_receta)
+            db.session.commit()
             return jsonify({'response': generated_text})
         else:
             return jsonify({'error': 'No se recibieron ingredientes ni en texto ni en imágenes.'})
 
     except Exception as e:
         return jsonify({'error': str(e)})
+
+def parse_receta(generated_text):
+    titulo = ''
+    # Filtrar solo el titulo
+    try:
+        if "Titulo" in generated_text:
+            titulo = generated_text.split("Titulo:")[1].split("Ingredientes:")[0].strip()
+        else:
+            titulo = generated_text.split('\n')[0].strip()
+    except IndexError as e:
+        print(f"Error al analizar el texto generado: {e}")
+
+    return titulo
 
 
 @app.route('/register', methods=['POST'])

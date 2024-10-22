@@ -49,6 +49,7 @@ const OllamaForm = ({ onLogout }) => {
       const res = await fetch("http://localhost:5000/consulta_ollama", {
         method: "POST",
         body: formData,
+        credentials: 'include',
       });
 
       const data = await res.json();

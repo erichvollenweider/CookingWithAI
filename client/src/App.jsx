@@ -12,7 +12,9 @@ function App() {
   // Al cargar la aplicación, verificamos si ya hubo clic usando localStorage
   useEffect(() => {
     const checkSession = async () => {
-      const response = await fetch('http://localhost:5000/check_session');
+      const response = await fetch('http://localhost:5000/check_session', {
+        credentials: 'include',
+      });
       const data = await response.json();
 
       if (data.logged_in) {
@@ -40,6 +42,7 @@ function App() {
     try {
       const response = await fetch('http://localhost:5000/logout', {
         method: 'POST',
+        credentials: 'include',
       });
 
       if (response.ok) {
