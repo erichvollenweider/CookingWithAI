@@ -5,6 +5,7 @@ const OllamaForm = ({ onLogout }) => {
   const [files, setFiles] = useState([]);
   const [previewUrls, setPreviewUrls] = useState([]);
   const [text, setText] = useState("");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState("");
   const [error, setError] = useState(null);
@@ -16,6 +17,10 @@ const OllamaForm = ({ onLogout }) => {
 
     const urls = filesArray.map((file) => URL.createObjectURL(file));
     setPreviewUrls(urls);
+  };
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen); // Alterna entre abrir/cerrar
   };
 
   const handleSubmit = async (event) => {
@@ -217,20 +222,33 @@ const OllamaForm = ({ onLogout }) => {
 
   return (
     <div className={styles.main}>
-      <div className={styles.sidebar}>
-        <h1>Recetas</h1>
-        <p>Consultas previas</p>
-        <ul>
-          <li>Receta 1</li>
-          <li>Receta 2</li>
-          <li>Receta 3</li>
-          <li>Receta 4</li>
-          <li>Receta 5</li>
-        </ul>
-        <div className={styles.bottomButton}>
-          <button onClick={onLogout} className={styles.logoutButton}>
-            Cerrar sesión
-          </button>
+      <div className={styles.container}>
+        <input
+          className={styles.toggleCheckbox}
+          id="toggle"
+          type="checkbox"
+          checked={sidebarOpen}
+          onChange={toggleSidebar}
+        />
+        <label className={styles.hamburger} htmlFor="toggle">
+          <div className={styles.bar}></div>
+          <div className={styles.bar}></div>
+          <div className={styles.bar}></div>
+        </label>
+        <div className={`${styles.sidebar} ${sidebarOpen ? styles.open : ''}`}>
+          <h1>Mis Recetas</h1>
+          <ul>
+            <li>Receta 1</li>
+            <li>Receta 2</li>
+            <li>Receta 3</li>
+            <li>Receta 4</li>
+            <li>Receta 5</li>
+          </ul>
+          <div className={styles.bottomButton}>
+            <button onClick={onLogout} className={styles.logoutButton}>
+              Cerrar sesión
+            </button>
+          </div>
         </div>
       </div>
       <div className={styles.chatContainer}>
