@@ -8,7 +8,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.7); 
+  background: rgba(0, 0, 0, 0.5); 
   display: flex;
   justify-content: center;
   align-items: center;
@@ -32,8 +32,8 @@
   padding: 20px;
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
-  background-color: #964B00; /* Color marrón oscuro */
-  color: #fff; /* Letras blancas */
+  background-color: #F4E8D9; /* Color marrón oscuro */
+  color: #333333; /* Letras blancas */
 }
 
 .information h2 {
@@ -48,8 +48,8 @@
   padding: 20px;
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
-  background-color: #5c3434; /* Color marrón claro */
-  color: #fff; /* Letras blancas */
+  background-color: #dad3c0; /* Color marrón claro */
+  color: #333333; /* Letras blancas */
 }
 
 .modalContent h2 {
@@ -64,14 +64,14 @@
   margin: 10px 0;
   border: 1px solid #3c3939;
   border-radius: 5px;
-  background-color: #317667; /* Color verde oscuro */
-  color: #fff; /* Letras blancas */
+  background-color: #F4E8D9; /* Color verde oscuro */
+  color: #333333; /* Letras blancas */
 }
 
 .modalContent button {
-  background-color: #8B0A0A; /* Color rojo intenso */
+  background-color: #E6B800; /* Color rojo intenso */
   border: none;
-  color: white;
+  color: 333333;
   padding: 10px 20px;
   font-size: 1rem;
   cursor: pointer;
@@ -86,7 +86,7 @@
 /* Botón cerrar */
 .closeBtn {
   background-color: transparent;
-  color: #6c0d0d;
+  color: #333333;
   border: none;
   font-size: 0.9rem;
   margin-top: 15px;
@@ -103,7 +103,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 50px;
-  color: #8B0A0A;
+  color: #333333;
 }
 
 /* Estilos adicionales */
@@ -113,22 +113,22 @@
   margin-bottom: 15px;
   border-radius: 20px;
   padding: 0 10px;
-  background-color: #463939; /* Color marrón oscuro */
+  background-color: #F4E8D9; /* Color marrón oscuro */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .modalContent label input {
   width: 100%;
   padding: 10px;
-  background-color: #fff;
+  background-color: #F4E8D9;
   border: none;
   outline: none;
   border-radius: 20px;
-  color: #333;
+  color: #333333;
 }
 
 .modalContent label i {
-  color: #a7a7a7;
+  color: #333333;
 }
 
 .modalContent .alertaError {
