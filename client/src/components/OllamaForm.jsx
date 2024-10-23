@@ -22,19 +22,20 @@ const OllamaForm = ({ onLogout }) => {
     setPreviewUrls((prevUrls) => [...prevUrls, ...newUrls]);
   };
   
-  const handleRemoveImage = (index) => {
+  const handleRemoveImage = (index, event) => {
+    event.preventDefault();
     const newFiles = [...files];
     const newPreviewUrls = [...previewUrls];
-
+  
     newFiles.splice(index, 1);
     newPreviewUrls.splice(index, 1);
-
+  
     setFiles(newFiles);
     setPreviewUrls(newPreviewUrls);
   };
 
   const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen); // Alterna entre abrir/cerrar
+    setSidebarOpen(!sidebarOpen);
   };
 
   const handleSubmit = async (event) => {
@@ -148,16 +149,20 @@ const OllamaForm = ({ onLogout }) => {
         </div>
         <div className={styles.submitsPost}>
           <form onSubmit={handleSubmit}>
-            <div className={styles.imagePreviewContainer}>
-              {previewUrls.map((url, index) => (
-                <img
-                  key={index}
-                  src={url}
-                  alt={`preview-${index}`}
-                  className={styles.imagePreview}
-                />
-              ))}
-            </div>
+          <div className={styles.imagePreviewContainer}>
+                {previewUrls.map((url, index) => (
+                  <div key={index} className={styles.imageWrapper}>
+                    <img
+                      key={index}
+                      src={url}
+                      alt={`preview-${index}`}
+                      className={styles.imagePreview}
+                    />
+                    <button className={styles.removeButton} onClick={(e) => handleRemoveImage(index, e)}>✖</button>
+                  </div>
+                ))}
+              </div>
+
 
             <div className={styles.messageBox}>
               <div className={styles.fileUploadWrapper}>
@@ -298,12 +303,15 @@ const OllamaForm = ({ onLogout }) => {
             <form onSubmit={handleSubmit}>
               <div className={styles.imagePreviewContainer}>
                 {previewUrls.map((url, index) => (
-                  <img
-                    key={index}
-                    src={url}
-                    alt={`preview-${index}`}
-                    className={styles.imagePreview}
-                  />
+                  <div key={index} className={styles.imageWrapper}>
+                    <img
+                      key={index}
+                      src={url}
+                      alt={`preview-${index}`}
+                      className={styles.imagePreview}
+                    />
+                    <button className={styles.removeButton} onClick={(e) => handleRemoveImage(index, e)}>✖</button>
+                  </div>
                 ))}
               </div>
 

@@ -241,6 +241,30 @@ body {
   margin-top: 30px;
 }
 
+/* Estilos para imágenes previas */
+.imageWrapper {
+  position: relative;
+}
+
+.removeButton {
+  position: absolute;
+  top: 20px;
+  right: 0px;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+}
+
+
 /* Cargando */
 .spinner {
   display: flex;
