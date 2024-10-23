@@ -127,21 +127,44 @@ def consulta_ollama():
             prompt = f"Dame una receta sencilla con los siguientes ingredientes: {', '.join(all_ingredients)}. Evita incluir elementos no relacionados o creativos. Quiero que me dividas la respuesta en 4 categorias (Titulo, Ingredientes, Preparación y Consejos) donde cada una de ellas tienen que comenzar con las siguientes exactas palabras segun corresponda a cada una de ellas: 'Titulo', 'Ingredientes:', 'Peparación:' y 'Consejos'."
             generated_text = ollama.invoke(prompt)
             titulo = parse_receta(generated_text)
-            # Recuperar el user_id del usuario logueado
-            user_id = session.get('user_id')
-
-            # Recuperar el usuario desde la base de datos usando el user_id
-            user = Users.query.get(user_id)
-           # Guardar toda la receta en la columna 'descripcion'
-            nueva_receta = Recetas(titulo=titulo, descripcion=generated_text, user_id=user.id)
-            db.session.add(nueva_receta)
-            db.session.commit()
+            
             return jsonify({'response': generated_text})
         else:
             return jsonify({'error': 'No se recibieron ingredientes ni en texto ni en imágenes.'})
 
     except Exception as e:
         return jsonify({'error': str(e)})
+
+@app.route('/guardar_receta', methods=['POST'])
+def guardar_receta():
+    try:
+        data = request.get_json()
+        response = data.get('response')
+
+        if not response:
+            return jsonify({'error': 'No se recibió ninguna receta para guardar'}), 400
+
+        user_id = session.get('user_id')
+        if not user_id:
+            return jsonify({'error': 'Usuario no está logueado'}), 401
+
+        user = Users.query.get(user_id)
+        if not user:
+            return jsonify({'error': 'Usuario no encontrado'}), 404
+
+        titulo = parse_receta(response)
+        if not titulo:
+            return jsonify({'error': 'No se pudo extraer el título de la receta'}), 400
+
+        nueva_receta = Recetas(titulo=titulo, descripcion=response, user_id=user.id)
+        db.session.add(nueva_receta)
+        db.session.commit()
+
+        return jsonify({'message': 'Receta guardada exitosamente'}), 200
+
+    except Exception as e:
+        print(f"Error al guardar receta: {str(e)}")  # Imprime el error en la consola del servidor
+        return jsonify({'error': str(e)}), 500
 
 def parse_receta(generated_text):
     titulo = ''
@@ -155,7 +178,6 @@ def parse_receta(generated_text):
         print(f"Error al analizar el texto generado: {e}")
 
     return titulo
-
 
 @app.route('/register', methods=['POST'])
 def register():
