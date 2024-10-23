@@ -10,26 +10,27 @@ const OllamaForm = ({ onLogout }) => {
   const [response, setResponse] = useState("");
   const [error, setError] = useState(null);
   const [showSubmits, setShowSubmits] = useState(true);
+  const [savedRecipes, setSavedRecipes] = useState([]);
 
   const handleFileChange = (e) => {
     const filesArray = Array.from(e.target.files); // Convertimos el FileList en array
-  
+
     // Concatenamos los archivos nuevos con los anteriores
     setFiles((prevFiles) => [...prevFiles, ...filesArray]);
-  
+
     // Creamos URLs para previsualizar las nuevas imágenes y las agregamos al estado
     const newUrls = filesArray.map((file) => URL.createObjectURL(file));
     setPreviewUrls((prevUrls) => [...prevUrls, ...newUrls]);
   };
-  
+
   const handleRemoveImage = (index, event) => {
     event.preventDefault();
     const newFiles = [...files];
     const newPreviewUrls = [...previewUrls];
-  
+
     newFiles.splice(index, 1);
     newPreviewUrls.splice(index, 1);
-  
+
     setFiles(newFiles);
     setPreviewUrls(newPreviewUrls);
   };
@@ -64,7 +65,7 @@ const OllamaForm = ({ onLogout }) => {
       const res = await fetch("http://localhost:5000/consulta_ollama", {
         method: "POST",
         body: formData,
-        credentials: 'include',
+        credentials: "include",
       });
 
       const data = await res.json();
@@ -79,6 +80,32 @@ const OllamaForm = ({ onLogout }) => {
     } finally {
       setLoading(false);
       setShowSubmits(false);
+    }
+  };
+
+  // Función para guardar la receta manualmente
+  const handleSaveRecipe = async () => {
+    if (response) {
+      try {
+        const res = await fetch("http://localhost:5000/guardar_receta", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ response }), // Enviar la respuesta de la receta al backend
+          credentials: "include",
+        });
+
+        const data = await res.json();
+        console.log(data);
+        if (data.error) {
+          alert(`Error: ${data.error}`);
+        } else {
+          setSavedRecipes((prevRecipes) => [...prevRecipes, response]); // Actualizar el estado local
+        }
+      } catch (error) {
+        alert("Hubo un error al guardar la receta.");
+      }
     }
   };
 
@@ -147,22 +174,34 @@ const OllamaForm = ({ onLogout }) => {
             </>
           )}
         </div>
+        <div className={styles.saveRecipe}>
+          <button
+            className={styles.confirmSave}
+            onClick={handleSaveRecipe} //Guardar receta al hacer click
+          >
+            Guardar receta
+          </button>
+        </div>
         <div className={styles.submitsPost}>
           <form onSubmit={handleSubmit}>
-          <div className={styles.imagePreviewContainer}>
-                {previewUrls.map((url, index) => (
-                  <div key={index} className={styles.imageWrapper}>
-                    <img
-                      key={index}
-                      src={url}
-                      alt={`preview-${index}`}
-                      className={styles.imagePreview}
-                    />
-                    <button className={styles.removeButton} onClick={(e) => handleRemoveImage(index, e)}>✖</button>
-                  </div>
-                ))}
-              </div>
-
+            <div className={styles.imagePreviewContainer}>
+              {previewUrls.map((url, index) => (
+                <div key={index} className={styles.imageWrapper}>
+                  <img
+                    key={index}
+                    src={url}
+                    alt={`preview-${index}`}
+                    className={styles.imagePreview}
+                  />
+                  <button
+                    className={styles.removeButton}
+                    onClick={(e) => handleRemoveImage(index, e)}
+                  >
+                    ✖
+                  </button>
+                </div>
+              ))}
+            </div>
 
             <div className={styles.messageBox}>
               <div className={styles.fileUploadWrapper}>
@@ -255,7 +294,7 @@ const OllamaForm = ({ onLogout }) => {
           <div className={styles.bar}></div>
           <div className={styles.bar}></div>
         </label>
-        <div className={`${styles.sidebar} ${sidebarOpen ? styles.open : ''}`}>
+        <div className={`${styles.sidebar} ${sidebarOpen ? styles.open : ""}`}>
           <h1>Mis Recetas</h1>
           <ul>
             <li>Receta 1</li>
@@ -263,6 +302,11 @@ const OllamaForm = ({ onLogout }) => {
             <li>Receta 3</li>
             <li>Receta 4</li>
             <li>Receta 5</li>
+            {/* {savedRecipes.map((recipe, index) => (
+              <li key={index}>{recipe.split("\n")[0]}</li> // Mostrar título de la receta guardada
+            ))} 
+            POR AHORA NO AGREGAMOS AL COSTADO, HAY QUE VER COMO TRAER DE LA 
+            BASE DE DATOS LAS RECETAS QUE TIENE EL USUARIO*/}
           </ul>
           <div className={styles.bottomButton}>
             <button onClick={onLogout} className={styles.logoutButton}>
@@ -310,7 +354,12 @@ const OllamaForm = ({ onLogout }) => {
                       alt={`preview-${index}`}
                       className={styles.imagePreview}
                     />
-                    <button className={styles.removeButton} onClick={(e) => handleRemoveImage(index, e)}>✖</button>
+                    <button
+                      className={styles.removeButton}
+                      onClick={(e) => handleRemoveImage(index, e)}
+                    >
+                      ✖
+                    </button>
                   </div>
                 ))}
               </div>
