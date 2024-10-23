@@ -12,11 +12,25 @@ const OllamaForm = ({ onLogout }) => {
   const [showSubmits, setShowSubmits] = useState(true);
 
   const handleFileChange = (e) => {
-    const filesArray = Array.from(e.target.files);
-    setFiles(filesArray);
+    const filesArray = Array.from(e.target.files); // Convertimos el FileList en array
+  
+    // Concatenamos los archivos nuevos con los anteriores
+    setFiles((prevFiles) => [...prevFiles, ...filesArray]);
+  
+    // Creamos URLs para previsualizar las nuevas imágenes y las agregamos al estado
+    const newUrls = filesArray.map((file) => URL.createObjectURL(file));
+    setPreviewUrls((prevUrls) => [...prevUrls, ...newUrls]);
+  };
+  
+  const handleRemoveImage = (index) => {
+    const newFiles = [...files];
+    const newPreviewUrls = [...previewUrls];
 
-    const urls = filesArray.map((file) => URL.createObjectURL(file));
-    setPreviewUrls(urls);
+    newFiles.splice(index, 1);
+    newPreviewUrls.splice(index, 1);
+
+    setFiles(newFiles);
+    setPreviewUrls(newPreviewUrls);
   };
 
   const toggleSidebar = () => {
