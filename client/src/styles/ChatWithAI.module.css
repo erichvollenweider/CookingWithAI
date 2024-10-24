@@ -525,4 +525,42 @@ body {
   text-decoration: none;
   font-weight: bold;
   margin-bottom: 15px;
+  transition: transform 0.2s ease, opacity 0.3s ease;
+}
+
+.confirmSave:hover {
+  transform: scale(1.1);
+}
+
+.animateSave:active {
+  animation: pop 0.3s ease forwards;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+
+.successMessage {
+  color: #4caf50;
+  font-weight: bold;
+  margin-top: 10px;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

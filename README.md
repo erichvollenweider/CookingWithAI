@@ -66,7 +66,7 @@ Aclaracion: todos los pasos siguientes se ejecutan en la terminal
 
 2. Abrimos el servidor de python en terminal1
 	`source venv/bin/activate`
-	`flask --app app.py run` Ejecucion
+	`python3 app.py` Ejecucion
 
 3. Abrimos parte del frontend en terminal2
 	`npm run dev` Ejecucion 

@@ -11,6 +11,8 @@ const OllamaForm = ({ onLogout }) => {
   const [error, setError] = useState(null);
   const [showSubmits, setShowSubmits] = useState(true);
   const [savedRecipes, setSavedRecipes] = useState([]);
+  const [buttonVisible, setButtonVisible] = useState(true);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   const handleFileChange = (e) => {
     const filesArray = Array.from(e.target.files); // Convertimos el FileList en array
@@ -41,6 +43,8 @@ const OllamaForm = ({ onLogout }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setButtonVisible(true);
+    setShowSubmits(true);
     setLoading(true);
     setError(null);
     setResponse("");
@@ -92,16 +96,21 @@ const OllamaForm = ({ onLogout }) => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ response }), // Enviar la respuesta de la receta al backend
+          body: JSON.stringify({ response }),
           credentials: "include",
         });
-
         const data = await res.json();
-        console.log(data);
         if (data.error) {
           alert(`Error: ${data.error}`);
         } else {
-          setSavedRecipes((prevRecipes) => [...prevRecipes, response]); // Actualizar el estado local
+          setSavedRecipes((prevRecipes) => [...prevRecipes, response]);
+
+          // Ocultar el botón y mostrar mensaje de éxito
+          setButtonVisible(false);
+          setShowSuccessMessage(true);
+
+          // Ocultar el mensaje de éxito después de 3 segundos
+          setTimeout(() => setShowSuccessMessage(false), 3000);
         }
       } catch (error) {
         alert("Hubo un error al guardar la receta.");
@@ -175,12 +184,18 @@ const OllamaForm = ({ onLogout }) => {
           )}
         </div>
         <div className={styles.saveRecipe}>
-          <button
-            className={styles.confirmSave}
-            onClick={handleSaveRecipe} //Guardar receta al hacer click
-          >
-            Guardar receta
-          </button>
+          {buttonVisible && (
+            <button
+              className={`${styles.confirmSave} ${styles.animateSave}`}
+              onClick={handleSaveRecipe}
+            >
+              Guardar receta
+            </button>
+          )}
+
+          {showSuccessMessage && (
+            <p className={styles.successMessage}>Receta guardada con éxito</p>
+          )}
         </div>
         <div className={styles.submitsPost}>
           <form onSubmit={handleSubmit}>
