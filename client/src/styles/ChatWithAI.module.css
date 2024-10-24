@@ -411,6 +411,7 @@ body {
 .sidebar h1 {
   font-size: 2rem;
   margin-bottom: 10px;
+  color: #333333
 }
 
 /* Lista de Navegación */
@@ -418,6 +419,7 @@ body {
   list-style: none;
   padding: 0;
   width: 100%;
+  color: #333333
 }
 
 .sidebar li {
