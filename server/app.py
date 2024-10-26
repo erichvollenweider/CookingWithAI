@@ -17,34 +17,52 @@ bcrypt = Bcrypt(app)
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 # Construir la ruta absoluta para el archivo CSV
-csv_file = os.path.join(basedir, 'dataset_clean_one_hot.csv')
+csv_frutas_verduras = os.path.join(basedir, 'dataset_frutas_verduras.csv')
+csv_file_carnes = os.path.join(basedir, 'dataset-carnes.csv')
 
 # Verificar si el archivo CSV existe
-if os.path.exists(csv_file):
-    df = pd.read_csv(csv_file)
-    class_labels = df.columns[1:] # La primera columna es 'image', el resto son las etiquetas one-hot
-    print("CSV cargado correctamente.")
+if os.path.exists(csv_frutas_verduras):
+    df_frutas_verduras = pd.read_csv(csv_frutas_verduras)
+    class_labels_frutas_verduras = df_frutas_verduras.columns[1:]  # Etiquetas para frutas y verduras
+    print("CSV frutas y verduras cargado correctamente.")
 else:
-    print(f"El archivo CSV no se encuentra en la ruta: {csv_file}")
+    print(f"El archivo CSV frutas y verduras no se encuentra en la ruta: {csv_frutas_verduras}")
     # Manejamos el error con una excepción
-    raise FileNotFoundError(f"El archivo CSV no se encuentra en la ruta: {csv_file}")
+    raise FileNotFoundError(f"El archivo CSV frutas y verduras no se encuentra en la ruta: {csv_frutas_verduras}")
 
-model_path = os.path.join(basedir, 'modeloEntrenado')
-if os.path.exists(model_path):
-    print(f'La ruta {model_path} es válida y existe.')
-    # Cargar el modelo
-    model = tf.keras.models.load_model(model_path)
-    print("Modelo cargado correctamente.")
+if os.path.exists(csv_file_carnes):
+    df_carnes = pd.read_csv(csv_file_carnes)
+    class_labels_carnes = df_carnes.columns[1:]  # Etiquetas para carnes
+    print("CSV carnes cargado correctamente.")
 else:
-    print(f'La ruta {model_path} no existe o es incorrecta.')
+    print(f"El archivo CSV carnes no se encuentra en la ruta: {csv_file_carnes}")
+    raise FileNotFoundError(f"El archivo CSV carnes no se encuentra en la ruta: {csv_file_carnes}")
+
+model_frutas_verduras_path = os.path.join(basedir, 'modeloEntrenado')
+model_carnes_path = os.path.join(basedir, 'modeloEntrenadoCarnes')
+
+if os.path.exists(model_frutas_verduras_path):
+    print(f'La ruta {model_frutas_verduras_path} es válida y existe.')
+    # Cargar el modelo
+    model_frutas_verduras = tf.keras.models.load_model(model_frutas_verduras_path)
+    print("Modelo frutas y verduras cargado correctamente.")
+else:
+    print(f'La ruta {model_frutas_verduras_path} no existe o es incorrecta.')
     # Manejamos el error con una excepción
-    raise FileNotFoundError(f'La ruta {model_path} no existe o es incorrecta.')
+    raise FileNotFoundError(f'La ruta {model_frutas_verduras_path} no existe o es incorrecta.')
+
+if os.path.exists(model_carnes_path):
+    print(f'La ruta {model_carnes_path} es válida y existe.')
+    model_carnes = tf.keras.models.load_model(model_carnes_path)
+    print("Modelo carnes cargado correctamente.")
+else:
+    print(f'La ruta {model_carnes_path} no existe o es incorrecta.')
+    raise FileNotFoundError(f'La ruta {model_carnes_path} no existe o es incorrecta.')
 
 ollama = Ollama(
     base_url='http://localhost:11434',
     model="gemma2:2b"
 )
-
 
 def preprocess_image(image):
     # Convertir cualquier imagen a RGB para garantizar que tenga 3 canales
@@ -65,27 +83,33 @@ def preprocess_image(image):
     
     return img_array
 
-
 def get_ingredients_from_image(image):
     img_array = preprocess_image(image)
-    predictions = model.predict(img_array)  # Hacer la predicción
+    predictions_frutas_verduras = model_frutas_verduras.predict(img_array)
+    predictions_carnes = model_carnes.predict(img_array)
     
     # Obtener las etiquetas predichas usando un umbral
-    predicted_labels = (predictions > 0.1).astype(int)  # Umbral de 0.5 para convertir a etiquetas
-    print(f"Predicciones: {predictions}")
-    print(f"Etiquetas predichas: {predicted_labels}")
+    predicted_labels_frutas_verduras = (predictions_frutas_verduras > 0.5).astype(int)
+    predicted_labels_carnes = (predictions_carnes > 0.8).astype(int)
 
-    # Obtener los ingredientes correspondientes a las etiquetas predichas
-    ingredients = [class_labels[i] for i in range(len(predicted_labels[0])) if predicted_labels[0][i] == 1]
-    return ingredients  # Devolver la lista de ingredientes
+    print(f"Predicciones frutas_verduras: {predictions_frutas_verduras}")
+    print(f"Etiquetas predichas frutas_verduras: {predicted_labels_frutas_verduras}")
+    
+    print(f"Predicciones carnes: {predictions_carnes}")
+    print(f"Etiquetas predichas cares: {predicted_labels_carnes}")
 
+    # Concatenar etiquetas y predicciones en una sola lista para simplificar
+    all_labels = list(class_labels_frutas_verduras) + list(class_labels_carnes)
+    all_predictions = np.concatenate([predicted_labels_frutas_verduras[0], predicted_labels_carnes[0]])
+
+    # Obtener ingredientes en una sola línea
+    ingredients = [all_labels[i] for i in range(len(all_predictions)) if all_predictions[i] == 1]
+    return ingredients
 
 # Ruta principal de la app
 @app.route('/')
 def index():
     return "Falta hacer el front..."
-
-app.secret_key = os.getenv('SECRET_KEY') or 'clave-secreta'
 
 @app.route('/consulta_ollama', methods=['POST'])
 def consulta_ollama():
@@ -200,7 +224,6 @@ def register():
 
     return jsonify({'message': 'Usuario registrado exitosamente'}), 200
 
-
 # Ruta para listar los usuarios registrados dentro de la bdd
 # Para verificar que los usuarios se crean
 @app.route('/usuarios')
@@ -238,9 +261,7 @@ def login():
     
     # Si las credenciales son correctas, iniciar sesión
     session['user_id'] = user.id
-    session.permanent = True
     return jsonify({'message': 'Inicio de sesion exitoso'}), 200
-
 
 @app.route('/logout', methods=['POST'])
 def logout():
@@ -250,10 +271,11 @@ def logout():
 @app.route('/check_session', methods=['GET'])
 def check_session():
     if 'logged_in' in session and session['logged_in']:
-        return jsonify({'logged_in': True}), 200
-    else:
-        return jsonify({'logged_in': False}), 200
-
+        user = Users.query.get(session['user_id'])
+        if user is not None:
+            return jsonify({'logged_in': True}), 200
+    session.clear()
+    return jsonify({'logged_in': False}), 200
 
 if __name__ == "__main__":
     # Manejamos los errores con el metodo que creamos
