@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { QRCodeCanvas } from 'qrcode.react';
 import styles from "../styles/ChatWithAI.module.css";
 
 const OllamaForm = ({ onLogout }) => {
@@ -13,6 +14,7 @@ const OllamaForm = ({ onLogout }) => {
   const [savedRecipes, setSavedRecipes] = useState([]);
   const [buttonVisible, setButtonVisible] = useState(true);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [showQR, setShowQR] = useState(false);  // Estado para mostrar/ocultar QR
 
   const handleFileChange = (e) => {
     const filesArray = Array.from(e.target.files); // Convertimos el FileList en array
@@ -41,6 +43,10 @@ const OllamaForm = ({ onLogout }) => {
     setSidebarOpen(!sidebarOpen);
   };
 
+  const toggleQR = () => setShowQR(!showQR);
+
+  const mobileUploadUrl = " https://951d-186-122-108-6.ngrok-free.app/camera";
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setButtonVisible(true);
@@ -66,7 +72,7 @@ const OllamaForm = ({ onLogout }) => {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/consulta_ollama", {
+      const res = await fetch("https://951d-186-122-108-6.ngrok-free.app/consulta_ollama", {
         method: "POST",
         body: formData,
         credentials: "include",
@@ -91,7 +97,7 @@ const OllamaForm = ({ onLogout }) => {
   const handleSaveRecipe = async () => {
     if (response) {
       try {
-        const res = await fetch("http://localhost:5000/guardar_receta", {
+        const res = await fetch(" https://951d-186-122-108-6.ngrok-free.app/guardar_receta", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -378,6 +384,19 @@ const OllamaForm = ({ onLogout }) => {
                   </div>
                 ))}
               </div>
+
+                {/* Botón para abrir QR */}
+                <button onClick={toggleQR} className={styles.qrButton}>
+                  {showQR ? "Ocultar QR" : "Subir desde móvil"}
+                </button>
+
+                {/* Condicionalmente mostramos el QR */}
+                {showQR && (
+                  <div className={styles.qrContainer}>
+                    <QRCodeCanvas value={mobileUploadUrl} size={200} />
+                    <p>Escanea el QR para subir imágenes desde tu móvil</p>
+                  </div>
+                )}
 
               <div className={styles.messageBox}>
                 <div className={styles.fileUploadWrapper}>

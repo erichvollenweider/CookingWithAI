@@ -1,4 +1,4 @@
-from flask import Flask, request, url_for, redirect, jsonify, session
+from flask import Flask, request, url_for, redirect, jsonify, session, send_from_directory
 from flask_cors import CORS
 from PIL import Image
 import tensorflow as tf
@@ -9,8 +9,16 @@ from langchain_community.llms import Ollama
 from database.models import Users, Recetas
 from database import db, create_app
 from flask_bcrypt import Bcrypt
+from jinja2 import Environment, FileSystemLoader
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
+
+template_loader = FileSystemLoader('templates')
+
+template_env = Environment(loader=template_loader)
+
+template = template_env.get_template('camera.html')
+
 bcrypt = Bcrypt(app)
 
 # Obtener la ruta absoluta donde se encuentra app.py
@@ -83,7 +91,7 @@ def get_ingredients_from_image(image):
 # Ruta principal de la app
 @app.route('/')
 def index():
-    return "Falta hacer el front..."
+    return "App activo."
 
 app.secret_key = os.getenv('SECRET_KEY') or 'clave-secreta'
 
@@ -253,6 +261,27 @@ def check_session():
         return jsonify({'logged_in': True}), 200
     else:
         return jsonify({'logged_in': False}), 200
+
+
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    if 'file' not in request.files:
+        return jsonify({"error": "No file part"}), 400
+    
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({"error": "No selected file"}), 400
+
+    # Aquí puedes guardar o procesar el archivo
+    # file.save(os.path.join('uploads', file.filename))
+
+    return jsonify({"message": "Archivo subido con éxito"}), 200
+
+@app.route('/camera', methods=['GET'])
+def camera():
+    print("Accediendo a /camera")  # Debug
+    return send_from_directory(app.template_folder, 'camera.html')
+
 
 
 if __name__ == "__main__":
