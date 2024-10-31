@@ -14,6 +14,11 @@ const OllamaForm = ({ onLogout }) => {
   const [buttonVisible, setButtonVisible] = useState(true);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
+  const [isModalOpen, setIsModalOpen] = useState(false); // g
+
   const handleFileChange = (e) => {
     const filesArray = Array.from(e.target.files); // Convertimos el FileList en array
 
@@ -311,18 +316,22 @@ const OllamaForm = ({ onLogout }) => {
         </label>
         <div className={`${styles.sidebar} ${sidebarOpen ? styles.open : ""}`}>
           <h1>Mis Recetas</h1>
-          <ul>
-            <li>Receta 1</li>
-            <li>Receta 2</li>
-            <li>Receta 3</li>
-            <li>Receta 4</li>
-            <li>Receta 5</li>
-            {/* {savedRecipes.map((recipe, index) => (
-              <li key={index}>{recipe.split("\n")[0]}</li> // Mostrar título de la receta guardada
-            ))} 
-            POR AHORA NO AGREGAMOS AL COSTADO, HAY QUE VER COMO TRAER DE LA 
-            BASE DE DATOS LAS RECETAS QUE TIENE EL USUARIO*/}
-          </ul>
+          <div className={styles.recipeBookButton}>
+            <button onClick={() => setIsModalOpen(true)}>
+              <img src="../../public/libRecetas.png" alt="Mi Libro" />
+              <h2>Mi Libro de</h2>
+              <h2>Recetas</h2>
+            </button>
+            {isModalOpen && (
+              <div className={styles.modalOverlay}>
+                <div className={styles.modalContent}>
+                  <h2>Título del Modal</h2>
+                  <p>Este es el contenido del modal.</p>
+                  <button onClick={() => setIsModalOpen(false)}>Cerrar</button>
+                </div>
+              </div>
+            )}
+          </div>
           <div className={styles.bottomButton}>
             <button onClick={onLogout} className={styles.logoutButton}>
               Cerrar sesión
