@@ -1,18 +1,18 @@
-import { useState, useEffect } from 'react';
-import './App.css';
-import OllamaForm from './components/OllamaForm';
-import LoginModal from './components/LoginModal';
-import RegisterModal from './components/RegisterModal';
+import { useState, useEffect } from "react";
+import "./App.css";
+import OllamaForm from "./components/OllamaForm";
+import LoginModal from "./components/LoginModal";
+import RegisterModal from "./components/RegisterModal";
+import ImageUploader from "./components/ImageUploader";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
 
-  // Al cargar la aplicación, verificamos si ya hubo clic usando localStorage
   useEffect(() => {
     const checkSession = async () => {
-      const response = await fetch('http://localhost:5000/check_session', {
+      const response = await fetch('http://192.168.100.5:5000/check_session', {
         credentials: 'include',
       });
       const data = await response.json();
@@ -40,9 +40,9 @@ function App() {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch('http://localhost:5000/logout', {
-        method: 'POST',
-        credentials: 'include',
+      const response = await fetch("http://192.168.100.5:5000//logout", {
+        method: "POST",
+        credentials: "include",
       });
 
       if (response.ok) {
@@ -101,6 +101,7 @@ function App() {
           onRegister={handleRegister}
         />
       )}
+      <ImageUploader />
     </div>
   );
 }

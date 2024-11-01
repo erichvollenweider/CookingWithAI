@@ -1,4 +1,4 @@
-from flask import Flask, request, url_for, redirect, jsonify, session, send_from_directory
+from flask import Flask, render_template, request, url_for, redirect, jsonify, session
 from flask_cors import CORS
 from PIL import Image
 import tensorflow as tf
@@ -91,7 +91,7 @@ def get_ingredients_from_image(image):
 # Ruta principal de la app
 @app.route('/')
 def index():
-    return "App activo."
+    return "App activo"
 
 app.secret_key = os.getenv('SECRET_KEY') or 'clave-secreta'
 
@@ -284,7 +284,9 @@ def camera():
 
 
 
-if __name__ == "__main__":
+
+if __name__ == "__main__":  
     # Manejamos los errores con el metodo que creamos
     app.register_error_handler(404, pagina_no_encotrada)
-    app.run()
+    app.run(host='0.0.0.0', port=5000,debug = True)
+    CORS(app, origins=["http://192.168.100.5:5173"])

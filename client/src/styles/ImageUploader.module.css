@@ -6,6 +6,7 @@ body {
 
 .main {
   display: flex;
+  flex-direction: column; /* Cambiado para móviles */
   height: 100vh;
   width: 100vw;
 }
@@ -17,28 +18,28 @@ body {
   width: 100%;
   background-color: #dad3c0;
   overflow-y: auto;
-  padding: 20px; /* Añadir un poco de espaciado */
+  padding: 10px; /* Espaciado reducido */
 }
 
 .chatContainer h1 {
   font-family: Tahoma;
-  font-size: 150px;
+  font-size: 20px; /* Ajustado para móviles */
   color: #333333;
-  margin-top: 30px;
+  margin-top: 10px; /* Ajustado */
   margin-bottom: 0;
 }
 
 .chatContainer h2 {
   font-family: Tahoma;
-  font-size: 50px;
+  font-size: 10px; /* Ajustado para móviles */
   color: #333333;
 }
 
 .chatContainer img {
   align-self: center;
-  width: 250px; /* Tamaño ajustado */
-  height: 250px;
-  margin-bottom: 30px; /* Ajuste del margen */
+  width: 100px; /* Tamaño ajustado */
+  height: 100px; /* Ajustado */
+  margin-bottom: 10px; /* Ajustado */
   border-radius: 50%;
   border: 5px solid #E0E0E0; /* Borde del logo */
 }
@@ -61,10 +62,10 @@ body {
   background-color: #F4E8D9;
   border: 1px solid #ddd;
   border-radius: 10px;
-  padding: 20px;
-  margin: 20px 0;
+  padding: 10px; /* Reducido */
+  margin: 10px 0; /* Ajustado */
   text-align: left;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ajustado */
 }
 
 .recipeContainer h2 {
@@ -79,32 +80,83 @@ body {
 }
 
 .bulletList {
-  padding: 15px;
+  padding: 5px; /* Ajustado */
 }
 
 .cleanList li {
-  margin: 8px 0;
+  margin: 5px 0; /* Ajustado */
+}
+
+.bottomButton {
+  margin-top: 100px; /* Ajustado */
+}
+
+.recipeBookButton {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 20px; /* Ajustado */
+}
+
+.recipeBookButton button {
+  padding: 0;
+  cursor: pointer;
+  font-size: 14px; /* Ajustado */
+}
+
+.recipeBookButton img {
+  width: 40px; /* Ajustado */
+  height: auto;
+  margin-bottom: -25px; /* Ajustado */
+  margin-right: 40px; /* Ajustado */
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: #fff;
+  padding: 20px;  /* Ajustado */
+  border-radius: 8px;
+  max-width: 90%;  /* Ancho máximo del 90% para móviles */
+  max-height: 90%; /* Altura máxima del 90% de la pantalla */
+  width: 100%;
+  height: auto;    /* Altura automática */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;  /* Permite el desplazamiento */
+  text-align: center;
+  color: #333333;
 }
 
 /* Botones */
 .logoutButton {
-  display: inline-flex;  /* Alinea el contenido dentro del botón */
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   border-radius: 8px;
   border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-family: inherit;  /* Asegura la misma tipografía que el contenedor */
+  padding: 10px; /* Ajustado */
+  font-size: 14px; /* Ajustado */
+  font-family: inherit;
   background-color: #94C9A9;
   color: #333333;
   cursor: pointer;
-  transition: border-color 0.25s, background-cologna /*subrayado si se usa en enlaces */
+  transition: border-color 0.25s, background-color 0.25s; /* Corregido */
 }
 
 .logoutButton:hover {
   border-color: #E0E0E0;
-  background-color: #f5f5f5; /* Le da un efecto sutil al fondo */
+  background-color: #f5f5f5;
 }
 
 /* Contenedor del mensaje */
@@ -114,23 +166,27 @@ body {
   align-items: center;
   justify-content: center;
   background-color: #F4E8D9;
-  padding: 0 15px;
+  padding: 0 10px; /* Ajustado */
   border-radius: 10px;
   border: 1px solid #E0E0E0;
-  position: relative; /* Aseguramos que el contenedor sea relativo */
 }
 
 /* Entrada de mensaje */
 .messageInput {
   flex-grow: 1;
   width: 100%;
-  min-height: 60px; /* Altura mínima ajustada */
+  min-height: 40px; /* Ajustado */
   background-color: transparent;
   color: #333333;
   font-weight: bold;
   padding-left: 10px;
   resize: vertical;
   border: none;
+}
+
+.messageInput:focus {
+  outline: none;
+  box-shadow: none;
 }
 
 .messageInput::placeholder {
@@ -178,6 +234,7 @@ body {
 .file {
   display: none;
 }
+
 .fileUploadWrapper label {
   cursor: pointer;
   width: fit-content;
@@ -187,67 +244,56 @@ body {
   justify-content: center;
   position: relative;
 }
+
 .fileUploadWrapper label svg {
   height: 18px;
 }
-.fileUploadWrapper label svg path {
-  transition: all 0.3s;
-}
-.fileUploadWrapper label svg circle {
-  transition: all 0.3s;
-}
+
 .fileUploadWrapper label:hover svg path {
   stroke: #fff;
 }
+
 .fileUploadWrapper label:hover svg circle {
   stroke: #fff;
   fill: #3c3c3c;
 }
-.fileUploadWrapper label:hover .tooltip {
-  display: block;
-  opacity: 1;
-}
+
 .tooltip {
   position: absolute;
-  top: -40px;
+  top: -30px; /* Ajustado */
   display: none;
   opacity: 0;
   color: #333333;
   font-size: 10px;
-  text-wrap: nowrap;
   background-color: #000;
-  padding: 6px 10px;
+  padding: 4px 8px; /* Ajustado */
   border: 1px solid #E0E0E0;
   border-radius: 5px;
-  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.596);
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.596);
   transition: all 0.3s;
 }
+
 /* Contenedor de imagen previa */
 .imagePreviewContainer {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 5px; /* Ajustado */
   justify-content: center;
 }
 
 /* Estilos para imágenes previas */
 .imagePreviewContainer img {
-  width: 100px;
-  height: 100px;
+  width: 80px; /* Ajustado */
+  height: 80px; /* Ajustado */
   object-fit: cover;
   border-radius: 5px;
-  margin-top: 30px;
 }
 
-/* Estilos para imágenes previas */
-.imageWrapper {
-  position: relative;
-}
-
+/* Botón de eliminar */
 .removeButton {
   position: absolute;
-  top: 20px;
-  right: 0px;
+  top: 5px; /* Ajustado */
+  right: 5px; /* Ajustado */
   background-color: #E6B800;
   color: #333333;
   border: none;
@@ -258,73 +304,34 @@ body {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-size: 14px;
-  line-height: 1;
+  font-size: 12px; /* Ajustado */
 }
 
 /* Cargando */
 .spinner {
   display: flex;
   justify-content: center;
-  margin-top: 160px;
-  margin-left: 42%;
+  margin-top: 80px; /* Ajustado */
   height: 50px;
-  width: max-content;
-  font-size: 18px;
+  font-size: 16px; /* Ajustado */
   font-weight: 600;
   font-family: monospace;
   letter-spacing: 1em;
   color: #333333;
-  display: flex;
-  justify-content: center;
-  align-items: center;
- }
- 
- .spinner span {
+}
+
+.spinner span {
   animation: loading6454 1.75s ease infinite;
- }
- 
- .spinner span:nth-child(2) {
-  animation-delay: 0.25s;
- }
- 
- .spinner span:nth-child(3) {
-  animation-delay: 0.5s;
- }
- 
- .spinner span:nth-child(4) {
-  animation-delay: 0.75s;
- }
- 
- .spinner span:nth-child(5) {
-  animation-delay: 1s;
- }
- 
- .spinner span:nth-child(6) {
-  animation-delay: 1.25s;
- }
- 
- .spinner span:nth-child(7) {
-  animation-delay: 1.5s;
- }
- 
- .spinner span:nth-child(8) {
-  animation-delay: 1.75s;
- }
+}
 
- .spinner span:nth-child(9) {
-  animation-delay: 2s;
- }
-
- @keyframes loading6454 {
+@keyframes loading6454 {
   0%, 100% {
-   transform: translateY(0);
+    transform: translateY(0);
   }
- 
   50% {
-   transform: translateY(-10px);
+    transform: translateY(-10px);
   }
- }
+}
 
 /* Transición suave para header */
 .header {
@@ -333,59 +340,56 @@ body {
   justify-content: center;
   gap: 10px;
   transition: all 0.3s ease;
-  position: relative;
-  margin-top: 40px; /* Posición inicial */
+  margin-top: 20px; /* Ajustado */
 }
 
-/* Logo y título (estado inicial) */
+/* Logo y título */
 .header img {
-  width: 120px;
-  height: 120px;
-  transition: all 0.3s ease;
+  width: 60px; /* Ajustado */
+  height: 60px; /* Ajustado */
 }
 
 .header h2 {
-  font-size: 40px;
+  font-size: 20px; /* Ajustado */
   margin: 0;
-  transition: all 0.3s ease;
 }
 
 .headerLetters {
   display: flex;
   flex-direction: column;
   justify-content: start;
-  margin-top: 20px;
+  margin-top: 10px; /* Ajustado */
 }
 
 .headerLetters h3 {
   color: #333333;
   margin: 0;
-  font-size: 15px;
+  font-size: 12px; /* Ajustado */
 }
 
 /* Compactar el header */
 .chatContainer.compact .header {
-  margin-top: 10px;
+  margin-top: 5px; /* Ajustado */
   position: absolute;
-  top: 10px;
-  left: 10px;
+  top: 5px; /* Ajustado */
+  left: 5px; /* Ajustado */
 }
 
 .chatContainer.compact .header img {
-  width: 60px;
-  height: 60px;
+  width: 40px; /* Ajustado */
+  height: 40px; /* Ajustado */
 }
 
 .chatContainer.compact .header h2 {
-  font-size: 24px;
+  font-size: 16px; /* Ajustado */
 }
 
 .chatContainer.compact .header h3 {
-  font-size: 16px;
+  font-size: 12px; /* Ajustado */
 }
 
 .submitsPost {
-  margin-bottom: 20px;
+  margin-bottom: 10px; /* Ajustado */
 }
 
 /* Barra lateral - Sidebar */
@@ -401,15 +405,15 @@ body {
 }
 
 .sidebar.open {
-  width: 250px;
+  width: 200px; /* Ajustado */
   content-visibility: visible;
 }
 
 /* Estilo de Títulos y Párrafos */
 .sidebar h1 {
-  font-size: 2rem;
+  font-size: 1.5rem; /* Ajustado */
   margin-bottom: 10px;
-  color: #333333
+  color: #333333;
 }
 
 /* Lista de Navegación */
@@ -417,7 +421,7 @@ body {
   list-style: none;
   padding: 0;
   width: 100%;
-  color: #333333
+  color: #333333;
 }
 
 .sidebar li {
@@ -473,78 +477,45 @@ body {
   transition:
     transform 0.3s ease,
     opacity 0.3s ease;
-  position: relative;
-  left: 10px;
-  top: 10px;
 }
 
 .toggleCheckbox:checked + .hamburger .bar:nth-child(2) {
-  transform: translate(0px, 10px);
   opacity: 0;
-  transition-delay: 0.3s;
-}
-
-.toggleCheckbox:checked + .hamburger .bar:nth-child(3) {
-  transform: translate(0px, -10px);
-  transition-delay: 0s;
 }
 
 .toggleCheckbox:checked + .hamburger .bar:nth-child(1) {
-  transform: rotate(-45deg) scale(0.9);
-  transition-delay: 0.4s;
+  transform: rotate(-45deg);
 }
+
 .toggleCheckbox:checked + .hamburger .bar:nth-child(3) {
-  transform: rotate(45deg) scale(0.9);
-  transition-delay: 0.4s;
+  transform: rotate(45deg);
 }
 
 .saveRecipe {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100px;
+  height: 80px; /* Ajustado */
 }
 
 .confirmSave {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 150px;
-  height: 75px;
+  width: 130px; /* Ajustado */
+  height: 40px; /* Ajustado */
   background-color: #E6B800;
   outline: none;
   border: 1px solid #E0E0E0;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s;
-  font-size: 1em;
-  font-family: inherit;
+  font-size: 14px; /* Ajustado */
   color: #333333;
-  text-decoration: none;
-  font-weight: bold;
-  margin-bottom: 15px;
-  transition: transform 0.2s ease, opacity 0.3s ease;
 }
 
 .confirmSave:hover {
-  transform: scale(1.1);
-}
-
-.animateSave:active {
-  animation: pop 0.3s ease forwards;
-}
-
-@keyframes pop {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.2);
-  }
-  100% {
-    transform: scale(0);
-    opacity: 0;
-  }
+  transform: scale(1.05); /* Ajustado */
 }
 
 .successMessage {
@@ -560,5 +531,21 @@ body {
   }
   to {
     opacity: 1;
+  }
+}
+
+/* Media Queries para dispositivos móviles */
+@media (max-width: 768px) {
+  /* Aquí puedes ajustar aún más los estilos para pantallas pequeñas */
+  .chatContainer h1 {
+    font-size: 20px;
+  }
+
+  .chatContainer h2 {
+    font-size: 16px;
+  }
+
+  .recipeContainer h2 {
+    font-size: 18px;
   }
 }

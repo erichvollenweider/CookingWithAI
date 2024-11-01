@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { QRCodeCanvas } from 'qrcode.react';
 import styles from "../styles/ChatWithAI.module.css";
+import mobileStyles from "../styles/ImageUploader.module.css";
 
 const OllamaForm = ({ onLogout }) => {
   const [files, setFiles] = useState([]);
@@ -14,7 +15,13 @@ const OllamaForm = ({ onLogout }) => {
   const [savedRecipes, setSavedRecipes] = useState([]);
   const [buttonVisible, setButtonVisible] = useState(true);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  const [showQR, setShowQR] = useState(false);  // Estado para mostrar/ocultar QR
+  const [showQR, setShowQR] = useState(false);  
+  const [isMobile, setIsMobile] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
+  const [isModalOpen, setIsModalOpen] = useState(false); 
 
   const handleFileChange = (e) => {
     const filesArray = Array.from(e.target.files); // Convertimos el FileList en array
@@ -45,7 +52,7 @@ const OllamaForm = ({ onLogout }) => {
 
   const toggleQR = () => setShowQR(!showQR);
 
-  const mobileUploadUrl = " https://951d-186-122-108-6.ngrok-free.app/camera";
+  const mobileUploadUrl = "http://192.168.100.5:5173/upload_image";
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -72,7 +79,7 @@ const OllamaForm = ({ onLogout }) => {
     }
 
     try {
-      const res = await fetch("https://951d-186-122-108-6.ngrok-free.app/consulta_ollama", {
+      const res = await fetch("http://192.168.100.5:5000/consulta_ollama", {
         method: "POST",
         body: formData,
         credentials: "include",
@@ -97,7 +104,7 @@ const OllamaForm = ({ onLogout }) => {
   const handleSaveRecipe = async () => {
     if (response) {
       try {
-        const res = await fetch(" https://951d-186-122-108-6.ngrok-free.app/guardar_receta", {
+        const res = await fetch("http://192.168.100.5:5000/guardar_receta", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -301,8 +308,8 @@ const OllamaForm = ({ onLogout }) => {
   };
 
   return (
-    <div className={styles.main}>
-      <div className={styles.container}>
+    <div className={isMobile ? mobileStyles.main : styles.main}>
+      <div className={isMobile ? mobileStyles.container : styles.container}>
         <input
           className={styles.toggleCheckbox}
           id="toggle"
@@ -385,18 +392,18 @@ const OllamaForm = ({ onLogout }) => {
                 ))}
               </div>
 
-                {/* Botón para abrir QR */}
+              {!isMobile && (
                 <button onClick={toggleQR} className={styles.qrButton}>
                   {showQR ? "Ocultar QR" : "Subir desde móvil"}
                 </button>
+              )}
 
-                {/* Condicionalmente mostramos el QR */}
-                {showQR && (
+              {showQR && !isMobile && (  
                   <div className={styles.qrContainer}>
                     <QRCodeCanvas value={mobileUploadUrl} size={200} />
                     <p>Escanea el QR para subir imágenes desde tu móvil</p>
                   </div>
-                )}
+              )}
 
               <div className={styles.messageBox}>
                 <div className={styles.fileUploadWrapper}>
