@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { QRCodeCanvas } from 'qrcode.react';
 import styles from "../styles/ChatWithAI.module.css";
 import mobileStyles from "../styles/ImageUploader.module.css";
+import { frontUrl, backendUrl } from '../config';
+
 
 const OllamaForm = ({ onLogout }) => {
   const [files, setFiles] = useState([]);
@@ -52,7 +54,7 @@ const OllamaForm = ({ onLogout }) => {
 
   const toggleQR = () => setShowQR(!showQR);
 
-  const mobileUploadUrl = "http://192.168.100.5:5173/upload_image";
+  const mobileUploadUrl = `${frontUrl}`;
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -79,7 +81,7 @@ const OllamaForm = ({ onLogout }) => {
     }
 
     try {
-      const res = await fetch("http://192.168.100.5:5000/consulta_ollama", {
+      const res = await fetch(`${backendUrl}/consulta_ollama`, {
         method: "POST",
         body: formData,
         credentials: "include",
@@ -104,7 +106,7 @@ const OllamaForm = ({ onLogout }) => {
   const handleSaveRecipe = async () => {
     if (response) {
       try {
-        const res = await fetch("http://192.168.100.5:5000/guardar_receta", {
+        const res = await fetch(`${backendUrl}/guardar_receta`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

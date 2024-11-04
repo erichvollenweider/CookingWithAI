@@ -283,10 +283,11 @@ def camera():
     return send_from_directory(app.template_folder, 'camera.html')
 
 
+URL_REACT = "http://192.168.100.5:5173"
 
 
 if __name__ == "__main__":  
     # Manejamos los errores con el metodo que creamos
     app.register_error_handler(404, pagina_no_encotrada)
     app.run(host='0.0.0.0', port=5000,debug = True)
-    CORS(app, origins=["http://192.168.100.5:5173"])
+    CORS(app, origins=[URL_REACT])

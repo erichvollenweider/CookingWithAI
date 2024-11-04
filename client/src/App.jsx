@@ -4,6 +4,7 @@ import OllamaForm from "./components/OllamaForm";
 import LoginModal from "./components/LoginModal";
 import RegisterModal from "./components/RegisterModal";
 import ImageUploader from "./components/ImageUploader";
+import { backendUrl } from './config';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -12,7 +13,7 @@ function App() {
 
   useEffect(() => {
     const checkSession = async () => {
-      const response = await fetch('http://192.168.100.5:5000/check_session', {
+      const response = await fetch(`${backendUrl}/check_session`, {
         credentials: 'include',
       });
       const data = await response.json();
