@@ -9,6 +9,7 @@ from langchain_community.llms import Ollama
 from database.models import Users, Recetas
 from database import db, create_app
 from flask_bcrypt import Bcrypt
+from model_rag import load_model
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 bcrypt = Bcrypt(app)
@@ -199,6 +200,7 @@ def index():
 @app.route('/consulta_ollama', methods=['POST'])
 def consulta_ollama():
     try:
+        rag_chain, retriever = load_model()
         # Verificar si hay texto en la solicitud
         text = request.form.get('text', '')
         
@@ -233,9 +235,12 @@ def consulta_ollama():
             all_ingredients = list(set(all_ingredients))
 
         if all_ingredients:
-            prompt = f"Dame una receta sencilla con los siguientes ingredientes: {', '.join(all_ingredients)}. Evita incluir elementos no relacionados o creativos. Quiero que me dividas la respuesta en 4 categorias (Titulo, Ingredientes, Preparación y Consejos) donde cada una de ellas tienen que comenzar con las siguientes exactas palabras segun corresponda a cada una de ellas: 'Titulo', 'Ingredientes:', 'Peparación:' y 'Consejos'."
-            generated_text = ollama.invoke(prompt)
+            prompt = f"Dame una receta con los siguientes ingredientes: {', '.join(all_ingredients)}."
+            # generated_text = ollama.invoke(prompt)
+            generated_text = ""
             titulo = parse_receta(generated_text)
+            for chunk in rag_chain.stream({"context": retriever, "question": prompt}):
+                generated_text += chunk.content
             
             return jsonify({'response': generated_text})
         else:
