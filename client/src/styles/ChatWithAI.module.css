@@ -87,28 +87,42 @@ body {
 }
 
 .bottomButton {
-  margin-top: 200px;
+  margin-top: 195px;
 }
 
 .recipeBookButton {
   display: flex;
   justify-content: center;
+  align-items: center;
   width: 100%;
-  margin-top: 50px;
+  margin-top: 20px;
 }
 
 .recipeBookButton button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
   padding: 0;
   cursor: pointer;
   font-size: 8px;
+  width: 80%;
+  max-width: 80%;
 }
 
 .recipeBookButton img {
-  width: 60px; /* Ajusta el tamaño de la imagen */
+  width: 60px;
   height: auto;
-  background-color: transparent; /* Asegura que el fondo de la imagen sea transparente */
+  background-color: transparent;
   margin-bottom: -65px;
   margin-right: 120px;
+}
+
+.recipeBookButton h2 {
+  margin: 0;
+  padding: 8px 0;
+  color: rgb(19, 18, 18);
 }
 
 .modalOverlay {
@@ -126,33 +140,146 @@ body {
 
 .modalContent {
   background-color: #fff;
-  padding: 30px;  /* Un poco más de padding */
+  padding: 30px; 
   border-radius: 8px;
-  max-width: 60%;  /* Ancho máximo del 80% de la pantalla */
-  max-height: 80%; /* Altura máxima del 80% de la pantalla */
+  max-width: 60%;  
+  max-height: 80%; 
   width: 100%;
-  height: 80vh;    /* Altura mínima como el 80% de la pantalla */
+  height: 80vh;    
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  overflow-y: auto;  /* Permite el desplazamiento si el contenido es demasiado grande */
+  overflow-y: auto;
   text-align: center;
   color: #333333;
 }
 
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modalContent {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 90%;
+  text-align: center;
+}
+
+.bookContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.book {
+  position: relative;
+  width: 350px;
+  height: 500px;
+  transition: transform 0.5s;
+  perspective: 1500px;
+}
+
+.paper {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  transition: transform 0.5s;
+}
+
+.front,
+.back {
+  background-color: white;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  transform-origin: left;
+  transition: transform 0.5s;
+}
+
+.front {
+  z-index: 1;
+  backface-visibility: hidden;
+  border-left: 3px solid powderblue;
+}
+
+.back {
+  z-index: 0;
+}
+
+.frontContent,
+.backContent {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.backContent {
+  transform: rotateY(180deg);
+}
+
+.flipped .front,
+.flipped .back {
+  transform: rotateY(-180deg);
+}
+
+button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  margin: 10px;
+  font-size: 24px;
+  transition: transform 0.5s;
+}
+
+button:focus {
+  outline: none;
+}
+
+button:hover {
+  color: #636363;
+}
+
+#p1 {
+  z-index: 3;
+}
+
+#p2 {
+  z-index: 2;
+}
+
+#p3 {
+  z-index: 1;
+}
 
 /* Botones */
 .logoutButton {
-  display: inline-flex;  /* Alinea el contenido dentro del botón */
+  display: inline-flex;  
   align-items: center;
   justify-content: center;
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
   font-size: 1em;
-  font-family: inherit;  /* Asegura la misma tipografía que el contenedor */
+  font-family: inherit;  
   background-color: #94C9A9;
   color: #333333;
   cursor: pointer;
-  transition: border-color 0.25s, background-cologna subrayado si se usa en enlaces */
+  transition: border-color 0.25s;
 }
 
 .logoutButton:hover {
@@ -467,7 +594,19 @@ body {
 .sidebar h1 {
   font-size: 2rem;
   margin-bottom: 10px;
-  color: #333333
+  color: #333333;
+  margin-bottom: 100px;
+}
+
+.sidebar h4 {
+  color: #333333;
+  margin-bottom: -18px;
+}
+
+.sidebar h5 {
+  color: #333333;
+  font-size: 12px;
+  margin-bottom: -10px;
 }
 
 /* Lista de Navegación */

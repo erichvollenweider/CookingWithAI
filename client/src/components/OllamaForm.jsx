@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import styles from "../styles/ChatWithAI.module.css";
 
-const OllamaForm = ({ onLogout }) => {
+const OllamaForm = ({ onLogout, displayBook }) => {
   const [files, setFiles] = useState([]);
   const [previewUrls, setPreviewUrls] = useState([]);
   const [text, setText] = useState("");
@@ -14,10 +14,14 @@ const OllamaForm = ({ onLogout }) => {
   const [buttonVisible, setButtonVisible] = useState(true);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
+  // Estado para controlar el libro y modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentLocation, setCurrentLocation] = useState(1);
+
+  const numOfPapers = 3;
+  const maxLocation = numOfPapers + 1;
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-
-  const [isModalOpen, setIsModalOpen] = useState(false); // g
 
   const handleFileChange = (e) => {
     const filesArray = Array.from(e.target.files); // Convertimos el FileList en array
@@ -122,6 +126,42 @@ const OllamaForm = ({ onLogout }) => {
       }
     }
   };
+
+  const goNextPage = () => {
+    if (currentLocation < maxLocation) {
+      setCurrentLocation((prev) => prev + 1);
+    }
+  };
+
+  const goPrevPage = () => {
+    if (currentLocation > 1) {
+      setCurrentLocation((prev) => prev - 1);
+    }
+  };
+
+  const getBookStyle = useMemo(() => {
+    if (currentLocation === 1) return { transform: "translateX(0%)" };
+    if (currentLocation === maxLocation) return { transform: "translateX(100%)" };
+    return { transform: "translateX(50%)" };
+  }, [currentLocation, maxLocation]);
+
+  // Cerrar modal al hacer clic fuera
+  const handleClickOutside = (e) => {
+    if (e.target.className.includes(styles.modalOverlay)) {
+      setIsModalOpen(false);
+    }
+  };
+
+  // Cerrar modal con tecla Esc
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        setIsModalOpen(false);
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   // Función para formatear la respuesta de la receta
   const renderRecipe = () => {
@@ -300,7 +340,7 @@ const OllamaForm = ({ onLogout }) => {
   };
 
   return (
-    <div className={styles.main}>
+    <div className={styles.main} onClick={handleClickOutside}>
       <div className={styles.container}>
         <input
           className={styles.toggleCheckbox}
@@ -316,6 +356,8 @@ const OllamaForm = ({ onLogout }) => {
         </label>
         <div className={`${styles.sidebar} ${sidebarOpen ? styles.open : ""}`}>
           <h1>Mis Recetas</h1>
+          <h4>¡No dejes que se escapen!</h4>
+          <h5>Guarda estas recetas en tu libro para disfrutarlas siempre</h5>
           <div className={styles.recipeBookButton}>
             <button onClick={() => setIsModalOpen(true)}>
               <img src="../../public/libRecetas.png" alt="Mi Libro" />
@@ -325,11 +367,37 @@ const OllamaForm = ({ onLogout }) => {
             {isModalOpen && (
               <div className={styles.modalOverlay}>
                 <div className={styles.modalContent}>
-                  <h2>Título del Modal</h2>
-                  <p>Este es el contenido del modal.</p>
-                  <button onClick={() => setIsModalOpen(false)}>Cerrar</button>
+                  <h2>Mi Libro de Recetas</h2>
+            
+                  <div className={styles.bookContainer}>
+                    
+                   <button onClick={goPrevPage} disabled={currentLocation === 1}>
+                      &lt;
+                    </button>
+
+                    <div className={styles.book} style={getBookStyle}>
+                      {[...Array(numOfPapers)].map((_, i) => (
+                      <div
+                        key={i}
+                        className={`${styles.paper} ${currentLocation > i + 1 ? styles.flipped : ""}`}
+                        style={{ zIndex: currentLocation > i + 1 ? i + 1 : "" }}
+                      >
+                        <div className={styles.front}>
+                          <div className={styles.frontContent}>Front {i + 1}</div>
+                        </div>
+                        <div className={styles.back}>
+                          <div className={styles.backContent}>Back {i + 1}</div>
+                        </div>
+                      </div>
+                      ))}
+                    </div> 
+
+                  <button onClick={goNextPage} disabled={currentLocation === maxLocation}>
+                    &gt;
+                  </button> 
                 </div>
               </div>
+            </div>
             )}
           </div>
           <div className={styles.bottomButton}>
