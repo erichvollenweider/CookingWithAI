@@ -10,7 +10,7 @@ import os
 db = SQLAlchemy(session_options={"expire_on_commit": False})
 
 def create_app(config_name='development'):
-    app = Flask(__name__,template_folder='templates')
+    app = Flask(__name__)
     CORS(app, supports_credentials=True)
     bcrypt = Bcrypt(app)
 

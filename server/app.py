@@ -13,12 +13,6 @@ from jinja2 import Environment, FileSystemLoader
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 
-template_loader = FileSystemLoader('templates')
-
-template_env = Environment(loader=template_loader)
-
-template = template_env.get_template('camera.html')
-
 bcrypt = Bcrypt(app)
 
 # Obtener la ruta absoluta donde se encuentra app.py
