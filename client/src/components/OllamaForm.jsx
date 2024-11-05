@@ -9,6 +9,9 @@ const OllamaForm = ({ onLogout }) => {
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState("");
   const [error, setError] = useState(null);
+  const [ingredients, setIngredients] = useState([]);
+  const [selectedIngredients, setSelectedIngredients] = useState([]);
+  const [showIngredientSelection, setShowIngredientSelection] = useState(false);
   const [showSubmits, setShowSubmits] = useState(true);
   const [savedRecipes, setSavedRecipes] = useState([]);
   const [buttonVisible, setButtonVisible] = useState(true);
@@ -46,6 +49,15 @@ const OllamaForm = ({ onLogout }) => {
     setSidebarOpen(!sidebarOpen);
   };
 
+  const handleIngredientSelection = (ingredient) => {
+    setSelectedIngredients((prevSelected) =>
+      prevSelected.includes(ingredient)
+        ? prevSelected.filter((item) => item !== ingredient)
+        : [...prevSelected, ingredient]
+    );
+  };
+
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setButtonVisible(true);
@@ -71,7 +83,7 @@ const OllamaForm = ({ onLogout }) => {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/consulta_ollama", {
+      const res = await fetch("http://localhost:5000/ingredientes_detectados", {
         method: "POST",
         body: formData,
         credentials: "include",
@@ -83,6 +95,8 @@ const OllamaForm = ({ onLogout }) => {
         setError(data.error);
       } else if (data.response) {
         setResponse(data.response);
+        setIngredients(data.response); // Almacena los ingredientes
+        setShowIngredientSelection(true); // Activa la selección de ingredientes
       }
     } catch (err) {
       setError("Error en la solicitud al servidor.");
@@ -338,6 +352,50 @@ const OllamaForm = ({ onLogout }) => {
             </button>
           </div>
         </div>
+      </div>
+      <div>
+        {/* Vista de selección de ingredientes */}
+        {showIngredientSelection ? (
+          <div>
+            <h2>Selecciona los Ingredientes Correctos</h2>
+            <div className={styles.ingredientButtons}>
+              {ingredients.map((ingredient, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleIngredientSelection(ingredient)}
+                  style={{
+                    backgroundColor: selectedIngredients.includes(ingredient)
+                      ? "green"
+                      : "gray",
+                    color: "white",
+                    margin: "5px",
+                    padding: "10px",
+                  }}
+                >
+                  {ingredient}
+                </button>
+              ))}
+            </div>
+            <button onClick={handleIngredientSubmit}>Enviar Selección</button>
+          </div>
+        ) : (
+          /* Formulario principal */
+          <form onSubmit={handleSubmit} className={styles.form}>
+            {/* Tu formulario y lógica de carga de imágenes existente */}
+            {/* Aquí colocas el resto de tu formulario y lógica de vista */}
+          </form>
+        )}
+
+        {/* Mostrar la respuesta generada (receta) */}
+        {response && (
+          <div className={styles.recipeResponse}>
+            <h2>Receta Generada</h2>
+            <p>{response}</p>
+          </div>
+        )}
+
+        {/* Mostrar mensaje de error si existe */}
+        {error && <p className={styles.errorMessage}>{error}</p>}
       </div>
       <div className={styles.chatContainer}>
         <div className={styles.header}>

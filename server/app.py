@@ -240,6 +240,18 @@ def detectar_ingredientes():
     except Exception as e:
         return jsonify({'error': str(e)})
 
+@app.route('/mostrar_ingredientes', methods=['POST'])
+def mostrar_ingredientes():
+    # Obtener el arreglo de ingredientes desde el cuerpo de la solicitud
+    ingredients = request.json.get('ingredients', [])
+
+    if not ingredients:
+        return jsonify({'error': 'No se recibieron ingredientes para mostrar.'}), 400
+
+    # Devolver el arreglo de ingredientes como JSON
+    return jsonify({'ingredients': ingredients}), 200
+
+
 @app.route('/consulta_ollama', methods=['POST'])
 def consulta_ollama():
     try:
