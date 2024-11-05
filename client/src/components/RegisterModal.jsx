@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
-import styles from '../styles/AuthModals.module.css'; // Importa los estilos correctamente
+import styles from '../styles/AuthModals.module.css'; 
+import { backendUrl } from '../config';
 
 const RegisterModal = ({ onClose, onRegister }) => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(''); // Para manejar los mensajes de error
+  const [error, setError] = useState(''); 
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setError(''); // Limpiar el mensaje de error
+    setError('');
 
-    // Llamar a la API de registro
     try {
-      const response = await fetch('http://localhost:5000/register', {
+      const response = await fetch(`${backendUrl}/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styles from '../styles/AuthModals.module.css';
+import { backendUrl } from '../config';
 
 const LoginModal = ({ onClose, onLogin, onSwitchToRegister }) => {
   const [email, setEmail] = useState('');
@@ -11,7 +12,7 @@ const LoginModal = ({ onClose, onLogin, onSwitchToRegister }) => {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:5000/login', {
+      const response = await fetch(`${backendUrl}/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

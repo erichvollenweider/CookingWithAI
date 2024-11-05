@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
+import { QRCodeCanvas } from 'qrcode.react';
 import styles from "../styles/ChatWithAI.module.css";
+import { frontUrl, backendUrl } from '../config';
 
 const OllamaForm = ({ onLogout, displayBook }) => {
   const [files, setFiles] = useState([]);
@@ -13,6 +15,13 @@ const OllamaForm = ({ onLogout, displayBook }) => {
   const [savedRecipes, setSavedRecipes] = useState([]);
   const [buttonVisible, setButtonVisible] = useState(true);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [showQR, setShowQR] = useState(false);  
+  const [isMobile, setIsMobile] = useState(false);
+
+
+  const toggleQR = () => setShowQR(!showQR);
+  const mobileUploadUrl = `${frontUrl}`;
+
 
   // Estado para controlar el libro y modal
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -75,7 +84,7 @@ const OllamaForm = ({ onLogout, displayBook }) => {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/consulta_ollama", {
+      const res = await fetch(`${backendUrl}/consulta_ollama`, {
         method: "POST",
         body: formData,
         credentials: "include",
@@ -100,7 +109,7 @@ const OllamaForm = ({ onLogout, displayBook }) => {
   const handleSaveRecipe = async () => {
     if (response) {
       try {
-        const res = await fetch("http://localhost:5000/guardar_receta", {
+        const res = await fetch(`${backendUrl}/guardar_receta`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -455,6 +464,17 @@ const OllamaForm = ({ onLogout, displayBook }) => {
                   </div>
                 ))}
               </div>
+
+              <button onClick={toggleQR} className={styles.qrButton}>
+                  {showQR ? "Ocultar QR" : "Subir desde móvil"}
+              </button>
+
+              {showQR && !isMobile && (  
+                  <div className={styles.qrContainer}>
+                    <QRCodeCanvas value={mobileUploadUrl} size={200} />
+                    <p>Escanea el QR para subir imágenes desde tu móvil</p>
+                  </div>
+              )}
 
               <div className={styles.messageBox}>
                 <div className={styles.fileUploadWrapper}>
