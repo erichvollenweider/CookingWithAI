@@ -59,6 +59,7 @@ Aclaracion: todos los pasos siguientes se ejecutan en la terminal
 7. Accedemos en otra terminal nueva (terminal2) a la parte del cliente
 	`cd /tu_ruta/CookingWithAI/client`
 	`npm install` Instalando dependencias de NodeJS
+	`npm install qrcode` Instalando dependencias para utilizar Códigos QR.
 
 ## Proceso de ejecución (Una vez instalado)
 1. Abrimos el servidor de Ollama y lo dejamos abierto (Si es que no se abre automaticamente, ver configuración de cada computadora)
@@ -69,6 +70,7 @@ Aclaracion: todos los pasos siguientes se ejecutan en la terminal
 	`python3 app.py` Ejecucion
 
 3. Abrimos parte del frontend en terminal2
-	`npm run dev` Ejecucion 
+	`npm run dev` Ejecucion solo en localhost. 
+	`npm run dev -- --host` Ejecucion local y network. 
 
 4. Entramos a la dirección IP que nos provee en la consola NPM (terminal2), utilizando el navegador. Estamos en la aplicacion!
