@@ -196,7 +196,7 @@ def get_ingredients_from_image(image):
 def index():
     return "Falta hacer el front..."
 
-@app.route('/detectar_ingredientes', methods=['POST'])
+@app.route('/ingredientes_detectados', methods=['POST'])
 def detectar_ingredientes():
     try:
         # Verificar si hay texto en la solicitud
