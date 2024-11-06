@@ -51,17 +51,24 @@ const OllamaForm = ({ onLogout }) => {
   };
 
   const handleIngredientSelection = (ingredient) => {
+    console.log("Ingrediente seleccionado para eliminar:", ingredient);
+
+    // Remueve el ingrediente del array `ingredients`
+    setIngredients((prevIngredients) =>
+      prevIngredients.filter((item) => item !== ingredient)
+    );
+
+    // Alterna la selección en `selectedIngredients`
     setSelectedIngredients((prevSelected) =>
       prevSelected.includes(ingredient)
         ? prevSelected.filter((item) => item !== ingredient)
         : [...prevSelected, ingredient]
     );
-  };
+};
 
   const handleConfirm = async (event) => {
     event.preventDefault();
     setButtonVisible(true);
-    setShowIngredientSelection(true);
     setLoading(true);
     setError(null);
 
@@ -96,6 +103,7 @@ const OllamaForm = ({ onLogout }) => {
     setLoading(true);
     setError(null);
     setResponse("");
+    setShowIngredientSelection(true);
 
     const formData = new FormData();
     if (files.length > 0) {
@@ -177,7 +185,7 @@ const OllamaForm = ({ onLogout }) => {
             {ingredients.map((ingredient, index) => (
               <button
                 key={index}
-                onClick={() => handleIngredientSelection(ingredient)}
+                onClick = {() => handleIngredientSelection(ingredient)}
                 style={{
                   backgroundColor: selectedIngredients.includes(ingredient)
                     ? "green"
@@ -533,7 +541,8 @@ const OllamaForm = ({ onLogout }) => {
               <span>O</span>
             </div>
           )}
-          {response && renderIngredients()}
+          {ingredients && renderIngredients()}
+          {recipe && renderRecipe()}
           {error && <p className={styles.errorMessage}>Error: {error}</p>}
         </div>
 
