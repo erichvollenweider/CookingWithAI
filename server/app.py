@@ -255,16 +255,13 @@ def mostrar_ingredientes():
 @app.route('/consulta_ollama', methods=['POST'])
 def consulta_ollama():
     try:
-        text = request.form.get('text', '')
-        all_ingredients = []
+        ingredients = request.json.get('ingredients', [])
 
-        user_ingredients = text.split(',')
-        all_ingredients.extend([ingredient.strip() for ingredient in user_ingredients])
-        all_ingredients = list(set(all_ingredients))
+        if ingredients:
+            all_ingredients = list(set(ingredient.strip() for ingredient in ingredients))
 
-        print("INGREDIENTES:", all_ingredients)
+            print("INGREDIENTES:", all_ingredients)
 
-        if all_ingredients:
             prompt = f"Dame una receta sencilla con los siguientes ingredientes: {', '.join(all_ingredients)}. Evita incluir elementos no relacionados o creativos. Quiero que me dividas la respuesta en 4 categorias (Titulo, Ingredientes, Preparación y Consejos) donde cada una de ellas tienen que comenzar con las siguientes exactas palabras segun corresponda a cada una de ellas: 'Titulo', 'Ingredientes:', 'Peparación:' y 'Consejos'."
             generated_text = ollama.invoke(prompt)
             titulo = parse_receta(generated_text)

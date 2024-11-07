@@ -51,20 +51,12 @@ const OllamaForm = ({ onLogout }) => {
   };
 
   const handleIngredientSelection = (ingredient) => {
-    console.log("Ingrediente seleccionado para eliminar:", ingredient);
-
-    // Remueve el ingrediente del array `ingredients`
-    setIngredients((prevIngredients) =>
-      prevIngredients.filter((item) => item !== ingredient)
-    );
-
-    // Alterna la selección en `selectedIngredients`
     setSelectedIngredients((prevSelected) =>
       prevSelected.includes(ingredient)
         ? prevSelected.filter((item) => item !== ingredient)
         : [...prevSelected, ingredient]
     );
-};
+  };
 
   const handleConfirm = async (event) => {
     event.preventDefault();
@@ -76,12 +68,12 @@ const OllamaForm = ({ onLogout }) => {
       const res = await fetch("http://localhost:5000/consulta_ollama", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: ingredients.join(", ") }),
+        body: JSON.stringify({ ingredients: selectedIngredients }),
         credentials: "include",
       });
-  
+
       const data = await res.json();
-  
+
       if (data.error) {
         setError(data.error);
       } else if (data.response) {
@@ -185,7 +177,7 @@ const OllamaForm = ({ onLogout }) => {
             {ingredients.map((ingredient, index) => (
               <button
                 key={index}
-                onClick = {() => handleIngredientSelection(ingredient)}
+                onClick={() => handleIngredientSelection(ingredient)}
                 style={{
                   backgroundColor: selectedIngredients.includes(ingredient)
                     ? "green"
