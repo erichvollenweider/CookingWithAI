@@ -16,9 +16,19 @@ const OllamaForm = ({ onLogout, displayBook }) => {
   const [buttonVisible, setButtonVisible] = useState(true);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showQR, setShowQR] = useState(false);  
-  const [isMobile, setIsMobile] = useState(false);
 
-  const toggleQR = () => setShowQR(!showQR);
+  const toggleQR = () => {
+    preventDefault();
+    setShowQR((prev) => !prev); 
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();  
+    }
+  };
+  
+  
   const mobileUploadUrl = `${frontUrl}`;
 
 
@@ -66,17 +76,6 @@ const OllamaForm = ({ onLogout, displayBook }) => {
     setLoading(true);
     setError(null);
     setResponse("");
-
-      
-    if (showQR ) {
-    setLoading(false); 
-    return;
-    }
-
-    if (!showQR ) {
-      setLoading(false); 
-      return;
-      }
 
     const formData = new FormData();
     if (files.length > 0) {
@@ -476,16 +475,17 @@ const OllamaForm = ({ onLogout, displayBook }) => {
                 ))}
               </div>
  
-              <button onClick={toggleQR} className={styles.qrButton}>
+              <form onKeyDown={handleKeyPress}>
+                <button onClick={toggleQR} className={styles.qrButton}>
                   {showQR ? "Ocultar QR" : "Subir desde móvil"}
-              </button>
-
-              {showQR && !isMobile && (  
+                </button>
+                {showQR && (
                   <div className={styles.qrContainer}>
                     <QRCodeCanvas value={mobileUploadUrl} size={200} />
                     <p>Escanea el QR para subir imágenes desde tu móvil</p>
                   </div>
-              )}
+                )}
+              </form>
 
               <div className={styles.messageBox}>
                 <div className={styles.fileUploadWrapper}>
