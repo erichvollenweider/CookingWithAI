@@ -17,8 +17,8 @@ const OllamaForm = ({ onLogout, displayBook }) => {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showQR, setShowQR] = useState(false);  
 
-  const toggleQR = () => {
-    preventDefault();
+  const toggleQR = (e) => {
+    e.preventDefault();
     setShowQR((prev) => !prev); 
   };
 
@@ -475,8 +475,12 @@ const OllamaForm = ({ onLogout, displayBook }) => {
                 ))}
               </div>
  
-              <form onKeyDown={handleKeyPress}>
-                <button onClick={toggleQR} className={styles.qrButton}>
+              <form onKeyDown={handleKeyPress} onSubmit={handleSubmit}>
+                <button 
+                  type="button" 
+                  onClick={toggleQR} 
+                  className={styles.qrButton}
+                >
                   {showQR ? "Ocultar QR" : "Subir desde móvil"}
                 </button>
                 {showQR && (
