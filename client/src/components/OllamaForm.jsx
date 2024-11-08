@@ -3,6 +3,9 @@ import { QRCodeCanvas } from 'qrcode.react';
 import styles from "../styles/ChatWithAI.module.css";
 import { frontUrl, backendUrl } from '../config';
 
+import RecipeBookModal from "./RecipeBookModal";
+import Sidebar from "./Sidebar";
+
 const OllamaForm = ({ onLogout, displayBook }) => {
   const [files, setFiles] = useState([]);
   const [previewUrls, setPreviewUrls] = useState([]);
@@ -360,72 +363,20 @@ const OllamaForm = ({ onLogout, displayBook }) => {
 
   return (
     <div className={styles.main} onClick={handleClickOutside}>
-      <div className={styles.container}>
-        <input
-          className={styles.toggleCheckbox}
-          id="toggle"
-          type="checkbox"
-          checked={sidebarOpen}
-          onChange={toggleSidebar}
-        />
-        <label className={styles.hamburger} htmlFor="toggle">
-          <div className={styles.bar}></div>
-          <div className={styles.bar}></div>
-          <div className={styles.bar}></div>
-        </label>
-        <div className={`${styles.sidebar} ${sidebarOpen ? styles.open : ""}`}>
-          <h1>Mis Recetas</h1>
-          <h4>¡No dejes que se escapen!</h4>
-          <h5>Guarda estas recetas en tu libro para disfrutarlas siempre</h5>
-          <div className={styles.recipeBookButton}>
-            <button onClick={() => setIsModalOpen(true)}>
-              <img src="../../public/libRecetas.png" alt="Mi Libro" />
-              <h2>Mi Libro de</h2>
-              <h2>Recetas</h2>
-            </button>
-            {isModalOpen && (
-              <div className={styles.modalOverlay}>
-                <div className={styles.modalContent}>
-                  <h2>Mi Libro de Recetas</h2>
-            
-                  <div className={styles.bookContainer}>
-                    
-                   <button onClick={goPrevPage} disabled={currentLocation === 1}>
-                      &lt;
-                    </button>
-
-                    <div className={styles.book} style={getBookStyle}>
-                      {[...Array(numOfPapers)].map((_, i) => (
-                      <div
-                        key={i}
-                        className={`${styles.paper} ${currentLocation > i + 1 ? styles.flipped : ""}`}
-                        style={{ zIndex: currentLocation > i + 1 ? i + 1 : "" }}
-                      >
-                        <div className={styles.front}>
-                          <div className={styles.frontContent}>Front {i + 1}</div>
-                        </div>
-                        <div className={styles.back}>
-                          <div className={styles.backContent}>Back {i + 1}</div>
-                        </div>
-                      </div>
-                      ))}
-                    </div> 
-
-                  <button onClick={goNextPage} disabled={currentLocation === maxLocation}>
-                    &gt;
-                  </button> 
-                </div>
-              </div>
-            </div>
-            )}
-          </div>
-          <div className={styles.bottomButton}>
-            <button onClick={onLogout} className={styles.logoutButton}>
-              Cerrar sesión
-            </button>
-          </div>
-        </div>
-      </div>
+      <Sidebar
+        sidebarOpen={sidebarOpen}
+        toggleSidebar={toggleSidebar}
+        openModal={openModal}
+        isModalOpen={isModalOpen}
+        closeModal={closeModal}
+        currentLocation={currentLocation}
+        goPrevPage={goPrevPage}
+        goNextPage={goNextPage}
+        getBookStyle={getBookStyle}
+        numOfPapers={numOfPapers}
+        maxLocation={maxLocation}
+        onLogout={onLogout}
+      />
       <div className={styles.chatContainer}>
         <div className={styles.header}>
           <img src="../../public/icon.png" className={styles.logo} />
