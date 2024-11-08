@@ -43,6 +43,29 @@ body {
   border: 5px solid #E0E0E0; /* Borde del logo */
 }
 
+/* Media query para pantallas pequeñas (móviles) */
+@media (max-width: 768px) {
+  .chatContainer {
+    padding: 10px; /* Reducir el espaciado */
+  }
+
+  .chatContainer h1 {
+    font-size: 50px; 
+    margin-top: 15px; 
+  }
+
+  .chatContainer h2 {
+    font-size: 30px; /* Reducir el tamaño del subtítulo */
+  }
+
+  .chatContainer img {
+    width: 150px; /* Reducir el tamaño de la imagen */
+    height: 150px;
+    margin-bottom: 20px; /* Reducir el margen inferior */
+  }
+}
+
+
 /* Mensajes de error */
 .errorMessage {
   color: red;
@@ -121,10 +144,67 @@ body {
 
 .recipeBookButton h2 {
   margin: 0;
+  font-size: 14px;
   padding: 8px 0;
   color: rgb(19, 18, 18);
 }
 
+@media (max-width: 768px) {
+  
+  .errorMessage {
+    font-size: 14px; 
+    margin-top: 5px;
+  }
+
+  
+  .aiResponse {
+    font-size: 14px; 
+  }
+
+  
+  .recipeContainer {
+    border-radius: 10px;
+    padding: 10px; 
+    margin: 10px 0; 
+  }
+
+  .recipeContainer h2 {
+    font-size: 18px;
+  }
+
+  
+  .cleanList li {
+    font-size: 14px; 
+    margin: 5px 0;
+  }
+
+  .bulletList {
+    padding: 10px;
+  }
+
+  /* Botón inferior */
+  .bottomButton {
+    margin-top: 150px; /* Ajustar el margen */
+  }
+
+  
+  .recipeBookButton button {
+    font-size: 16px;
+    width: 90%; 
+    max-width: 90%;
+  }
+
+  .recipeBookButton img {
+    width: 50px; 
+    margin-bottom: -50px;
+    margin-right: 120px;
+  }
+
+  .recipeBookButton h2 {
+    font-size: 16px; 
+    padding: 5px 0; 
+  }
+}
 .modalOverlay {
   position: fixed;
   top: 0;
@@ -264,6 +344,46 @@ button:hover {
 
 #p3 {
   z-index: 1;
+}
+
+
+@media (max-width: 768px) {
+  .modalContent {
+    padding: 15px; 
+    max-width: 90%; 
+    height: auto; 
+    max-height: 90%; 
+  }
+
+  .bookContainer {
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px; 
+  }
+
+  .book {
+    width: 230px; 
+    height: 330px; 
+  }
+
+  .paper {
+    width: 100%;
+    height: 100%;
+  }
+
+  .front,
+  .back {
+    border-left: 2px solid powderblue; /* Reducir el borde */
+  }
+
+  button {
+    font-size: 18px; /* Reducir tamaño de los botones */
+    margin: 0px; /* Reducir márgenes */
+  }
+
+  #p1, #p2, #p3 {
+    font-size: 18px; /* Reducir tamaño de los números del libro */
+  }
 }
 
 /* Botones */
@@ -407,6 +527,68 @@ button:hover {
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.596);
   transition: all 0.3s;
 }
+
+/* Media Query para pantallas más pequeñas (móviles) */
+@media (max-width: 768px) {
+
+  .logoutButton {
+    display: inline-flex;  
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    font-size: 1em;
+    font-family: inherit;  
+    background-color: #94C9A9;
+    color: #333333;
+    cursor: pointer;
+    transition: border-color 0.25s;
+  }
+
+  /* Contenedor de mensaje */
+  .messageBox {
+    height: 50px; /* Reducir la altura del contenedor */
+    padding: 0 10px; /* Reducir padding */
+  }
+
+  /* Entrada de mensaje */
+  .messageInput {
+    min-height: 40px; /* Reducir altura mínima */
+    padding-left: 8px; /* Reducir padding */
+  }
+
+  /* Botón de envío */
+  .sendButton {
+    width: 30px; /* Reducir tamaño del botón */
+    height: 30px; /* Reducir tamaño */
+  }
+
+  .sendButton svg {
+    height: 16px; /* Reducir el tamaño del icono */
+  }
+
+  /* Contenedor de archivo */
+  .fileUploadWrapper {
+    width: 30px; /* Reducir ancho */
+  }
+
+  .fileUploadWrapper label {
+    width: 30px; /* Reducir tamaño del área clickeable */
+    height: 30px;
+  }
+
+  .fileUploadWrapper label svg {
+    height: 16px; /* Reducir tamaño del icono */
+  }
+
+  /* Tooltip */
+  .tooltip {
+    font-size: 8px; /* Reducir tamaño de fuente del tooltip */
+    padding: 5px 8px; /* Reducir padding */
+    top: -35px; /* Ajustar la posición */
+  }
+}
+
 /* Contenedor de imagen previa */
 .imagePreviewContainer {
   display: flex;
@@ -511,6 +693,39 @@ button:hover {
   }
  }
 
+ @media (max-width: 768px) {
+  .imagePreviewContainer {
+    gap: 8px; 
+  }
+
+  /* Estilos para imágenes previas */
+  .imagePreviewContainer img {
+    width: 80px; 
+    height: 80px;
+    margin-top: 10px; 
+  }
+
+
+  .removeButton {
+    top: 10px; 
+    right: 5px; 
+    width: 18px; 
+    height: 18px;
+    font-size: 12px; 
+  }
+
+  .spinner {
+    margin-top: 100px; 
+    margin-left: 15%; 
+    height: 40px; 
+    font-size: 16px;
+  }
+
+  .spinner span {
+    animation: loading6454 1.5s ease infinite; /* Ajustar la animación */
+  }
+}
+
 /* Transición suave para header */
 .header {
   display: flex;
@@ -519,7 +734,7 @@ button:hover {
   gap: 10px;
   transition: all 0.3s ease;
   position: relative;
-  margin-top: 40px; /* Posición inicial */
+  margin-top: 40px; 
 }
 
 /* Logo y título (estado inicial) */
@@ -609,7 +824,46 @@ button:hover {
   margin-bottom: -10px;
 }
 
-/* Lista de Navegación */
+@media (max-width: 768px) {
+  .header {
+    align-items: start;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 10px;
+  }
+
+  .header img {
+    width: 80px; 
+    height: 80px;
+  }
+
+  .header h2 {
+    font-size: 35px; 
+    margin-left: 15%;
+  }
+
+  .headerLetters h3 {
+    font-size: 14px; 
+    margin-left: 15%;
+  }
+
+  .sidebar {
+    width: 50px;
+  }
+
+  .sidebar.open {
+    width: 200px; 
+  }
+
+  .sidebar h1 {
+    font-size: 1.5rem; 
+  }
+
+  .sidebar h4, .sidebar h5 {
+    font-size: 14px; 
+  }
+}
+
 .sidebar ul {
   list-style: none;
   padding: 0;
@@ -630,9 +884,7 @@ button:hover {
   color: #f1f1f1;
 }
 
-/* Botón para Cerrar Sesión */
 .sidebar button {
-  margin-top: auto; /* Empuja el botón hacia el final */
   padding: 10px 15px;
   background-color: #E6B800;
   color: #333333;
@@ -646,12 +898,12 @@ button:hover {
   background-color: #F4E8D9;
 }
 
-/* Checkbox Oculto para Controlar la Barra */
+
 .toggleCheckbox {
   display: none;
 }
 
-/* Botón Hamburguesa */
+
 .hamburger {
   cursor: pointer;
   display: flex;
@@ -758,4 +1010,88 @@ button:hover {
   to {
     opacity: 1;
   }
+}
+
+@media (max-width: 768px) {
+
+  .sidebar {
+    width: 0;
+    transition: width 0.3s ease-in-out;
+    visibility: hidden; 
+  }
+
+  .sidebar.open {
+    width: 200px; 
+    visibility: visible; 
+  }
+
+  .sidebar ul {
+    padding: 20px 10px; 
+  }
+
+  .sidebar li {
+    padding: 8px 15px;
+    font-size: 16px; 
+  }
+
+  .sidebar button {
+    width: 90%; 
+    padding: 5px;
+  }
+
+  .hamburger {
+    width: 25px;
+    height: 20px;
+    margin-top: 10px;
+  }
+
+  .hamburger .bar {
+    height: 3px;
+  }
+  
+  .confirmSave {
+    width: 100%; 
+    padding: 12px;
+    font-size: 1.1em; 
+    margin-bottom: 10px;
+  }
+
+  
+  .confirmSave:active {
+    animation: none; 
+  }
+}
+
+
+.qrButton {
+  background-color: #E6B800; 
+  color: rgb(0, 0, 0); 
+  border: none; 
+  padding: 10px 20px; 
+  font-size: 16px; 
+  cursor: pointer; 
+  border-radius: 5px; 
+  transition: background-color 0.3s ease; 
+}
+
+
+.qrButton:hover {
+  background-color: #E6B800; 
+}
+
+
+@media (max-width: 768px) {
+  .qrButton {
+    display: none; 
+  }
+}
+
+.qrContainer {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.qrContainer p {
+  font-size: 16px;
+  color: #333;
 }

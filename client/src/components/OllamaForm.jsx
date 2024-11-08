@@ -18,7 +18,6 @@ const OllamaForm = ({ onLogout, displayBook }) => {
   const [showQR, setShowQR] = useState(false);  
   const [isMobile, setIsMobile] = useState(false);
 
-
   const toggleQR = () => setShowQR(!showQR);
   const mobileUploadUrl = `${frontUrl}`;
 
@@ -33,6 +32,7 @@ const OllamaForm = ({ onLogout, displayBook }) => {
   const closeModal = () => setIsModalOpen(false);
 
   const handleFileChange = (e) => {
+
     const filesArray = Array.from(e.target.files); // Convertimos el FileList en array
 
     // Concatenamos los archivos nuevos con los anteriores
@@ -66,6 +66,17 @@ const OllamaForm = ({ onLogout, displayBook }) => {
     setLoading(true);
     setError(null);
     setResponse("");
+
+      
+    if (showQR ) {
+    setLoading(false); 
+    return;
+    }
+
+    if (!showQR ) {
+      setLoading(false); 
+      return;
+      }
 
     const formData = new FormData();
     if (files.length > 0) {
@@ -464,7 +475,7 @@ const OllamaForm = ({ onLogout, displayBook }) => {
                   </div>
                 ))}
               </div>
-
+ 
               <button onClick={toggleQR} className={styles.qrButton}>
                   {showQR ? "Ocultar QR" : "Subir desde móvil"}
               </button>
