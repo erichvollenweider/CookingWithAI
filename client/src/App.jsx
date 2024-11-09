@@ -46,7 +46,7 @@ function App() {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch("http://192.168.100.5:5000//logout", {
+      const response = await fetch(`${backendUrl}/logout`, {
         method: "POST",
         credentials: "include",
       });

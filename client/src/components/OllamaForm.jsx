@@ -93,7 +93,7 @@ const OllamaForm = ({ onLogout, displayBook }) => {
     setError(null);
 
     try {
-      const res = await fetch("http://localhost:5000/consulta_ollama", {
+      const res = await fetch(`${backendUrl}/consulta_ollama`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ingredients: selectedIngredients }),
@@ -340,7 +340,7 @@ const OllamaForm = ({ onLogout, displayBook }) => {
                   ></path>
                   <path
                     stroke-linejoin="round"
-                    stroke-linecap="round"
+                    stroke-linecap="round"Loading
                     stroke-width="33.67"
                     stroke="#6c6c6c"
                     d="M646.293 331.888L17.7538 17.6187L155.245 331.888M646.293 331.888L17.753 646.157L155.245 331.888M646.293 331.888L318.735 330.228L155.245 331.888"
@@ -554,21 +554,9 @@ const OllamaForm = ({ onLogout, displayBook }) => {
             <h3>¡ Las mejores y mas rapidas recetas !</h3>
           </div>
         </div>
-
+        
         <div className={styles.aiResponse}>
-          {loading && (
-            <div className={styles.spinner}>
-              <span>C</span>
-              <span>O</span>
-              <span>C</span>
-              <span>I</span>
-              <span>N</span>
-              <span>A</span>
-              <span>N</span>
-              <span>D</span>
-              <span>O</span>
-            </div>
-          )}
+          {loading && <LoadingSpinner />}
           {ingredients && renderIngredients()}
           {recipe && renderRecipe()}
           {error && <p className={styles.errorMessage}>Error: {error}</p>}

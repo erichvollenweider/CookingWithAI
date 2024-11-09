@@ -191,18 +191,6 @@ def detectar_ingredientes():
     except Exception as e:
         return jsonify({'error': str(e)})
 
-@app.route('/mostrar_ingredientes', methods=['POST'])
-def mostrar_ingredientes():
-    # Obtener el arreglo de ingredientes desde el cuerpo de la solicitud
-    ingredients = request.json.get('ingredients', [])
-
-    if not ingredients:
-        return jsonify({'error': 'No se recibieron ingredientes para mostrar.'}), 400
-
-    # Devolver el arreglo de ingredientes como JSON
-    return jsonify({'ingredients': ingredients}), 200
-
-
 @app.route('/consulta_ollama', methods=['POST'])
 def consulta_ollama():
     try:
@@ -362,7 +350,7 @@ def camera():
     return send_from_directory(app.template_folder, 'camera.html')
 
 
-URL_REACT = "http://192.168.100.5:5173"
+URL_REACT = "http://127.0.1.1:5173"
 
 
 if __name__ == "__main__":  
