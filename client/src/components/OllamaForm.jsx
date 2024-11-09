@@ -18,11 +18,15 @@ const OllamaForm = ({ onLogout, displayBook }) => {
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState("");
   const [error, setError] = useState(null);
+  const [ingredients, setIngredients] = useState([]);
+  const [selectedIngredients, setSelectedIngredients] = useState([]);
+  const [showIngredientSelection, setShowIngredientSelection] = useState(false);
   const [showSubmits, setShowSubmits] = useState(true);
   const [savedRecipes, setSavedRecipes] = useState([]);
   const [buttonVisible, setButtonVisible] = useState(true);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showQR, setShowQR] = useState(false);
+  const [recipe, setRecipe] = useState("");
 
   const toggleQR = (e) => {
     e.preventDefault();
@@ -74,6 +78,44 @@ const OllamaForm = ({ onLogout, displayBook }) => {
     setSidebarOpen(!sidebarOpen);
   };
 
+  const handleIngredientSelection = (ingredient) => {
+    setSelectedIngredients((prevSelected) =>
+      prevSelected.includes(ingredient)
+        ? prevSelected.filter((item) => item !== ingredient)
+        : [...prevSelected, ingredient]
+    );
+  };
+
+  const handleConfirm = async (event) => {
+    event.preventDefault();
+    setButtonVisible(true);
+    setLoading(true);
+    setError(null);
+
+    try {
+      const res = await fetch("http://localhost:5000/consulta_ollama", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ingredients: selectedIngredients }),
+        credentials: "include",
+      });
+
+      const data = await res.json();
+
+      if (data.error) {
+        setError(data.error);
+      } else if (data.response) {
+        setResponse(data.response);
+        setRecipe(data.response);
+      }
+    } catch (err) {
+      setError("Error en la solicitud al servidor.");
+    } finally {
+      setLoading(false);
+      setShowIngredientSelection(false);
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setButtonVisible(true);
@@ -81,6 +123,7 @@ const OllamaForm = ({ onLogout, displayBook }) => {
     setLoading(true);
     setError(null);
     setResponse("");
+    setShowIngredientSelection(true);
 
     const formData = new FormData();
     if (files.length > 0) {
@@ -99,7 +142,7 @@ const OllamaForm = ({ onLogout, displayBook }) => {
     }
 
     try {
-      const res = await fetch(`${backendUrl}/consulta_ollama`, {
+      const res = await fetch(`${backendUrl}/ingredientes_detectados`, {
         method: "POST",
         body: formData,
         credentials: "include",
@@ -110,7 +153,7 @@ const OllamaForm = ({ onLogout, displayBook }) => {
       if (data.error) {
         setError(data.error);
       } else if (data.response) {
-        setResponse(data.response);
+        setIngredients(data.response); // Almacena los ingredientes
       }
     } catch (err) {
       setError("Error en la solicitud al servidor.");
@@ -187,9 +230,133 @@ const OllamaForm = ({ onLogout, displayBook }) => {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
 
+  const renderIngredients = () => {
+    if (!showIngredientSelection) return null;
+
+    return (
+      <div>
+        <div>
+          <h2>Selecciona los Ingredientes Correctos</h2>
+          <div className={styles.ingredientButtons}>
+            {ingredients.map((ingredient, index) => (
+              <button
+                key={index}
+                onClick={() => handleIngredientSelection(ingredient)}
+                style={{
+                  backgroundColor: selectedIngredients.includes(ingredient)
+                    ? "green"
+                    : "gray",
+                  color: "white",
+                  margin: "5px",
+                  padding: "10px",
+                }}
+              >
+                {ingredient}
+              </button>
+            ))}
+          </div>
+          <button onClick={handleConfirm}>Enviar Selección</button>
+        </div>
+        <div className={styles.submitsPost}>
+          <form onSubmit={handleSubmit}>
+            <div className={styles.imagePreviewContainer}>
+              {previewUrls.map((url, index) => (
+                <div key={index} className={styles.imageWrapper}>
+                  <img
+                    key={index}
+                    src={url}
+                    alt={`preview-${index}`}
+                    className={styles.imagePreview}
+                  />
+                  <button
+                    className={styles.removeButton}
+                    onClick={(e) => handleRemoveImage(index, e)}
+                  >
+                    ✖
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            <div className={styles.messageBox}>
+              <div className={styles.fileUploadWrapper}>
+                <label htmlFor="file">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 337 337"
+                  >
+                    <circle
+                      stroke-width="20"
+                      stroke="#6c6c6c"
+                      fill="none"
+                      r="158.5"
+                      cy="168.5"
+                      cx="168.5"
+                    ></circle>
+                    <path
+                      stroke-linecap="round"
+                      stroke-width="25"
+                      stroke="#6c6c6c"
+                      d="M167.759 79V259"
+                    ></path>
+                    <path
+                      stroke-linecap="round"
+                      stroke-width="25"
+                      stroke="#6c6c6c"
+                      d="M79 167.138H259"
+                    ></path>
+                  </svg>
+                  <span className={styles.tooltip}>Add an image</span>
+                </label>
+                <input
+                  type="file"
+                  id="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleFileChange}
+                  className={styles.file}
+                  name="file"
+                />
+              </div>
+              <input
+                placeholder="Ingredientes..."
+                type="text"
+                value={text}
+                onChange={(e) => {
+                  setText(e.target.value);
+                }}
+                className={styles.messageInput}
+              />
+              <button className={styles.sendButton} type="submit">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 664 663"
+                >
+                  <path
+                    fill="none"
+                    d="M646.293 331.888L17.7538 17.6187L155.245 331.888M646.293 331.888L17.753 646.157L155.245 331.888M646.293 331.888L318.735 330.228L155.245 331.888"
+                  ></path>
+                  <path
+                    stroke-linejoin="round"
+                    stroke-linecap="round"
+                    stroke-width="33.67"
+                    stroke="#6c6c6c"
+                    d="M646.293 331.888L17.7538 17.6187L155.245 331.888M646.293 331.888L17.753 646.157L155.245 331.888M646.293 331.888L318.735 330.228L155.245 331.888"
+                  ></path>
+                </svg>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    );
+  };
+
   // Función para formatear la respuesta de la receta
   const renderRecipe = () => {
-    if (!response) return null;
+    if (!recipe) return null;
 
     // Aquí asumimos que la respuesta de Gemma2 está en un formato que podemos procesar
     const recipeLines = response.split("\n");
@@ -389,8 +556,21 @@ const OllamaForm = ({ onLogout, displayBook }) => {
         </div>
 
         <div className={styles.aiResponse}>
-          {loading && <LoadingSpinner />}
-          {response && renderRecipe()}
+          {loading && (
+            <div className={styles.spinner}>
+              <span>C</span>
+              <span>O</span>
+              <span>C</span>
+              <span>I</span>
+              <span>N</span>
+              <span>A</span>
+              <span>N</span>
+              <span>D</span>
+              <span>O</span>
+            </div>
+          )}
+          {ingredients && renderIngredients()}
+          {recipe && renderRecipe()}
           {error && <p className={styles.errorMessage}>Error: {error}</p>}
         </div>
 

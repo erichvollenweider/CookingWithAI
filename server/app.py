@@ -147,8 +147,8 @@ def get_ingredients_from_image(image):
 def index():
     return "App activo"
 
-@app.route('/consulta_ollama', methods=['POST'])
-def consulta_ollama():
+@app.route('/ingredientes_detectados', methods=['POST'])
+def detectar_ingredientes():
     try:
         # Verificar si hay texto en la solicitud
         text = request.form.get('text', '')
@@ -183,7 +183,36 @@ def consulta_ollama():
             # Eliminar duplicados después de agregar los ingredientes del texto
             all_ingredients = list(set(all_ingredients))
 
-        if all_ingredients:
+        if all_ingredients:            
+            return jsonify({'response': all_ingredients})
+        else:
+            return jsonify({'error': 'No se recibieron ingredientes ni en texto ni en imágenes.'})
+
+    except Exception as e:
+        return jsonify({'error': str(e)})
+
+@app.route('/mostrar_ingredientes', methods=['POST'])
+def mostrar_ingredientes():
+    # Obtener el arreglo de ingredientes desde el cuerpo de la solicitud
+    ingredients = request.json.get('ingredients', [])
+
+    if not ingredients:
+        return jsonify({'error': 'No se recibieron ingredientes para mostrar.'}), 400
+
+    # Devolver el arreglo de ingredientes como JSON
+    return jsonify({'ingredients': ingredients}), 200
+
+
+@app.route('/consulta_ollama', methods=['POST'])
+def consulta_ollama():
+    try:
+        ingredients = request.json.get('ingredients', [])
+
+        if ingredients:
+            all_ingredients = list(set(ingredient.strip() for ingredient in ingredients))
+
+            print("INGREDIENTES:", all_ingredients)
+
             prompt = f"Dame una receta sencilla con los siguientes ingredientes: {', '.join(all_ingredients)}. Evita incluir elementos no relacionados o creativos. Quiero que me dividas la respuesta en 4 categorias (Titulo, Ingredientes, Preparación y Consejos) donde cada una de ellas tienen que comenzar con las siguientes exactas palabras segun corresponda a cada una de ellas: 'Titulo', 'Ingredientes:', 'Peparación:' y 'Consejos'."
             generated_text = ollama.invoke(prompt)
             titulo = parse_receta(generated_text)
