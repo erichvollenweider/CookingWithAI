@@ -6,6 +6,7 @@ env/
 server/database/database.db
 *.pyc
 __pycache__/
+.env
 
 instance/
 
