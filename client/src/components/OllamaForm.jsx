@@ -5,6 +5,8 @@ import { frontUrl, backendUrl } from '../config';
 
 import RecipeBookModal from "./RecipeBookModal";
 import Sidebar from "./Sidebar";
+import ImagePreview from "./ImagePreview";
+import FileUpload from "./FileUpload";
 
 const OllamaForm = ({ onLogout, displayBook }) => {
   const [files, setFiles] = useState([]);
@@ -407,25 +409,7 @@ const OllamaForm = ({ onLogout, displayBook }) => {
         {showSubmits && (
           <div className={styles.submits}>
             <form onSubmit={handleSubmit}>
-              <div className={styles.imagePreviewContainer}>
-                {previewUrls.map((url, index) => (
-                  <div key={index} className={styles.imageWrapper}>
-                    <img
-                      key={index}
-                      src={url}
-                      alt={`preview-${index}`}
-                      className={styles.imagePreview}
-                    />
-                    <button
-                      className={styles.removeButton}
-                      onClick={(e) => handleRemoveImage(index, e)}
-                    >
-                      ✖
-                    </button>
-                  </div>
-                ))}
-              </div>
- 
+              <ImagePreview previewUrls={previewUrls} handleRemoveImage={handleRemoveImage} />
               <form onKeyDown={handleKeyPress} onSubmit={handleSubmit}>
                 <button 
                   type="button" 
@@ -443,46 +427,7 @@ const OllamaForm = ({ onLogout, displayBook }) => {
               </form>
 
               <div className={styles.messageBox}>
-                <div className={styles.fileUploadWrapper}>
-                  <label htmlFor="file">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 337 337"
-                    >
-                      <circle
-                        stroke-width="20"
-                        stroke="#6c6c6c"
-                        fill="none"
-                        r="158.5"
-                        cy="168.5"
-                        cx="168.5"
-                      ></circle>
-                      <path
-                        stroke-linecap="round"
-                        stroke-width="25"
-                        stroke="#6c6c6c"
-                        d="M167.759 79V259"
-                      ></path>
-                      <path
-                        stroke-linecap="round"
-                        stroke-width="25"
-                        stroke="#6c6c6c"
-                        d="M79 167.138H259"
-                      ></path>
-                    </svg>
-                    <span className={styles.tooltip}>Add an image</span>
-                  </label>
-                  <input
-                    type="file"
-                    id="file"
-                    accept="image/*"
-                    multiple
-                    onChange={handleFileChange}
-                    className={styles.file}
-                    name="file"
-                  />
-                </div>
+                <FileUpload handleFileChange={handleFileChange} />
                 <input
                   placeholder="Ingredientes..."
                   type="text"
