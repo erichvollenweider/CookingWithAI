@@ -7,6 +7,8 @@ import RecipeBookModal from "./RecipeBookModal";
 import Sidebar from "./Sidebar";
 import ImagePreview from "./ImagePreview";
 import FileUpload from "./FileUpload";
+import MessageBox from "./MessageBox";
+import LoadingSpinner from "./LoadingSpinner";
 
 const OllamaForm = ({ onLogout, displayBook }) => {
   const [files, setFiles] = useState([]);
@@ -20,22 +22,20 @@ const OllamaForm = ({ onLogout, displayBook }) => {
   const [savedRecipes, setSavedRecipes] = useState([]);
   const [buttonVisible, setButtonVisible] = useState(true);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  const [showQR, setShowQR] = useState(false);  
+  const [showQR, setShowQR] = useState(false);
 
   const toggleQR = (e) => {
     e.preventDefault();
-    setShowQR((prev) => !prev); 
+    setShowQR((prev) => !prev);
   };
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
-      event.preventDefault();  
+      event.preventDefault();
     }
   };
-  
-  
-  const mobileUploadUrl = `${frontUrl}`;
 
+  const mobileUploadUrl = `${frontUrl}`;
 
   // Estado para controlar el libro y modal
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -389,19 +389,7 @@ const OllamaForm = ({ onLogout, displayBook }) => {
         </div>
 
         <div className={styles.aiResponse}>
-          {loading && (
-            <div className={styles.spinner}>
-              <span>C</span>
-              <span>O</span>
-              <span>C</span>
-              <span>I</span>
-              <span>N</span>
-              <span>A</span>
-              <span>N</span>
-              <span>D</span>
-              <span>O</span>
-            </div>
-          )}
+          {loading && <LoadingSpinner />}
           {response && renderRecipe()}
           {error && <p className={styles.errorMessage}>Error: {error}</p>}
         </div>
@@ -411,9 +399,9 @@ const OllamaForm = ({ onLogout, displayBook }) => {
             <form onSubmit={handleSubmit}>
               <ImagePreview previewUrls={previewUrls} handleRemoveImage={handleRemoveImage} />
               <form onKeyDown={handleKeyPress} onSubmit={handleSubmit}>
-                <button 
-                  type="button" 
-                  onClick={toggleQR} 
+                <button
+                  type="button"
+                  onClick={toggleQR}
                   className={styles.qrButton}
                 >
                   {showQR ? "Ocultar QR" : "Subir desde móvil"}
@@ -425,38 +413,12 @@ const OllamaForm = ({ onLogout, displayBook }) => {
                   </div>
                 )}
               </form>
-
-              <div className={styles.messageBox}>
-                <FileUpload handleFileChange={handleFileChange} />
-                <input
-                  placeholder="Ingredientes..."
-                  type="text"
-                  value={text}
-                  onChange={(e) => {
-                    setText(e.target.value);
-                  }}
-                  className={styles.messageInput}
-                />
-                <button className={styles.sendButton} type="submit">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 664 663"
-                  >
-                    <path
-                      fill="none"
-                      d="M646.293 331.888L17.7538 17.6187L155.245 331.888M646.293 331.888L17.753 646.157L155.245 331.888M646.293 331.888L318.735 330.228L155.245 331.888"
-                    ></path>
-                    <path
-                      stroke-linejoin="round"
-                      stroke-linecap="round"
-                      stroke-width="33.67"
-                      stroke="#6c6c6c"
-                      d="M646.293 331.888L17.7538 17.6187L155.245 331.888M646.293 331.888L17.753 646.157L155.245 331.888M646.293 331.888L318.735 330.228L155.245 331.888"
-                    ></path>
-                  </svg>
-                </button>
-              </div>
+              <MessageBox
+                handleFileChange={handleFileChange}
+                text={text}
+                setText={setText}
+                handleSubmit={handleSubmit}
+              />
             </form>
           </div>
         )}
