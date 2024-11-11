@@ -16,7 +16,6 @@ const RecipeBookModal = ({
   return (
     <div className={styles.modalOverlay} onClick={closeModal}>
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-        <h2>Mi Libro de Recetas</h2>
         <div className={styles.bookContainer}>
           <button onClick={goPrevPage} disabled={currentLocation === 1}>
             &lt;

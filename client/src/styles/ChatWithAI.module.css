@@ -205,65 +205,46 @@ body {
     padding: 5px 0; 
   }
 }
+
 .modalOverlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 50%;
+  left: 50%;
+  width: 70%;
+  height: 80%;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  transform: translate(-50%, -50%);
 }
 
 .modalContent {
-  background-color: #fff;
-  padding: 30px; 
+  background-color: black;
+  padding: 15px; 
   border-radius: 8px;
-  max-width: 60%;  
-  max-height: 80%; 
   width: 100%;
-  height: 80vh;    
+  height: 100%;    
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   overflow-y: auto;
   text-align: center;
   color: #333333;
 }
 
-.modalOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.modalContent {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  width: 400px;
-  max-width: 90%;
-  text-align: center;
-}
-
 .bookContainer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 20px;
+  width: 100%;
+  height: 100%;
+  background-color: #F4E8D9;
 }
 
 .book {
   position: relative;
-  width: 350px;
-  height: 500px;
+  width: 50%;
+  height: 100%;
   transition: transform 0.5s;
   perspective: 1500px;
 }
@@ -317,13 +298,17 @@ body {
   transform: rotateY(-180deg);
 }
 
-button {
+.bookContainer button {
   border: none;
   background-color: transparent;
   cursor: pointer;
-  margin: 10px;
-  font-size: 24px;
+  margin: 5px;
+  font-size: 10px;
   transition: transform 0.5s;
+  z-index: 2000;
+  margin-bottom: 20px;
+  width: 20px;
+  height: 20px;
 }
 
 button:focus {
@@ -345,7 +330,6 @@ button:hover {
 #p3 {
   z-index: 1;
 }
-
 
 @media (max-width: 768px) {
   .modalContent {
@@ -400,6 +384,7 @@ button:hover {
   color: #333333;
   cursor: pointer;
   transition: border-color 0.25s;
+  margin-top: 5px;
 }
 
 .logoutButton:hover {
