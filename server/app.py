@@ -235,11 +235,11 @@ def consulta_ollama():
             all_ingredients = list(set(all_ingredients))
 
         if all_ingredients:
-            prompt = f"Dame una receta con los siguientes ingredientes: {', '.join(all_ingredients)}."
+            # prompt = f"Dame una receta con los siguientes ingredientes: {', '.join(all_ingredients)}."
             # generated_text = ollama.invoke(prompt)
             generated_text = ""
             titulo = parse_receta(generated_text)
-            for chunk in rag_chain.stream({"context": retriever, "question": prompt}):
+            for chunk in rag_chain.stream({"context": retriever, "question": all_ingredients}):
                 generated_text += chunk.content
             
             return jsonify({'response': generated_text})

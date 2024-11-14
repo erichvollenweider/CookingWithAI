@@ -3,42 +3,35 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.embeddings import OllamaEmbeddings
 from langchain_community.vectorstores import Chroma
 from langchain.schema import Document
-from langchain.embeddings import HuggingFaceEmbeddings
 
-df = pd.read_csv("./recetas.csv")
+def load_csv(filepath):
+    df = pd.read_csv(filepath)
+    documents = [
+        Document(
+            page_content=f"""
+            Ingrediente Individuales:
+            {row['Ingrediente Individuales']}
+            """,
+            metadata={
+                "Título": row['Título'],
+                "Ingredientes": row['Ingredientes'],
+                "Preparación": row['Preparación'],
+                "Consejos": row['Consejos'],
+                "Ingrediente Individuales": row['Ingrediente Individuales']
+            }
+        )
+        for _, row in df.iterrows()
+    ]
+    print(f"Cantidad de documentos cargados: {len(documents)}")
+    return documents
 
-# Crear documentos de LangChain con metadatos separados para cada columna
-documents = [
-    Document(
-        page_content=f"{row['Ingredientes']}",
-        metadata={
-            "Título": row['Título'],
-            "Ingredientes": row['Ingredientes'],
-            "Preparación": row['Preparación'],
-            "Consejos": row['Consejos']
-        }
-    )
-    for _, row in df.iterrows()
-]
+def create_vector_store(documents, model_name="nomic-embed-text", persist_directory="./vector_store"):
+    embeddings = OllamaEmbeddings(model=model_name, show_progress=True)
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=4000, chunk_overlap=0)
+    texts = text_splitter.split_documents(documents)
+    vectorstore = Chroma.from_documents(texts, embedding=embeddings, persist_directory=persist_directory)
+    print("Vector store creado con éxito.")
+    return vectorstore
 
-print(f"Cantidad de documentos cargados: {len(documents)}")
-
-# Crear embeddings
-embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
-
-# Dividir los documentos en fragmentos usando RecursiveCharacterTextSplitter
-text_splitter = RecursiveCharacterTextSplitter(
-    chunk_size=1500,
-    chunk_overlap=200,
-)
-
-texts = text_splitter.split_documents(documents)
-
-# Crear el almacén vectorial
-vectorstore = Chroma.from_documents(
-    documents=texts, 
-    embedding=embeddings,
-    persist_directory="./vector_store"
-)
-
-print("Vector store creado con éxito.")
+documents = load_csv("./recetas.csv")
+vectorstore = create_vector_store(documents)
