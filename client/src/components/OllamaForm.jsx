@@ -91,6 +91,7 @@ const OllamaForm = ({ onLogout, displayBook }) => {
     setButtonVisible(true);
     setLoading(true);
     setError(null);
+    setShowIngredientSelection(false);
 
     try {
       const res = await fetch(`${backendUrl}/consulta_ollama`, {
@@ -119,11 +120,13 @@ const OllamaForm = ({ onLogout, displayBook }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setButtonVisible(true);
-    setShowSubmits(true);
+    setShowSubmits(false);
     setLoading(true);
     setError(null);
+    setShowIngredientSelection(false);
     setResponse("");
-    setShowIngredientSelection(true);
+    setSelectedIngredients([]);
+    setRecipe("");
 
     const formData = new FormData();
     if (files.length > 0) {
@@ -154,6 +157,7 @@ const OllamaForm = ({ onLogout, displayBook }) => {
         setError(data.error);
       } else if (data.response) {
         setIngredients(data.response); // Almacena los ingredientes
+        setShowIngredientSelection(true);
       }
     } catch (err) {
       setError("Error en la solicitud al servidor.");
@@ -234,19 +238,20 @@ const OllamaForm = ({ onLogout, displayBook }) => {
     if (!showIngredientSelection) return null;
 
     return (
-      <div>
-        <div>
-          <h2>Selecciona los Ingredientes Correctos</h2>
-          <div className={styles.ingredientButtons}>
+      <div className={styles.ingredientsContainer}>
+        <div className={styles.ingredientsReceived}>
+          <h2>SELECCIONAR INGREDIENTES</h2>
+          <div>
             {ingredients.map((ingredient, index) => (
               <button
                 key={index}
                 onClick={() => handleIngredientSelection(ingredient)}
+                className={styles.ingredientButtons}
                 style={{
                   backgroundColor: selectedIngredients.includes(ingredient)
-                    ? "green"
-                    : "gray",
-                  color: "white",
+                    ? "#E6B800"
+                    : "#F4E8D9",
+                  color: "#333333",
                   margin: "5px",
                   padding: "10px",
                 }}
@@ -255,7 +260,7 @@ const OllamaForm = ({ onLogout, displayBook }) => {
               </button>
             ))}
           </div>
-          <button onClick={handleConfirm}>Enviar Selección</button>
+          <button onClick={handleConfirm} className={styles.confirmIngredients}>Enviar Selección</button>
         </div>
         <div className={styles.submitsPost}>
           <form onSubmit={handleSubmit}>
@@ -572,7 +577,7 @@ const OllamaForm = ({ onLogout, displayBook }) => {
                   onClick={toggleQR}
                   className={styles.qrButton}
                 >
-                  {showQR ? "Ocultar QR" : "Subir desde móvil"}
+                  {showQR ? "Ocultar QR" : "Cocina desde tú móvil"}
                 </button>
                 {showQR && (
                   <div className={styles.qrContainer}>

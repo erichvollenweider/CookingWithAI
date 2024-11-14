@@ -110,7 +110,7 @@ body {
 }
 
 .bottomButton {
-  margin-top: 195px;
+  margin-top: 570px;
 }
 
 .recipeBookButton {
@@ -118,7 +118,7 @@ body {
   justify-content: center;
   align-items: center;
   width: 100%;
-  margin-top: 20px;
+  margin-top: 50px;
 }
 
 .recipeBookButton button {
@@ -140,12 +140,14 @@ body {
   background-color: transparent;
   margin-bottom: -65px;
   margin-right: 120px;
+  padding-right: 20px;
 }
 
 .recipeBookButton h2 {
   margin: 0;
   font-size: 14px;
   padding: 8px 0;
+  padding-left: 30px;
   color: rgb(19, 18, 18);
 }
 
@@ -181,12 +183,6 @@ body {
   .bulletList {
     padding: 10px;
   }
-
-  /* Botón inferior */
-  .bottomButton {
-    margin-top: 150px; /* Ajustar el margen */
-  }
-
   
   .recipeBookButton button {
     font-size: 16px;
@@ -380,6 +376,7 @@ button:hover {
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-family: inherit;  
+  font-weight: bold;
   background-color: #94C9A9;
   color: #333333;
   cursor: pointer;
@@ -793,9 +790,11 @@ button:hover {
 /* Estilo de Títulos y Párrafos */
 .sidebar h1 {
   font-size: 2rem;
+  margin-top: 25px;
   margin-bottom: 10px;
-  color: #333333;
-  margin-bottom: 100px;
+  color: #E6B800;
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
 .sidebar h4 {
@@ -1079,4 +1078,35 @@ button:hover {
 .qrContainer p {
   font-size: 16px;
   color: #333;
+}
+
+.ingredientsContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  height: 100%;
+}
+
+.ingredientsReceived {
+  flex-grow: 1;
+}
+
+.ingredientsContainer .submitsPost {
+  justify-content: end;
+  margin-bottom: 0;
+}
+
+.ingredientButtons {
+  text-transform: uppercase;
+  border-radius: 10px;
+  font-weight: bolder;
+}
+
+.confirmIngredients {
+  margin-top: 25px;
+  padding: 10px;
+  background-color: #E6B800;
+  color: #333333;
+  border-radius: 10px;
+  font-weight: bolder;
 }
