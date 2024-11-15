@@ -8,7 +8,10 @@ from flask_bcrypt import Bcrypt
 from jinja2 import Environment, FileSystemLoader
 from dotenv import load_dotenv
 from routes import init_routes
-from utils.helpers import parse_receta, get_ingredients_from_image
+from utils.helpers import get_ingredients_from_image
+from model_rag import load_model
+
+rag_chain, retriever = load_model()
 
 load_dotenv()
 
@@ -23,9 +26,6 @@ template_env = Environment(loader=template_loader)
 template = template_env.get_template('camera.html')
 
 bcrypt = Bcrypt(app)
-
-# Obtener la ruta absoluta donde se encuentra app.py
-# basedir = os.path.abspath(os.path.dirname(__file__))
 
 ollama = Ollama(
     base_url='http://localhost:11434',
@@ -91,10 +91,9 @@ def consulta_ollama():
 
             print("INGREDIENTES:", all_ingredients)
 
-            prompt = f"Dame una receta sencilla con los siguientes ingredientes: {', '.join(all_ingredients)}. Evita incluir elementos no relacionados o creativos. Quiero que me dividas la respuesta en 4 categorias (Titulo, Ingredientes, Preparación y Consejos) donde cada una de ellas tienen que comenzar con las siguientes exactas palabras segun corresponda a cada una de ellas: 'Titulo', 'Ingredientes:', 'Peparación:' y 'Consejos'."
-            generated_text = ollama.invoke(prompt)
-            titulo = parse_receta(generated_text)
-            
+            generated_text = ""
+            for chunk in rag_chain.stream({"context": retriever, "question": all_ingredients}):
+                generated_text += chunk.content
             return jsonify({'response': generated_text})
         else:
             return jsonify({'error': 'No se recibieron ingredientes ni en texto ni en imágenes.'})

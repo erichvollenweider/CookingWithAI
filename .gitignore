@@ -8,7 +8,7 @@ server/database/database.db
 *.pyc
 __pycache__/
 .env
-
+vector_store
 instance/
 
 .pytest_cache/
