@@ -5,7 +5,6 @@ import os
 from langchain_community.llms import Ollama
 from database import create_app
 from flask_bcrypt import Bcrypt
-from jinja2 import Environment, FileSystemLoader
 from dotenv import load_dotenv
 from routes import init_routes
 from utils.helpers import get_ingredients_from_image
@@ -18,12 +17,6 @@ load_dotenv()
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 
 init_routes(app)
-
-template_loader = FileSystemLoader('templates')
-
-template_env = Environment(loader=template_loader)
-
-template = template_env.get_template('camera.html')
 
 bcrypt = Bcrypt(app)
 
