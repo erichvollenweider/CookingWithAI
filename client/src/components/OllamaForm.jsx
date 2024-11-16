@@ -105,6 +105,7 @@ const OllamaForm = ({ onLogout, displayBook }) => {
 
       if (data.error) {
         setError(data.error);
+        setShowSubmits(true);
       } else if (data.response) {
         setResponse(data.response);
         setRecipe(data.response);
@@ -140,6 +141,7 @@ const OllamaForm = ({ onLogout, displayBook }) => {
 
     if (files.length === 0 && !text) {
       setError("Por favor, sube una o más imágenes o ingresa un texto.");
+      setShowSubmits(true);
       setLoading(false);
       return;
     }
@@ -155,6 +157,7 @@ const OllamaForm = ({ onLogout, displayBook }) => {
 
       if (data.error) {
         setError(data.error);
+        setShowSubmits(true);
       } else if (data.response) {
         setIngredients(data.response); // Almacena los ingredientes
         setShowIngredientSelection(true);
