@@ -41,6 +41,9 @@ const RecipeBookModal = ({
           <button onClick={goNextPage} disabled={currentLocation === maxLocation}>
             &gt;
           </button>
+          <button className={styles.closeButton} onClick={closeModal}>
+            &times;
+          </button>
         </div>
       </div>
     </div>
