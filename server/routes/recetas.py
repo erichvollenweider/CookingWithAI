@@ -1,6 +1,7 @@
 from fpdf import FPDF
 from flask import Blueprint, jsonify, session, make_response
 from database.models import Recetas, Users
+from .recipes import guardar_receta
 
 recetas_bp = Blueprint('recetas', __name__)
 
@@ -118,3 +119,29 @@ def export_recetas():
     response.headers['Content-Type'] = 'application/pdf'
     response.headers['Content-Disposition'] = f'attachment; filename=recetario_{user.username}.pdf'
     return response
+
+@recetas_bp.route('/guardar_y_descargar_receta', methods=['POST'])
+def guardar_y_descargar_receta():
+    try:
+        guardar_receta()
+
+        user_id = session.get('user_id')
+        user = Users.query.get(user_id)
+
+        ultima_receta = Recetas.query.filter_by(user_id=user.id).order_by(Recetas.id.desc()).first()
+        titulo = ultima_receta.titulo.strip().split('\n')[0]
+        descripcion = sacar_titulo(ultima_receta.descripcion)
+
+        pdf = CocinaPDF()
+        pdf.add_recipe(titulo, descripcion)
+
+        pdf_output = pdf.output(dest='S').encode('latin1')
+
+        response = make_response(pdf_output)
+        response.headers['Content-Type'] = 'application/pdf'
+        response.headers['Content-Disposition'] = f'attachment; filename=receta.pdf'
+
+        return response
+    except Exception as e:
+        print(f"Error al guardar y descargar receta: {str(e)}")
+        return jsonify({'error': str(e)}), 500

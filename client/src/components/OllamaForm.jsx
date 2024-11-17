@@ -23,8 +23,10 @@ const OllamaForm = ({ onLogout, displayBook }) => {
   const [showIngredientSelection, setShowIngredientSelection] = useState(false);
   const [showSubmits, setShowSubmits] = useState(true);
   const [savedRecipes, setSavedRecipes] = useState([]);
-  const [buttonVisible, setButtonVisible] = useState(true);
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [buttonVisibleSave, setButtonVisibleSave] = useState(true);
+  const [buttonVisibleDownload, setButtonVisibleDownload] = useState(true);
+  const [showSuccessMessageSave, setShowSuccessMessageSave] = useState(false);
+  const [showSuccessMessageDownload, setShowSuccessMessageDownload] = useState(false);
   const [showQR, setShowQR] = useState(false);
   const [recipe, setRecipe] = useState("");
   const [useRAG, serUseRAG] = useState(false);
@@ -120,7 +122,8 @@ const OllamaForm = ({ onLogout, displayBook }) => {
 
   const handleConfirm = async (event) => {
     event.preventDefault();
-    setButtonVisible(true);
+    setButtonVisibleSave(true);
+    setButtonVisibleDownload(true);
     setLoading(true);
     setError(null);
     setShowIngredientSelection(false);
@@ -155,7 +158,8 @@ const OllamaForm = ({ onLogout, displayBook }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setButtonVisible(true);
+    setButtonVisibleSave(true);
+    setButtonVisibleDownload(true);
     setShowSubmits(false);
     setLoading(true);
     setError(null);
@@ -222,15 +226,49 @@ const OllamaForm = ({ onLogout, displayBook }) => {
           setSavedRecipes((prevRecipes) => [...prevRecipes, response]);
 
           // Ocultar el botón y mostrar mensaje de éxito
-          setButtonVisible(false);
-          setShowSuccessMessage(true);
+          setButtonVisibleSave(false);
+          setShowSuccessMessageSave(true);
 
           // Ocultar el mensaje de éxito después de 3 segundos
-          setTimeout(() => setShowSuccessMessage(false), 3000);
+          setTimeout(() => setShowSuccessMessageSave(false), 3000);
         }
       } catch (error) {
         alert("Hubo un error al guardar la receta.");
       }
+    }
+  };
+
+  const handleSaveAndDownload = async () => {
+    try {
+      const response = await fetch(`${backendUrl}/guardar_y_descargar_receta`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ response: recipe }),
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Error desconocido al exportar las recetas");
+      }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "recetario_personal.pdf");
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+    } catch (err) {
+      setError(err.message || "Ocurrió un error al exportar las recetas");
+    } finally {
+      setButtonVisibleDownload(false);
+      setShowSuccessMessageDownload(true);
+
+      setTimeout(() => setShowSuccessMessageDownload(false), 3000);
     }
   };
 
@@ -406,7 +444,7 @@ const OllamaForm = ({ onLogout, displayBook }) => {
           )}
         </div>
         <div className={styles.saveRecipe}>
-          {buttonVisible && (
+          {buttonVisibleSave && (
             <button
               className={`${styles.confirmSave} ${styles.animateSave}`}
               onClick={handleSaveRecipe}
@@ -415,8 +453,21 @@ const OllamaForm = ({ onLogout, displayBook }) => {
             </button>
           )}
 
-          {showSuccessMessage && (
+          {showSuccessMessageSave && (
             <p className={styles.successMessage}>Receta guardada con éxito</p>
+          )}
+
+          {buttonVisibleDownload && (
+            <button
+              className={`${styles.confirmSave} ${styles.animateSave}`}
+              onClick={handleSaveAndDownload}
+            >
+              Descargar receta
+            </button>
+          )}
+
+          {showSuccessMessageDownload && (
+            <p className={styles.successMessage}>Receta descargada con éxito</p>
           )}
         </div>
         <div className={styles.submitsPost}>
