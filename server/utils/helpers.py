@@ -83,7 +83,7 @@ def get_ingredients_from_image(image):
     predicted_labels_v1 = (predictions_v1 > 0.6).astype(int)
     predicted_labels_v2 = (predictions_v2 > 0.85).astype(int)
     predicted_labels_f = (predictions_f > 0.7).astype(int)
-    predicted_labels_carnes = (predictions_carnes > 0.85).astype(int)
+    predicted_labels_carnes = (predictions_carnes > 0.33).astype(int)
 
     labels_v1 = ["anquito", "apio", "berenjena", "cebolla", "cebolla morada", "choclo", "coliflor", 
                 "huevo", "lechuga", "papa", "pimiento amarillo", "pimiento rojo", "pimiento verde", "remolacha"]
