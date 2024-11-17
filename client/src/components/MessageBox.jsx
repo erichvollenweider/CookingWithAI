@@ -1,11 +1,34 @@
-import React from 'react';
+import React, { useState } from "react"; // Importa useState
 import styles from "../styles/ChatWithAI.module.css";
 import FileUpload from "./FileUpload";
+import { QRCodeCanvas } from "qrcode.react";
+import {frontUrl} from "../config.js"; // Importa QRCodeCanvas correctamente
+
 
 const MessageBox = ({ handleFileChange, text, setText, handleSubmit }) => {
+  const [showQR, setShowQR] = useState(false);
+  const mobileUploadUrl = `${frontUrl}`;
+  const toggleQR = () => {
+    setShowQR((prev) => !prev);
+  };
+
   return (
     <div className={styles.messageBox}>
       <FileUpload handleFileChange={handleFileChange} />
+      <button type="button" onClick={toggleQR} className={styles.qrButton}>
+        <i className="fa fa-mobile-alt"></i>
+      </button>
+      {showQR && (
+        <div className={styles.modalOverlayQR}>
+          <div className={styles.modalContentQR}>
+            <button className={styles.closeButtonQR} onClick={toggleQR}>
+              &times;
+            </button>
+            <QRCodeCanvas value={mobileUploadUrl} size={200} />
+            <p>Escanea el QR para subir imágenes desde tu celular</p>
+          </div>
+        </div>
+      )}
       <input
         placeholder="Ingredientes..."
         type="text"

@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.6.0",
     "axios": "^1.7.7",
     "package.json": "^2.0.1",
     "qrcode.react": "^4.1.0",
