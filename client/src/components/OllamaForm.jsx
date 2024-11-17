@@ -27,6 +27,11 @@ const OllamaForm = ({ onLogout, displayBook }) => {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showQR, setShowQR] = useState(false);
   const [recipe, setRecipe] = useState("");
+  const [useRAG, serUseRAG] = useState(false);
+
+  const toggleUseRAG = () => {
+    serUseRAG((prevState) => !prevState)
+  }
 
   const toggleQR = (e) => {
     e.preventDefault();
@@ -97,7 +102,7 @@ const OllamaForm = ({ onLogout, displayBook }) => {
       const res = await fetch(`${backendUrl}/consulta_ollama`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ingredients: selectedIngredients }),
+        body: JSON.stringify({ ingredients: selectedIngredients, use_rag: useRAG }),
         credentials: "include",
       });
 
@@ -267,22 +272,29 @@ const OllamaForm = ({ onLogout, displayBook }) => {
         </div>
         <div className={styles.submitsPost}>
           <form onSubmit={handleSubmit}>
+            <div className={styles.toggleContainer}>
+              <label className={styles.toggleSwitch}>
+                <input type="checkbox" checked={useRAG} onChange={toggleUseRAG}/>
+                <span className={styles.slider}></span>
+              </label>
+              <span>{useRAG ? "Modo Argentino ON" : "Modo Argentino OFF"}</span>
+            </div>
             <div className={styles.imagePreviewContainer}>
               {previewUrls.map((url, index) => (
-                <div key={index} className={styles.imageWrapper}>
-                  <img
-                    key={index}
-                    src={url}
-                    alt={`preview-${index}`}
-                    className={styles.imagePreview}
-                  />
-                  <button
-                    className={styles.removeButton}
-                    onClick={(e) => handleRemoveImage(index, e)}
-                  >
-                    ✖
-                  </button>
-                </div>
+                  <div key={index} className={styles.imageWrapper}>
+                    <img
+                        key={index}
+                        src={url}
+                        alt={`preview-${index}`}
+                        className={styles.imagePreview}
+                    />
+                    <button
+                        className={styles.removeButton}
+                        onClick={(e) => handleRemoveImage(index, e)}
+                    >
+                      ✖
+                    </button>
+                  </div>
               ))}
             </div>
 
@@ -290,68 +302,68 @@ const OllamaForm = ({ onLogout, displayBook }) => {
               <div className={styles.fileUploadWrapper}>
                 <label htmlFor="file">
                   <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 337 337"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 337 337"
                   >
                     <circle
-                      stroke-width="20"
-                      stroke="#6c6c6c"
-                      fill="none"
-                      r="158.5"
-                      cy="168.5"
-                      cx="168.5"
+                        stroke-width="20"
+                        stroke="#6c6c6c"
+                        fill="none"
+                        r="158.5"
+                        cy="168.5"
+                        cx="168.5"
                     ></circle>
                     <path
-                      stroke-linecap="round"
-                      stroke-width="25"
-                      stroke="#6c6c6c"
-                      d="M167.759 79V259"
+                        stroke-linecap="round"
+                        stroke-width="25"
+                        stroke="#6c6c6c"
+                        d="M167.759 79V259"
                     ></path>
                     <path
-                      stroke-linecap="round"
-                      stroke-width="25"
-                      stroke="#6c6c6c"
-                      d="M79 167.138H259"
+                        stroke-linecap="round"
+                        stroke-width="25"
+                        stroke="#6c6c6c"
+                        d="M79 167.138H259"
                     ></path>
                   </svg>
                   <span className={styles.tooltip}>Add an image</span>
                 </label>
                 <input
-                  type="file"
-                  id="file"
-                  accept="image/*"
-                  multiple
-                  onChange={handleFileChange}
-                  className={styles.file}
-                  name="file"
+                    type="file"
+                    id="file"
+                    accept="image/*"
+                    multiple
+                    onChange={handleFileChange}
+                    className={styles.file}
+                    name="file"
                 />
               </div>
               <input
-                placeholder="Ingredientes..."
-                type="text"
-                value={text}
-                onChange={(e) => {
-                  setText(e.target.value);
-                }}
-                className={styles.messageInput}
+                  placeholder="Ingredientes..."
+                  type="text"
+                  value={text}
+                  onChange={(e) => {
+                    setText(e.target.value);
+                  }}
+                  className={styles.messageInput}
               />
               <button className={styles.sendButton} type="submit">
                 <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 664 663"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 664 663"
                 >
                   <path
-                    fill="none"
-                    d="M646.293 331.888L17.7538 17.6187L155.245 331.888M646.293 331.888L17.753 646.157L155.245 331.888M646.293 331.888L318.735 330.228L155.245 331.888"
+                      fill="none"
+                      d="M646.293 331.888L17.7538 17.6187L155.245 331.888M646.293 331.888L17.753 646.157L155.245 331.888M646.293 331.888L318.735 330.228L155.245 331.888"
                   ></path>
                   <path
-                    stroke-linejoin="round"
-                    stroke-linecap="round"Loading
-                    stroke-width="33.67"
-                    stroke="#6c6c6c"
-                    d="M646.293 331.888L17.7538 17.6187L155.245 331.888M646.293 331.888L17.753 646.157L155.245 331.888M646.293 331.888L318.735 330.228L155.245 331.888"
+                      stroke-linejoin="round"
+                      stroke-linecap="round" Loading
+                      stroke-width="33.67"
+                      stroke="#6c6c6c"
+                      d="M646.293 331.888L17.7538 17.6187L155.245 331.888M646.293 331.888L17.753 646.157L155.245 331.888M646.293 331.888L318.735 330.228L155.245 331.888"
                   ></path>
                 </svg>
               </button>

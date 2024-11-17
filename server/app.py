@@ -78,15 +78,21 @@ def detectar_ingredientes():
 def consulta_ollama():
     try:
         ingredients = request.json.get('ingredients', [])
+        use_rag = request.json.get('use_rag', False)
 
         if ingredients:
             all_ingredients = list(set(ingredient.strip() for ingredient in ingredients))
 
             print("INGREDIENTES:", all_ingredients)
 
-            generated_text = ""
-            for chunk in rag_chain.stream({"context": retriever, "question": all_ingredients}):
-                generated_text += chunk.content
+            if use_rag:
+                generated_text = ""
+                for chunk in rag_chain.stream({"context": retriever, "question": all_ingredients}):
+                    generated_text += chunk.content
+            else:
+                prompt = f"Dame una receta sencilla con los siguientes ingredientes: {', '.join(all_ingredients)}. Evita incluir elementos no relacionados o creativos. Quiero que me dividas la respuesta en 4 categorias (Titulo, Ingredientes, Preparación y Consejos) donde cada una de ellas tienen que comenzar con las siguientes exactas palabras segun corresponda a cada una de ellas: 'Titulo', 'Ingredientes:', 'Peparación:' y 'Consejos'."
+                generated_text = ollama.invoke(prompt)
+
             return jsonify({'response': generated_text})
         else:
             return jsonify({'error': 'No se recibieron ingredientes ni en texto ni en imágenes.'})
