@@ -110,7 +110,9 @@ body {
 }
 
 .bottomButton {
-  margin-top: 570px;
+  position: fixed;
+  bottom: 4%;
+  left: 3%;
 }
 
 .recipeDownload {
@@ -1166,7 +1168,13 @@ button:hover {
 .toggleContainer {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
+  margin-top: 15px;
+}
+
+.toggleContainer span {
+  font-weight: bold;
 }
 
 .toggleSwitch {
@@ -1207,7 +1215,7 @@ button:hover {
 }
 
 input:checked + .slider {
-  background-color: #4caf50;
+  background-color: #E6B800;
 }
 
 input:checked + .slider:before {

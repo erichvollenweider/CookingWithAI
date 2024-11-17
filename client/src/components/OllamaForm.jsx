@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { QRCodeCanvas } from 'qrcode.react';
+import { QRCodeCanvas } from "qrcode.react";
 import styles from "../styles/ChatWithAI.module.css";
-import { frontUrl, backendUrl } from '../config';
+import { frontUrl, backendUrl } from "../config";
 
 import RecipeBookModal from "./RecipeBookModal";
 import Sidebar from "./Sidebar";
@@ -39,8 +39,8 @@ const OllamaForm = ({ onLogout, displayBook }) => {
   const mobileUploadUrl = `${frontUrl}`;
 
   const toggleUseRAG = () => {
-    serUseRAG((prevState) => !prevState)
-  }
+    serUseRAG((prevState) => !prevState);
+  };
 
   const toggleQR = (e) => {
     e.preventDefault();
@@ -48,13 +48,12 @@ const OllamaForm = ({ onLogout, displayBook }) => {
   };
 
   const handleKeyPress = (event) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       event.preventDefault();
     }
   };
 
   const handleExport = async () => {
-    setLoading(true);
     setError("");
 
     try {
@@ -68,7 +67,9 @@ const OllamaForm = ({ onLogout, displayBook }) => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || "Error desconocido al exportar las recetas");
+        throw new Error(
+          errorData.message || "Error desconocido al exportar las recetas"
+        );
       }
 
       const blob = await response.blob();
@@ -87,7 +88,6 @@ const OllamaForm = ({ onLogout, displayBook }) => {
   };
 
   const handleFileChange = (e) => {
-
     const filesArray = Array.from(e.target.files);
     setFiles((prevFiles) => [...prevFiles, ...filesArray]);
     const newUrls = filesArray.map((file) => URL.createObjectURL(file));
@@ -129,7 +129,10 @@ const OllamaForm = ({ onLogout, displayBook }) => {
       const res = await fetch(`${backendUrl}/consulta_ollama`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ingredients: selectedIngredients, use_rag: useRAG }),
+        body: JSON.stringify({
+          ingredients: selectedIngredients,
+          use_rag: useRAG,
+        }),
         credentials: "include",
       });
 
@@ -198,7 +201,6 @@ const OllamaForm = ({ onLogout, displayBook }) => {
       setError("Error en la solicitud al servidor.");
     } finally {
       setLoading(false);
-      setShowSubmits(false);
     }
   };
 
@@ -246,7 +248,8 @@ const OllamaForm = ({ onLogout, displayBook }) => {
 
   const getBookStyle = useMemo(() => {
     if (currentLocation === 1) return { transform: "translateX(0%)" };
-    if (currentLocation === maxLocation) return { transform: "translateX(100%)" };
+    if (currentLocation === maxLocation)
+      return { transform: "translateX(100%)" };
     return { transform: "translateX(50%)" };
   }, [currentLocation, maxLocation]);
 
@@ -294,40 +297,42 @@ const OllamaForm = ({ onLogout, displayBook }) => {
               </button>
             ))}
           </div>
-          <button onClick={handleConfirm} className={styles.confirmIngredients}>Enviar Selección</button>
+          <button onClick={handleConfirm} className={styles.confirmIngredients}>
+            Enviar Selección
+          </button>
+          <div className={styles.toggleContainer}>
+            <label className={styles.toggleSwitch}>
+              <input type="checkbox" checked={useRAG} onChange={toggleUseRAG} />
+              <span className={styles.slider}></span>
+            </label>
+            <span>{"Argentinización"}</span>
+          </div>
         </div>
         <div className={styles.submitsPost}>
           <form onSubmit={handleSubmit}>
-            <div className={styles.toggleContainer}>
-              <label className={styles.toggleSwitch}>
-                <input type="checkbox" checked={useRAG} onChange={toggleUseRAG}/>
-                <span className={styles.slider}></span>
-              </label>
-              <span>{useRAG ? "Modo Argentino ON" : "Modo Argentino OFF"}</span>
-            </div>
             <div className={styles.imagePreviewContainer}>
               {previewUrls.map((url, index) => (
-                  <div key={index} className={styles.imageWrapper}>
-                    <img
-                        key={index}
-                        src={url}
-                        alt={`preview-${index}`}
-                        className={styles.imagePreview}
-                    />
-                    <button
-                        className={styles.removeButton}
-                        onClick={(e) => handleRemoveImage(index, e)}
-                    >
-                      ✖
-                    </button>
-                  </div>
+                <div key={index} className={styles.imageWrapper}>
+                  <img
+                    key={index}
+                    src={url}
+                    alt={`preview-${index}`}
+                    className={styles.imagePreview}
+                  />
+                  <button
+                    className={styles.removeButton}
+                    onClick={(e) => handleRemoveImage(index, e)}
+                  >
+                    ✖
+                  </button>
+                </div>
               ))}
             </div>
             <MessageBox
-                handleFileChange={handleFileChange}
-                text={text}
-                setText={setText}
-                handleSubmit={handleSubmit}
+              handleFileChange={handleFileChange}
+              text={text}
+              setText={setText}
+              handleSubmit={handleSubmit}
             />
           </form>
         </div>
@@ -435,10 +440,10 @@ const OllamaForm = ({ onLogout, displayBook }) => {
               ))}
             </div>
             <MessageBox
-                handleFileChange={handleFileChange}
-                text={text}
-                setText={setText}
-                handleSubmit={handleSubmit}
+              handleFileChange={handleFileChange}
+              text={text}
+              setText={setText}
+              handleSubmit={handleSubmit}
             />
           </form>
         </div>
@@ -471,7 +476,7 @@ const OllamaForm = ({ onLogout, displayBook }) => {
             <h3>¡ Las mejores y mas rapidas recetas !</h3>
           </div>
         </div>
-        
+
         <div className={styles.aiResponse}>
           {loading && <LoadingSpinner />}
           {ingredients && renderIngredients()}
@@ -482,7 +487,10 @@ const OllamaForm = ({ onLogout, displayBook }) => {
         {showSubmits && (
           <div className={styles.submits}>
             <form onSubmit={handleSubmit}>
-              <ImagePreview previewUrls={previewUrls} handleRemoveImage={handleRemoveImage} />
+              <ImagePreview
+                previewUrls={previewUrls}
+                handleRemoveImage={handleRemoveImage}
+              />
               <MessageBox
                 handleFileChange={handleFileChange}
                 text={text}

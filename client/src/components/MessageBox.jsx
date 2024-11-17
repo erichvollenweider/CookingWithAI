@@ -25,7 +25,7 @@ const MessageBox = ({ handleFileChange, text, setText, handleSubmit }) => {
               &times;
             </button>
             <QRCodeCanvas value={mobileUploadUrl} size={200} />
-            <p>Escanea el QR para subir imágenes desde tu celular</p>
+            <p>¡ Escanea el QR para abrir la aplicación en tu telefono !</p>
           </div>
         </div>
       )}

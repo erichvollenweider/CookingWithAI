@@ -51,7 +51,7 @@ def detectar_ingredientes():
                 print(f"Ingredientes predichos: {ingredients}")
 
                 if not ingredients:
-                    return jsonify({'error': 'No se detectaron ingredientes en una o más imágenes.'})
+                    return jsonify({'error': 'No se detectaron ingredientes en una o más imágenes.'}), 200
 
                 all_ingredients.extend(ingredients)
             
@@ -69,7 +69,7 @@ def detectar_ingredientes():
         if all_ingredients:            
             return jsonify({'response': all_ingredients})
         else:
-            return jsonify({'error': 'No se recibieron ingredientes ni en texto ni en imágenes.'})
+            return jsonify({'error': 'No se recibieron ingredientes ni en texto ni en imágenes.'}), 200
 
     except Exception as e:
         return jsonify({'error': str(e)})
@@ -95,7 +95,7 @@ def consulta_ollama():
 
             return jsonify({'response': generated_text})
         else:
-            return jsonify({'error': 'No se recibieron ingredientes ni en texto ni en imágenes.'})
+            return jsonify({'error': 'No se recibieron ingredientes ni en texto ni en imágenes.'}), 200
 
     except Exception as e:
         return jsonify({'error': str(e)})

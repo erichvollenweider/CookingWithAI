@@ -48,34 +48,33 @@ class CocinaPDF(FPDF):
         self.set_font('Helvetica', 'B', 14)
         self.set_fill_color(255, 228, 196)
         self.cell(0, 10, title, 0, 1, 'L', fill=True)
-        self.ln(5)
 
         sections = description.split('**')
         for section in sections:
             if section.startswith("Ingredientes:"):
+                self.ln(3)
                 self.set_font('Helvetica', 'B', 12)
                 self.set_text_color(160, 82, 45)
                 self.cell(0, 10, 'Ingredientes:', 0, 1)
                 self.set_font('Helvetica', '', 12)
                 self.set_text_color(0, 0, 0)
                 self.multi_cell(0, 8, section.replace("Ingredientes:", "").strip())
-                self.ln(3)
             elif section.startswith("Preparación:"):
+                self.ln(3)
                 self.set_font('Helvetica', 'B', 12)
                 self.set_text_color(160, 82, 45)
                 self.cell(0, 10, 'Preparación:', 0, 1)
                 self.set_font('Helvetica', '', 12)
                 self.set_text_color(0, 0, 0)
                 self.multi_cell(0, 8, section.replace("Preparación:", "").strip())
-                self.ln(3)
             elif section.startswith("Consejos:"):
+                self.ln(3)
                 self.set_font('Helvetica', 'B', 12)
                 self.set_text_color(160, 82, 45)
                 self.cell(0, 10, 'Consejos:', 0, 1)
                 self.set_font('Helvetica', '', 12)
                 self.set_text_color(0, 0, 0)
                 self.multi_cell(0, 8, section.replace("Consejos:", "").strip())
-                self.ln(3)
             else:
                 self.multi_cell(0, 8, section.strip())
         self.ln(10)
