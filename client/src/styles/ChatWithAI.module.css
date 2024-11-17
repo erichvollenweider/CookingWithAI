@@ -113,43 +113,80 @@ body {
   margin-top: 570px;
 }
 
+.recipeDownload {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.recipeDownload button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  width: 75%;
+  max-width: 75%;
+  border: none;
+  background-color: transparent;
+  margin-top: 0.5cm;
+}
+
+.recipeDownload .content {
+  display: flex;
+  align-items: center;
+}
+
+.recipeDownload img {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.recipeDownload p {
+  margin: 0;
+  font-size: 16px;
+  color: rgb(19, 18, 18);
+}
+
 .recipeBookButton {
   display: flex;
   justify-content: center;
-  align-items: center;
   width: 100%;
-  margin-top: 50px;
 }
 
 .recipeBookButton button {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  padding: 0;
+  padding: 10px;
   cursor: pointer;
-  font-size: 8px;
-  width: 80%;
-  max-width: 80%;
+  font-size: 14px;
+  width: 75%;
+  max-width: 75%;
+  border: none;
+  background-color: transparent;
+  margin-top: 0.5cm;
+}
+
+.recipeBookButton .content {
+  display: flex;
+  align-items: center;
 }
 
 .recipeBookButton img {
-  width: 60px;
-  height: auto;
-  background-color: transparent;
-  margin-bottom: -65px;
-  margin-right: 120px;
-  padding-right: 20px;
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
 }
 
-.recipeBookButton h2 {
+.recipeBookButton p {
   margin: 0;
-  font-size: 14px;
-  padding: 8px 0;
-  padding-left: 30px;
+  font-size: 16px;
   color: rgb(19, 18, 18);
 }
+
 
 @media (max-width: 768px) {
   

@@ -26,17 +26,17 @@ class CocinaPDF(FPDF):
     def add_index(self):
         self.add_page()
         self.set_font('Helvetica', 'B', 16)
-        self.set_fill_color(245, 245, 245)  # Color de fondo más claro para el índice
+        self.set_fill_color(245, 245, 245)
         self.cell(0, 10, 'Índice', 0, 1, 'C', fill=True)
         self.ln(10)
 
         self.set_font('Helvetica', 'B', 14)
-        self.set_fill_color(224, 224, 224)  # Gris claro para encabezados
+        self.set_fill_color(224, 224, 224)
         self.cell(160, 10, 'Título de la Receta', 1, 0, 'C', fill=True)
         self.cell(30, 10, 'Página', 1, 1, 'C', fill=True)
 
         self.set_font('Helvetica', '', 12)
-        self.set_fill_color(245, 245, 245)  # Restaurar color de fondo blanco
+        self.set_fill_color(245, 245, 245)
         for title, page in self.index:
             self.cell(160, 10, title, 1, 0, 'L', fill=True)
             self.cell(30, 10, str(page), 1, 1, 'C', fill=True)
@@ -46,7 +46,7 @@ class CocinaPDF(FPDF):
         self.index.append((title, self.page_no()))
 
         self.set_font('Helvetica', 'B', 14)
-        self.set_fill_color(255, 228, 196)  # Beige claro
+        self.set_fill_color(255, 228, 196)
         self.cell(0, 10, title, 0, 1, 'L', fill=True)
         self.ln(5)
 
@@ -54,7 +54,7 @@ class CocinaPDF(FPDF):
         for section in sections:
             if section.startswith("Ingredientes:"):
                 self.set_font('Helvetica', 'B', 12)
-                self.set_text_color(160, 82, 45)  # Marrón oscuro
+                self.set_text_color(160, 82, 45)
                 self.cell(0, 10, 'Ingredientes:', 0, 1)
                 self.set_font('Helvetica', '', 12)
                 self.set_text_color(0, 0, 0)

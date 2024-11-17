@@ -15,6 +15,7 @@ const Sidebar = ({
   numOfPapers,
   maxLocation,
   onLogout,
+  handleExport,
 }) => {
   return (
     <div className={styles.container}>
@@ -37,9 +38,10 @@ const Sidebar = ({
 
         <div className={styles.recipeBookButton}>
           <button onClick={openModal}>
-            <img src="../../public/libRecetas.png" alt="Mi Libro" />
-            <h2>Mi Libro de</h2>
-            <h2>Recetas</h2>
+            <div className={styles.content}>
+              <img src="../../public/book.svg"/>
+              <p>Recetas Guardadas</p>
+            </div>
           </button>
 
           <RecipeBookModal
@@ -52,6 +54,15 @@ const Sidebar = ({
             numOfPapers={numOfPapers}
             maxLocation={maxLocation}
           />
+        </div>
+
+        <div className={styles.recipeDownload}>
+          <button onClick={handleExport} >
+            <div className={styles.content}>
+              <img src="../../public/download_icon.svg"/>
+              <p>Descargar Recetas</p>
+            </div>
+          </button>
         </div>
 
         <div className={styles.bottomButton}>

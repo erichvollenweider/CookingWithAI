@@ -28,6 +28,15 @@ const OllamaForm = ({ onLogout, displayBook }) => {
   const [showQR, setShowQR] = useState(false);
   const [recipe, setRecipe] = useState("");
   const [useRAG, serUseRAG] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentLocation, setCurrentLocation] = useState(1);
+
+  const numOfPapers = 3;
+  const maxLocation = numOfPapers + 1;
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
+  const mobileUploadUrl = `${frontUrl}`;
 
   const toggleUseRAG = () => {
     serUseRAG((prevState) => !prevState)
@@ -44,25 +53,43 @@ const OllamaForm = ({ onLogout, displayBook }) => {
     }
   };
 
-  const mobileUploadUrl = `${frontUrl}`;
+  const handleExport = async () => {
+    setLoading(true);
+    setError("");
 
-  // Estado para controlar el libro y modal
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentLocation, setCurrentLocation] = useState(1);
+    try {
+      const response = await fetch(`${backendUrl}/export_recetas`, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-  const numOfPapers = 3;
-  const maxLocation = numOfPapers + 1;
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Error desconocido al exportar las recetas");
+      }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "recetario_personal.pdf");
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+    } catch (err) {
+      setError(err.message || "Ocurrió un error al exportar las recetas");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleFileChange = (e) => {
 
-    const filesArray = Array.from(e.target.files); // Convertimos el FileList en array
-
-    // Concatenamos los archivos nuevos con los anteriores
+    const filesArray = Array.from(e.target.files);
     setFiles((prevFiles) => [...prevFiles, ...filesArray]);
-
-    // Creamos URLs para previsualizar las nuevas imágenes y las agregamos al estado
     const newUrls = filesArray.map((file) => URL.createObjectURL(file));
     setPreviewUrls((prevUrls) => [...prevUrls, ...newUrls]);
   };
@@ -164,7 +191,7 @@ const OllamaForm = ({ onLogout, displayBook }) => {
         setError(data.error);
         setShowSubmits(true);
       } else if (data.response) {
-        setIngredients(data.response); // Almacena los ingredientes
+        setIngredients(data.response);
         setShowIngredientSelection(true);
       }
     } catch (err) {
@@ -175,7 +202,6 @@ const OllamaForm = ({ onLogout, displayBook }) => {
     }
   };
 
-  // Función para guardar la receta manualmente
   const handleSaveRecipe = async () => {
     if (response) {
       try {
@@ -435,6 +461,7 @@ const OllamaForm = ({ onLogout, displayBook }) => {
         numOfPapers={numOfPapers}
         maxLocation={maxLocation}
         onLogout={onLogout}
+        handleExport={handleExport}
       />
       <div className={styles.chatContainer}>
         <div className={styles.header}>
