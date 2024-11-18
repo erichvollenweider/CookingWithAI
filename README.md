@@ -107,6 +107,7 @@ ollama serve
 source .venv/bin/activate
 python3 app.py
 ```
+> 💡 **¿Deseas habilitar el RAG?** Haz clic [aquí](#habilitar-rag) para activar esta funcionalidad y luego regresa a este paso para continuar con la ejecución estándar.
 
 ### 3. Iniciar el servidor de React
 #### En una tercera termina, ejecuta el cliente:
@@ -118,7 +119,20 @@ npm run dev -- --host  # Ejecución en localhost y red
 ## 🌐 **Acceder a la aplicacción**
 Abre tu navegador e ingresa la dirección IP proporcionada en la consola de NPM. ¡Estás listo para explorar Cooking With AI! 🎉
 
+## 🔎 **Habilitar RAG**
+El **RAG (Retrieval-Augmented Generation)** permite integrar capacidades avanzadas de recuperación de información para enriquecer las respuestas de Gemma2 con datos específicos, en este caso para dar recetas argentinas.  
 
+### Pasos para activar el RAG:
+#### 1. Descargar el modelo adicional de embeddings:
+```bash
+ollama pull nomic-embed-text
+```
 
+#### 2. Ejecutar el archivo encargado de generar la base de datos con los embeddings:
+```bash
+python3 gemma2_rag.py
+```
+
+#### 3. Regresa al paso correspondiente en la [ejecución del proyecto](#iniciar-el-servidor-de-python) para continuar con la configuración estándar.
 
 
