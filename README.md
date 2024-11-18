@@ -107,7 +107,7 @@ ollama serve
 source .venv/bin/activate
 python3 app.py
 ```
-> 💡 **¿Deseas habilitar el RAG?** Haz clic [aquí](#habilitar-rag) para activar esta funcionalidad y luego regresa a este paso para continuar con la ejecución estándar.
+> 💡 **¿Deseas habilitar el RAG?** Ve a la seccion ***Habilitar RAG*** para activar esta funcionalidad y luego regresa a este paso para continuar con la ejecución estándar.
 
 ### 3. Iniciar el servidor de React
 #### En una tercera termina, ejecuta el cliente:
@@ -133,6 +133,6 @@ ollama pull nomic-embed-text
 python3 gemma2_rag.py
 ```
 
-#### 3. Regresa al paso correspondiente en la [ejecución del proyecto](#iniciar-el-servidor-de-python) para continuar con la configuración estándar.
+#### 3. Regresa a la seccion ***Iniciar el servidor de Python*** para continuar con la configuración estándar.
 
 
