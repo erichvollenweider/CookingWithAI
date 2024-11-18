@@ -52,6 +52,7 @@ const OllamaForm = ({ onLogout, displayBook }) => {
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
       event.preventDefault();
+      handleSubmit(event);
     }
   };
 
@@ -169,6 +170,7 @@ const OllamaForm = ({ onLogout, displayBook }) => {
     setRecipe("");
 
     const formData = new FormData();
+
     if (files.length > 0) {
       for (let i = 0; i < files.length; i++) {
         formData.append("images", files[i]);
@@ -335,16 +337,16 @@ const OllamaForm = ({ onLogout, displayBook }) => {
               </button>
             ))}
           </div>
-          <button onClick={handleConfirm} className={styles.confirmIngredients}>
-            Enviar Selección
-          </button>
           <div className={styles.toggleContainer}>
             <label className={styles.toggleSwitch}>
               <input type="checkbox" checked={useRAG} onChange={toggleUseRAG} />
               <span className={styles.slider}></span>
             </label>
-            <span>{"Argentinización"}</span>
+            <span>{"Solo recetas Argentinas"}</span>
           </div>
+          <button onClick={handleConfirm} className={styles.confirmIngredients}>
+            Enviar Selección
+          </button>
         </div>
         <div className={styles.submitsPost}>
           <form onSubmit={handleSubmit}>
@@ -547,6 +549,7 @@ const OllamaForm = ({ onLogout, displayBook }) => {
                 text={text}
                 setText={setText}
                 handleSubmit={handleSubmit}
+                handleKeyPress={handleKeyPress}
               />
             </form>
           </div>

@@ -5,7 +5,7 @@ import { QRCodeCanvas } from "qrcode.react";
 import {frontUrl} from "../config.js"; // Importa QRCodeCanvas correctamente
 
 
-const MessageBox = ({ handleFileChange, text, setText, handleSubmit }) => {
+const MessageBox = ({ handleFileChange, text, setText, handleSubmit, handleKeyPress}) => {
   const [showQR, setShowQR] = useState(false);
   const mobileUploadUrl = `${frontUrl}`;
   const toggleQR = () => {
@@ -34,6 +34,7 @@ const MessageBox = ({ handleFileChange, text, setText, handleSubmit }) => {
         type="text"
         value={text}
         onChange={(e) => setText(e.target.value)}
+        onKeyDown={handleKeyPress}
         className={styles.messageInput}
       />
       <button className={styles.sendButton} type="submit" onClick={handleSubmit}>
