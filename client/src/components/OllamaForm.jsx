@@ -394,9 +394,9 @@ const OllamaForm = ({ onLogout, displayBook }) => {
     recipeLines.forEach((line) => {
       if (line.includes("Ingredientes:")) {
         currentSection = "ingredients";
-      } else if (line.includes("Preparación:")) {
+      } else if (line.includes("Preparación:") || line.includes("Instrucciones:")) {
         currentSection = "preparation";
-      } else if (line.includes("Consejos:")) {
+      } else if (line.includes("Consejos:") || line.includes("Util:") || line.includes("Utils:")) {
         currentSection = "consejos";
       } else if (currentSection === "ingredients") {
         ingredients.push(line.replace(/\*/g, "").trim()); // Elimina los "*"
