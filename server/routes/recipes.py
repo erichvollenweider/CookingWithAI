@@ -35,6 +35,33 @@ def guardar_receta():
     except Exception as e:
         print(f"Error al guardar receta: {str(e)}")  # Imprime el error en la consola del servidor
         return jsonify({'error': str(e)}), 500
+    
+@recipes_bp.route('/eliminar_ultima_receta', methods=['DELETE'])
+def eliminar_ultima_receta():
+    try:
+        user_id = session.get('user_id')
+        if not user_id:
+            return jsonify({'error': 'Usuario no está logueado'}), 401
+
+        user = Users.query.get(user_id)
+        if not user:
+            return jsonify({'error': 'Usuario no encontrado'}), 404
+
+        # Obtener la última receta del usuario
+        ultima_receta = Recetas.query.filter_by(user_id=user.id).order_by(Recetas.id.desc()).first()
+        if not ultima_receta:
+            return jsonify({'error': 'No se encontraron recetas para este usuario'}), 404
+
+        # Eliminar la última receta
+        db.session.delete(ultima_receta)
+        db.session.commit()
+
+        return jsonify({'message': 'Última receta eliminada exitosamente'}), 200
+
+    except Exception as e:
+        print(f"Error al eliminar la última receta: {str(e)}")  # Imprime el error en la consola del servidor
+        return jsonify({'error': str(e)}), 500
+
 
 @recipes_bp.route('/get_recipes', methods=['GET'])
 def get_recipes():

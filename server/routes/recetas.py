@@ -1,7 +1,7 @@
 from fpdf import FPDF
 from flask import Blueprint, jsonify, session, make_response
 from database.models import Recetas, Users
-from .recipes import guardar_receta
+from .recipes import guardar_receta, eliminar_ultima_receta
 
 recetas_bp = Blueprint('recetas', __name__)
 
@@ -140,6 +140,8 @@ def guardar_y_descargar_receta():
         response = make_response(pdf_output)
         response.headers['Content-Type'] = 'application/pdf'
         response.headers['Content-Disposition'] = f'attachment; filename=receta.pdf'
+
+        eliminar_ultima_receta()
 
         return response
     except Exception as e:
