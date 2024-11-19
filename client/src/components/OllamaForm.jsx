@@ -311,6 +311,28 @@ const OllamaForm = ({ onLogout, displayBook }) => {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
 
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Tab") {
+        e.preventDefault(); // Prevenir el cambio de enfoque predeterminado de la tecla Tab
+  
+        if (sidebarOpen) {
+          setSidebarOpen(false); // Cerrar el sidebar si está abierto
+        } else {
+          setSidebarOpen(true); // Abrir el sidebar si está cerrado
+        }
+      } else if (e.key === "Escape") {
+        setIsModalOpen(false); // Cerrar modal si está abierto
+      }
+    };
+  
+    document.addEventListener("keydown", handleKeyDown);
+  
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [sidebarOpen]);
+  
   const renderIngredients = () => {
     if (!showIngredientSelection) return null;
 
