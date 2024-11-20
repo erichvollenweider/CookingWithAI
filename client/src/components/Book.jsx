@@ -15,7 +15,7 @@ const Book = ({ isModalOpen,
 
   const openBook = () => {
     document.querySelector("#book").style.transform = "translateX(50%)";
-    document.querySelector("#prev-btn").style.transform = "translateX(180px)";
+    document.querySelector("#prev-btn").style.transform = "translateX(-180px)";
     document.querySelector("#next-btn").style.transform = "translateX(180px)";
   };
 
@@ -102,7 +102,7 @@ const Book = ({ isModalOpen,
   return (
     <div className="modalOverlay" onClick={closeModal}>
       <div className="modalContent" onClick={(e) => e.stopPropagation()}>
-        <div className="book-container">
+        <div className="bookContainer">
           <button id="prev-btn" onClick={goPrevPage}>
             <i className="fa-solid fa-circle-arrow-left"></i>
           </button>
@@ -111,12 +111,12 @@ const Book = ({ isModalOpen,
             {recipes.map((page, index) => (
               <div id={`p${index + 1}`} key={index} className="paper">
                 <div className="front">
-                  <div className="front-content">
+                  <div className="frontContent">
                     <h3>{page.front}</h3>
                   </div>
                 </div>
                 <div className="back">
-                  <div className="back-content">
+                  <div className="backContent">
                     <h1>{page.back}</h1>
                   </div>
                 </div>

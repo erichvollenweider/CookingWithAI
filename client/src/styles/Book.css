@@ -4,6 +4,16 @@
     box-sizing: border-box;
 }
 
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-family: sans-serif;
+    background-color: powderblue;
+}
+
 .modalOverlay {
   position: fixed;
   top: 0;
@@ -34,26 +44,16 @@
 .bookContainer {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   width: 100%;
   height: 100%;
   background-color: #F4E8D9;
 }
 
-body {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    font-family: sans-serif;
-    background-color: powderblue;
-}
-
 .book {
     position: relative;
-    width: 350px;
-    height: 500px;
+    width: 550px;
+    height: 750px;
     transition: transform 0.5s;
 }
 
@@ -87,7 +87,7 @@ body {
     z-index: 0;
 }
 
-.front-content, .back-content {
+.frontContent, .backContent {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -96,7 +96,7 @@ body {
     align-items: center;
 }
 
-.back-content {
+.backContent {
     transform: rotateY(180deg);
 }
 
