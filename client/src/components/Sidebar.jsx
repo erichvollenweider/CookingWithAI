@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "../styles/ChatWithAI.module.css";
-import RecipeBookModal from "./RecipeBookModal";
+import Book from "./Book";
 
 const Sidebar = ({
   sidebarOpen,
@@ -8,14 +8,13 @@ const Sidebar = ({
   openModal,
   isModalOpen,
   closeModal,
-  currentLocation,
   goPrevPage,
   goNextPage,
-  getBookStyle,
   numOfPapers,
   maxLocation,
   onLogout,
   handleExport,
+  fetchNumOfPapers,
 }) => {
   return (
     <div className={styles.container}>
@@ -37,20 +36,18 @@ const Sidebar = ({
         <h5>Guarda estas recetas en tu libro para disfrutarlas siempre</h5>
 
         <div className={styles.recipeBookButton}>
-          <button onClick={openModal}>
+          <button onClick={() => { openModal(); fetchNumOfPapers(); }}>
             <div className={styles.content}>
               <img src="../../public/book.svg"/>
               <p>Recetas Guardadas</p>
             </div>
           </button>
 
-          <RecipeBookModal
+          <Book
             isModalOpen={isModalOpen}
             closeModal={closeModal}
-            currentLocation={currentLocation}
             goPrevPage={goPrevPage}
             goNextPage={goNextPage}
-            getBookStyle={getBookStyle}
             numOfPapers={numOfPapers}
             maxLocation={maxLocation}
           />

@@ -294,32 +294,17 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 92%;
-  background-color: #f0f8ff;
+  height: 100%;
+  background-color: #dad3c0;
   color: #333;
   padding: 20px;
   text-align: center;
 }
 
-.initialPage h2 {
-  font-size: 40px;
-  font-weight: bold;
-  color: #007bff;
-  margin-bottom: 30px;
-}
-
 .initialPage img {
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  border: 5px solid #E0E0E0;
-}
-
-.initialPage p {
-  font-size: 15px;
-  margin-top: 30px;
-  margin-bottom: 50px;
-  color: #555;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* Estilo para la página final (última página especial) */
@@ -328,33 +313,17 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 92%;
-  background-color: #f8f9fa; /* Color más suave de fondo */
+  height: 100%;
+  background-color: #dad3c0;
   color: #333;
   padding: 20px;
   text-align: center;
-  margin-right: 1100px;
-}
-
-.finalPage h2 {
-  font-size: 40px;
-  font-weight: bold;
-  color: #007bff;
-  margin-bottom: 30px;
 }
 
 .finalPage img{
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  border: 5px solid #E0E0E0;
-}
-
-.finalPage p {
-  font-size: 15px;
-  margin-top: 30px;
-  margin-bottom: 10px;
-  color: #555;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .paper {
