@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import "../styles/Book.css";
 import 'font-awesome/css/font-awesome.min.css';
 import {backendUrl} from "../config.js";
-import styles from "../styles/ChatWithAI.module.css";
 
 const Book = ({ isModalOpen,
                 closeModal,
@@ -108,21 +107,32 @@ const Book = ({ isModalOpen,
           </button>
 
           <div id="book" className="book">
-            {recipes.map((page, index) => (
-              <div id={`p${index + 1}`} key={index} className="paper">
-                <div className="front">
-                  <div className="frontContent">
-                    <h3>{page.front}</h3>
+            {recipes.reduce((acc, _, index, arr) => {
+              if (index % 2 === 0) {
+                const frontRecipe = arr[index];
+                const backRecipe = arr[index + 1];
+
+                acc.push(
+                  <div id={`p${Math.floor(index / 2) + 1}`} key={index} className="paper">
+                    <div className="front">
+                      <div className="frontContent">
+                        <h3>{frontRecipe?.titulo}</h3>
+                        <p>{frontRecipe?.descripcion}</p>
+                      </div>
+                    </div>
+                    <div className="back">
+                      <div className="backContent">
+                        <h3>{backRecipe?.titulo || "Sin más recetas"}</h3>
+                        <p>{backRecipe?.descripcion || ""}</p>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div className="back">
-                  <div className="backContent">
-                    <h1>{page.back}</h1>
-                  </div>
-                </div>
-              </div>
-            ))}
+                );
+              }
+              return acc;
+            }, [])}
           </div>
+
 
           <button id="next-btn" onClick={goNextPage}>
             <i className="fa-solid fa-circle-arrow-right"></i>
