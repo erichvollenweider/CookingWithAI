@@ -15,8 +15,8 @@ const Book = ({ isModalOpen,
 
   const openBook = () => {
     document.querySelector("#book").style.transform = "translateX(50%)";
-    document.querySelector("#prev-btn").style.transform = "translateX(-180px)";
-    document.querySelector("#next-btn").style.transform = "translateX(180px)";
+    document.querySelector("#prev-btn").style.transform = "translateX(-360px)";
+    document.querySelector("#next-btn").style.transform = "translateX(360px)";
   };
 
   const closeBook = (isAtBeginning) => {
