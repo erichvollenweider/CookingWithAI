@@ -283,6 +283,78 @@ body {
   height: 100%;
   transition: transform 0.5s;
   perspective: 1500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Estilo para la página inicial (primera página especial) */
+.initialPage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 92%;
+  background-color: #f0f8ff;
+  color: #333;
+  padding: 20px;
+  text-align: center;
+}
+
+.initialPage h2 {
+  font-size: 40px;
+  font-weight: bold;
+  color: #007bff;
+  margin-bottom: 30px;
+}
+
+.initialPage img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 5px solid #E0E0E0;
+}
+
+.initialPage p {
+  font-size: 15px;
+  margin-top: 30px;
+  margin-bottom: 50px;
+  color: #555;
+}
+
+/* Estilo para la página final (última página especial) */
+.finalPage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 92%;
+  background-color: #f8f9fa; /* Color más suave de fondo */
+  color: #333;
+  padding: 20px;
+  text-align: center;
+  margin-right: 1100px;
+}
+
+.finalPage h2 {
+  font-size: 40px;
+  font-weight: bold;
+  color: #007bff;
+  margin-bottom: 30px;
+}
+
+.finalPage img{
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 5px solid #E0E0E0;
+}
+
+.finalPage p {
+  font-size: 15px;
+  margin-top: 30px;
+  margin-bottom: 10px;
+  color: #555;
 }
 
 .paper {
@@ -1276,21 +1348,25 @@ input:checked + .slider:before {
   flex-direction: column;
   justify-content: flex-start; /* Asegura que los elementos estén alineados arriba */
   height: 100%; /* Para asegurar que el contenido ocupe todo el espacio disponible */
+  width: 89%;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 
 .recipeTitle {
-  font-size: 1.8rem; /* Tamaño del título */
-  font-weight: 700; /* Título en negrita */
+  font-size: 30px; /* Tamaño del título */
+  font-weight: 700;
   color: #333;
-  margin-bottom: 10px; /* Margen entre el título y la descripción */
+  margin-bottom: 10px;
+  margin-top: 5px;
 }
 
 .recipeDescription {
-  font-size: 1rem;
+  font-size: 15px;
   color: #555;
   line-height: 1.5;
+  text-align: justify;
 }
-
 
 @media (max-width: 768px) {
   .backContent {
@@ -1304,55 +1380,4 @@ input:checked + .slider:before {
   .recipeDescription {
     font-size: 0.95rem;
   }
-}
-
-
-/* Estilo para la página inicial (primera página especial) */
-.initialPage {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  background-color: #f0f8ff; /* Color claro de fondo */
-  color: #333;
-  padding: 20px;
-  text-align: center;
-}
-
-.initialPage h2 {
-  font-size: 36px;
-  font-weight: bold;
-  color: #007bff; /* Color azul */
-}
-
-.initialPage p {
-  font-size: 18px;
-  margin-top: 10px;
-  color: #555;
-}
-
-/* Estilo para la página final (última página especial) */
-.finalPage {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  background-color: #f8f9fa; /* Color más suave de fondo */
-  color: #333;
-  padding: 20px;
-  text-align: center;
-}
-
-.finalPage h2 {
-  font-size: 36px;
-  font-weight: bold;
-  color: #28a745; /* Color verde */
-}
-
-.finalPage p {
-  font-size: 18px;
-  margin-top: 10px;
-  color: #555;
 }

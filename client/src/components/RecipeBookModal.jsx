@@ -77,12 +77,15 @@ const RecipeBookModal = ({
             ) : currentLocation === 1 ? (
               <div className={styles.initialPage}>
                 <h2>CookingWithAI</h2>
+                <img src="../../public/icon.png" className={styles.logoBookT}/>
                 <p>Bienvenido a nuestro libro de recetas, donde la inteligencia artificial te ayuda a crear platos deliciosos.</p>
               </div>
             ) : currentLocation === maxLocation ? (
               <div className={styles.finalPage}>
                 <h2>CookingWithAI</h2>
-                <p>Gracias por usar nuestra app. ¡Esperamos que hayas disfrutado de las recetas!</p>
+                <img src="../../public/icon.png" className={styles.logoBookCT}/>
+                <p>Gracias por usar nuestra app.</p>
+                <p>¡Esperamos que hayas disfrutado de las recetas!</p>
               </div>
             ) : recipes.length === 0 ? (
               <p>No tienes recetas guardadas.</p>
