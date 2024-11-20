@@ -32,8 +32,8 @@ const OllamaForm = ({ onLogout, displayBook }) => {
   const [useRAG, serUseRAG] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentLocation, setCurrentLocation] = useState(1);
+  const [numOfPapers, setNumOfPapers] = useState(2);
 
-  const numOfPapers = 3;
   const maxLocation = numOfPapers + 1;
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -226,6 +226,7 @@ const OllamaForm = ({ onLogout, displayBook }) => {
           alert(`Error: ${data.error}`);
         } else {
           setSavedRecipes((prevRecipes) => [...prevRecipes, response]);
+          setNumOfPapers((prev) => prev + 1);
 
           // Ocultar el botón y mostrar mensaje de éxito
           setButtonVisibleSave(false);
@@ -300,38 +301,40 @@ const OllamaForm = ({ onLogout, displayBook }) => {
     }
   };
 
-  // Cerrar modal con tecla Esc
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Escape") {
-        setIsModalOpen(false);
+        setIsModalOpen(false); // Cierra el modal
+      } else if (e.key === "Tab") {
+        e.preventDefault(); // Previene el comportamiento predeterminado del tab
+        setSidebarOpen((prev) => !prev); // Alterna el sidebar
       }
     };
+  
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
-
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === "Tab") {
-        e.preventDefault(); // Prevenir el cambio de enfoque predeterminado de la tecla Tab
   
-        if (sidebarOpen) {
-          setSidebarOpen(false); // Cerrar el sidebar si está abierto
-        } else {
-          setSidebarOpen(true); // Abrir el sidebar si está cerrado
-        }
-      } else if (e.key === "Escape") {
-        setIsModalOpen(false); // Cerrar modal si está abierto
+  useEffect(() => {
+    const fetchNumOfPapers = async () => {
+      try {
+        const response = await fetch(`${backendUrl}/count-recetas`, {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const data = await response.json();
+        setNumOfPapers(data.count);
+      } catch (error) {
+        console.error("Error al obtener la cantidad de recetas:", error);
       }
     };
   
-    document.addEventListener("keydown", handleKeyDown);
+    fetchNumOfPapers();
+  }, []);
   
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [sidebarOpen]);
   
   const renderIngredients = () => {
     if (!showIngredientSelection) return null;
@@ -420,7 +423,7 @@ const OllamaForm = ({ onLogout, displayBook }) => {
         currentSection = "ingredients";
       } else if (line.includes("Preparación:") || line.includes("Instrucciones:")) {
         currentSection = "preparation";
-      } else if (line.includes("Consejos:") || line.includes("Util:") || line.includes("Utils:")) {
+      } else if (line.includes("Consejos:") || line.includes("Util:") || line.includes("Utils:") || line.includes("Tips:") || line.includes("Nota:")) {
         currentSection = "consejos";
       } else if (currentSection === "ingredients") {
         ingredients.push(line.replace(/\*/g, "").trim()); // Elimina los "*"

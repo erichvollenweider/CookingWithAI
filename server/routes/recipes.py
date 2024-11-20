@@ -88,3 +88,13 @@ def get_recipes():
     ]
 
     return jsonify({'message': 'Recetas obtenidas correctamente', 'recetas': recetas_dic}), 200
+
+@recipes_bp.route('/count-recetas', methods=['GET'])
+def count_recetas():
+    user_id = session.get('user_id')
+    if not user_id:
+        return jsonify({'error': 'Usuario no está logueado'}), 401
+
+    count = Recetas.query.filter_by(user_id=user_id).count()
+    count = count + 2
+    return jsonify({'count': count})
