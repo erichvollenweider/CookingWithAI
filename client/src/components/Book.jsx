@@ -78,11 +78,16 @@ const Book = ({ isModalOpen,
       }
       const data = await response.json();
 
-      const cleanedRecipes = data.recetas.map((recipe) => ({
-        ...recipe,
-        titulo: cleanText(recipe.titulo),
-        descripcion: cleanText(recipe.descripcion),
-      }));
+      const cleanedRecipes = data.recetas.map((recipe) => {
+        const parsedRecipe = parseRecipe(recipe.descripcion);
+        return {
+          ...recipe,
+          titulo: cleanText(recipe.titulo),
+          ingredientes: parsedRecipe.Ingredientes,
+          preparacion: parsedRecipe.Preparación,
+          consejos: parsedRecipe.Consejos,
+        };
+      });
 
       const uniqueRecipes = Array.from(
         new Map(cleanedRecipes.map((recipe) => [recipe.id, recipe])).values()
@@ -94,6 +99,30 @@ const Book = ({ isModalOpen,
     } finally {
       setLoading(false);
     }
+  };
+
+  const parseRecipe = (text) => {
+    const sections = cleanText(text)
+      .split(/(Ingredientes|Preparación|Consejos)/g)
+      .map((section) => section.trim())
+      .filter((section) => section.length > 0);
+
+    const result = {
+      Ingredientes: "",
+      Preparación: "",
+      Consejos: "",
+    };
+
+    let currentKey = "";
+    for (const section of sections) {
+      if (["Ingredientes", "Preparación", "Consejos"].includes(section)) {
+        currentKey = section;
+      } else if (currentKey) {
+        result[currentKey] += section;
+      }
+    }
+
+    return result;
   };
 
   if (!isModalOpen) return null;
@@ -117,14 +146,24 @@ const Book = ({ isModalOpen,
                     <div className="front">
                       <div className="frontContent">
                         <h3>{frontRecipe?.titulo}</h3>
-                        <p>{frontRecipe?.descripcion}</p>
+                        <h4>Ingredientes:</h4>
+                        <p>{frontRecipe?.ingredientes}</p>
+                        <h4>Preparación:</h4>
+                        <p>{frontRecipe?.preparacion}</p>
+                        <h4>Consejos:</h4>
+                        <p>{frontRecipe?.consejos}</p>
                       </div>
                     </div>
                     <div className="back">
-                      <div className="backContent">
-                        <h3>{backRecipe?.titulo || "Sin más recetas"}</h3>
-                        <p>{backRecipe?.descripcion || ""}</p>
-                      </div>
+                    <div className="backContent">
+                      <h3>{backRecipe?.titulo}</h3>
+                      <h4>Ingredientes:</h4>
+                      <p>{backRecipe?.ingredientes}</p>
+                      <h4>Preparación:</h4>
+                      <p>{backRecipe?.preparacion}</p>
+                      <h4>Consejos:</h4>
+                      <p>{backRecipe?.consejos}</p>
+                    </div>
                     </div>
                   </div>
                 );

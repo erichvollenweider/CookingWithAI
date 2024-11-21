@@ -36,8 +36,8 @@
 
 .book {
     position: relative;
-    width: 550px;
-    height: 750px;
+    width: 600px;
+    height: 800px;
     transition: transform 0.5s;
 }
 
@@ -64,11 +64,12 @@
 .front {
     z-index: 1;
     backface-visibility: hidden;
-    border-left: 3px solid powderblue;
+    border: 2px solid grey;
 }
 
 .back {
     z-index: 0;
+    border: 2px solid grey;
 }
 
 .frontContent, .backContent {
@@ -79,6 +80,24 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    text-align: center;
+    font-family: Helvetica;
+}
+
+.frontContent h3, .backContent h3 {
+  font-size: 16px;
+  color: rgb(139, 69, 19);
+}
+
+.frontContent h4, .backContent h4 {
+  font-size: 14px;
+  color: rgb(139, 69, 19);
+  margin-bottom: 5px;
+  text-decoration: underline ;
+}
+
+.frontContent p, .backContent p {
+  font-size: 14px;
 }
 
 .backContent {
