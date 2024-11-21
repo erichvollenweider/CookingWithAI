@@ -241,237 +241,23 @@ body {
   }
 }
 
-.modalOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.modalContent {
-  background-color: #F4E8D9;
-  padding: 15px; 
-  border-radius: 8px;
-  width: 80%;
-  height: 85%;    
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  overflow-y: auto;
-  text-align: center;
-  color: #333333;
-  transform: translate(8%, -5%);
-  position: relative;
-}
-
-.bookContainer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  height: 100%;
-  background-color: #F4E8D9;
-}
-
-.book {
-  position: relative;
-  width: 50%;
-  height: 100%;
-  transition: transform 0.5s;
-  perspective: 1500px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Estilo para la página inicial (primera página especial) */
-.initialPage {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 92%;
-  background-color: #f0f8ff;
-  color: #333;
-  padding: 20px;
-  text-align: center;
-}
-
-.initialPage h2 {
-  font-size: 40px;
-  font-weight: bold;
-  color: #007bff;
-  margin-bottom: 30px;
-}
-
-.initialPage img {
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  border: 5px solid #E0E0E0;
-}
-
-.initialPage p {
-  font-size: 15px;
-  margin-top: 30px;
-  margin-bottom: 50px;
-  color: #555;
-}
-
-/* Estilo para la página final (última página especial) */
-.finalPage {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 92%;
-  background-color: #f8f9fa; /* Color más suave de fondo */
-  color: #333;
-  padding: 20px;
-  text-align: center;
-  margin-right: 1100px;
-}
-
-.finalPage h2 {
-  font-size: 40px;
-  font-weight: bold;
-  color: #007bff;
-  margin-bottom: 30px;
-}
-
-.finalPage img{
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  border: 5px solid #E0E0E0;
-}
-
-.finalPage p {
-  font-size: 15px;
-  margin-top: 30px;
-  margin-bottom: 10px;
-  color: #555;
-}
-
-.paper {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  transition: transform 0.5s;
-}
-
-.front,
-.back {
-  background-color: white;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  transform-origin: left;
-  transition: transform 0.5s;
-}
-
-.front {
-  z-index: 1;
-  backface-visibility: hidden;
-  border-left: 3px solid powderblue;
-}
-
-.back {
-  z-index: 0;
-}
-
-.frontContent,
-.backContent {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.backContent {
-  transform: rotateY(180deg);
-}
-
-.flipped .front,
-.flipped .back {
-  transform: rotateY(-180deg);
-}
-
-.bookContainer button {
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-  margin: 5px;
-  font-size: 10px;
-  transition: transform 0.5s;
-  z-index: 2000;
-  margin-bottom: 20px;
-  width: 20px;
-  height: 20px;
-}
-
-button:focus {
-  outline: none;
-}
-
-button:hover {
-  color: #636363;
-}
-
-#p1 {
-  z-index: 3;
-}
-
-#p2 {
-  z-index: 2;
-}
-
-#p3 {
-  z-index: 1;
-}
-
-.closeButton {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: none;
-  border: none;
-  font-size: 24px;
-  font-weight: bold;
-  color: black;
-  cursor: pointer;
-}
-
-.closeButton:hover {
-  color: #ff0000;
-}
-
 @media (max-width: 768px) {
   .modalContent {
-    padding: 15px; 
-    max-width: 90%; 
-    height: auto; 
-    max-height: 90%; 
+    padding: 15px;
+    max-width: 90%;
+    height: auto;
+    max-height: 90%;
   }
 
   .bookContainer {
     flex-direction: column;
     align-items: center;
-    margin-top: 10px; 
+    margin-top: 10px;
   }
 
   .book {
-    width: 230px; 
-    height: 330px; 
+    width: 230px;
+    height: 330px;
   }
 
   .paper {
@@ -481,16 +267,16 @@ button:hover {
 
   .front,
   .back {
-    border-left: 2px solid powderblue; /* Reducir el borde */
+    border-left: 2px solid powderblue;
   }
 
   button {
-    font-size: 18px; /* Reducir tamaño de los botones */
-    margin: 0px; /* Reducir márgenes */
+    font-size: 18px;
+    margin: 0px;
   }
 
   #p1, #p2, #p3 {
-    font-size: 18px; /* Reducir tamaño de los números del libro */
+    font-size: 18px;
   }
 }
 

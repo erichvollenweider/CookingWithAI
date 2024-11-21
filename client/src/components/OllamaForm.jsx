@@ -1,12 +1,9 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { QRCodeCanvas } from "qrcode.react";
 import styles from "../styles/ChatWithAI.module.css";
 import { frontUrl, backendUrl } from "../config";
 
-import RecipeBookModal from "./RecipeBookModal";
 import Sidebar from "./Sidebar";
 import ImagePreview from "./ImagePreview";
-import FileUpload from "./FileUpload";
 import MessageBox from "./MessageBox";
 import LoadingSpinner from "./LoadingSpinner";
 
@@ -33,8 +30,8 @@ const OllamaForm = ({ onLogout, displayBook }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentLocation, setCurrentLocation] = useState(1);
   const [numOfPapers, setNumOfPapers] = useState(2);
-
   const maxLocation = numOfPapers + 1;
+
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
@@ -275,25 +272,6 @@ const OllamaForm = ({ onLogout, displayBook }) => {
     }
   };
 
-  const goNextPage = () => {
-    if (currentLocation < maxLocation) {
-      setCurrentLocation((prev) => prev + 1);
-    }
-  };
-
-  const goPrevPage = () => {
-    if (currentLocation > 1) {
-      setCurrentLocation((prev) => prev - 1);
-    }
-  };
-
-  const getBookStyle = useMemo(() => {
-    if (currentLocation === 1) return { transform: "translateX(0%)" };
-    if (currentLocation === maxLocation)
-      return { transform: "translateX(100%)" };
-    return { transform: "translateX(50%)" };
-  }, [currentLocation, maxLocation]);
-
   // Cerrar modal al hacer clic fuera
   const handleClickOutside = (e) => {
     if (e.target.className.includes(styles.modalOverlay)) {
@@ -315,26 +293,21 @@ const OllamaForm = ({ onLogout, displayBook }) => {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
   
-  useEffect(() => {
-    const fetchNumOfPapers = async () => {
-      try {
-        const response = await fetch(`${backendUrl}/count-recetas`, {
-          method: "GET",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        const data = await response.json();
-        setNumOfPapers(data.count);
-      } catch (error) {
-        console.error("Error al obtener la cantidad de recetas:", error);
-      }
-    };
-  
-    fetchNumOfPapers();
-  }, []);
-  
+  const fetchNumOfPapers = async () => {
+    try {
+      const response = await fetch(`${backendUrl}/count-recetas`, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      setNumOfPapers(data.count);
+    } catch (error) {
+      console.error("Error al obtener la cantidad de recetas:", error);
+    }
+  };
   
   const renderIngredients = () => {
     if (!showIngredientSelection) return null;
@@ -537,14 +510,11 @@ const OllamaForm = ({ onLogout, displayBook }) => {
         openModal={openModal}
         isModalOpen={isModalOpen}
         closeModal={closeModal}
-        currentLocation={currentLocation}
-        goPrevPage={goPrevPage}
-        goNextPage={goNextPage}
-        getBookStyle={getBookStyle}
         numOfPapers={numOfPapers}
         maxLocation={maxLocation}
         onLogout={onLogout}
         handleExport={handleExport}
+        fetchNumOfPapers={fetchNumOfPapers}
       />
       <div className={styles.chatContainer}>
         <div className={styles.header}>

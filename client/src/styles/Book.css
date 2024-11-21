@@ -1,0 +1,148 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: #F4E8D9;
+  padding: 15px;
+  border-radius: 8px;
+  width: 80%;
+  height: 85%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+  text-align: center;
+  color: #333333;
+  transform: translate(8%, -5%);
+  position: relative;
+}
+
+.bookContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: #F4E8D9;
+}
+
+.book {
+    position: relative;
+    width: 600px;
+    height: 800px;
+    transition: transform 0.5s;
+}
+
+.paper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    perspective: 1500px;
+}
+
+.front, .back {
+    background-color: white;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    transform-origin: left;
+    transition: transform 0.5s;
+}
+
+.front {
+    z-index: 1;
+    backface-visibility: hidden;
+    border: 2px solid grey;
+}
+
+.back {
+    z-index: 0;
+    border: 2px solid grey;
+}
+
+.frontContent, .backContent {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-family: Helvetica;
+}
+
+.frontContent h3, .backContent h3 {
+  font-size: 16px;
+  color: rgb(139, 69, 19);
+}
+
+.frontContent h4, .backContent h4 {
+  font-size: 14px;
+  color: rgb(139, 69, 19);
+  margin-bottom: 5px;
+  text-decoration: underline ;
+}
+
+.frontContent p, .backContent p {
+  font-size: 14px;
+}
+
+.backContent {
+    transform: rotateY(180deg);
+}
+
+.flipped .front, .flipped .back {
+    transform: rotateY(-180deg);
+}
+
+button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    margin: 10px;
+    transition: transform 0.5s;
+}
+
+button:focus {
+    outline: none;
+}
+
+button:hover i {
+    color: #636363;
+}
+
+i {
+    font-size: 50px;
+    color: black;
+}
+
+#prev-btn, #next-btn {
+    width: 50px;
+    height: 50px;
+  background: transparent;
+}
+
+#p1 {
+    z-index: 3;
+}
+
+#p2 {
+    z-index: 2;
+}
+
+#p3 {
+    z-index: 1;
+}
