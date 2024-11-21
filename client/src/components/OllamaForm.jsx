@@ -1,12 +1,9 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { QRCodeCanvas } from "qrcode.react";
 import styles from "../styles/ChatWithAI.module.css";
 import { frontUrl, backendUrl } from "../config";
 
-import RecipeBookModal from "./RecipeBookModal";
 import Sidebar from "./Sidebar";
 import ImagePreview from "./ImagePreview";
-import FileUpload from "./FileUpload";
 import MessageBox from "./MessageBox";
 import LoadingSpinner from "./LoadingSpinner";
 
