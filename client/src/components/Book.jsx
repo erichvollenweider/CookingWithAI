@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from "react";
 import "../styles/Book.css";
 import 'font-awesome/css/font-awesome.min.css';
-import {backendUrl} from "../config.js";
+import { backendUrl } from "../config.js";
 
-const Book = ({ isModalOpen,
-                closeModal,
-                numOfPapers,
-                maxLocation,}) => {
+const Book = ({ isModalOpen, closeModal, numOfPapers, maxLocation }) => {
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentLocation, setCurrentLocation] = useState(1);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  const updateIsMobile = () => setIsMobile(window.innerWidth <= 768);
+
+  useEffect(() => {
+    window.addEventListener("resize", updateIsMobile);
+    return () => window.removeEventListener("resize", updateIsMobile);
+  }, []);
 
   const openBook = () => {
     document.querySelector("#book").style.transform = "translateX(50%)";
@@ -30,35 +35,47 @@ const Book = ({ isModalOpen,
   };
 
   const goNextPage = () => {
-    if (currentLocation < maxLocation) {
-      const paper = document.querySelector(`#p${currentLocation}`);
-      if (paper) {
-        paper.classList.add("flipped");
-        paper.style.zIndex = currentLocation;
+    if (isMobile) {
+      if (currentLocation < recipes.length) {
+        setCurrentLocation((prev) => prev + 1);
       }
-      if (currentLocation === 1) openBook();
-      if (currentLocation === numOfPapers) closeBook(false);
-      setCurrentLocation((prev) => prev + 1);
+    } else {
+      if (currentLocation < maxLocation) {
+        const paper = document.querySelector(`#p${currentLocation}`);
+        if (paper) {
+          paper.classList.add("flipped");
+          paper.style.zIndex = currentLocation;
+        }
+        if (currentLocation === 1) openBook();
+        if (currentLocation === numOfPapers) closeBook(false);
+        setCurrentLocation((prev) => prev + 1);
+      }
     }
   };
 
   const goPrevPage = () => {
-    if (currentLocation > 1) {
-      const paper = document.querySelector(`#p${currentLocation - 1}`);
-      if (paper) {
-        paper.classList.remove("flipped");
-        paper.style.zIndex = numOfPapers - currentLocation + 1;
+    if (isMobile) {
+      if (currentLocation > 1) {
+        setCurrentLocation((prev) => prev - 1);
       }
-      if (currentLocation === 2) closeBook(true);
-      if (currentLocation === maxLocation) openBook();
-      setCurrentLocation((prev) => prev - 1);
+    } else {
+      if (currentLocation > 1) {
+        const paper = document.querySelector(`#p${currentLocation - 1}`);
+        if (paper) {
+          paper.classList.remove("flipped");
+          paper.style.zIndex = numOfPapers - currentLocation + 1;
+        }
+        if (currentLocation === 2) closeBook(true);
+        if (currentLocation === maxLocation) openBook();
+        setCurrentLocation((prev) => prev - 1);
+      }
     }
   };
 
   useEffect(() => {
     if (isModalOpen) {
       fetchRecipes();
-      goPrevPage && goPrevPage(1);
+      if (!isMobile) goPrevPage && goPrevPage(1);
     }
   }, [isModalOpen]);
 
@@ -135,43 +152,60 @@ const Book = ({ isModalOpen,
             <i className="fa-solid fa-circle-arrow-left"></i>
           </button>
 
-          <div id="book" className="book">
-            {recipes.reduce((acc, _, index, arr) => {
-              if (index % 2 === 0) {
-                const frontRecipe = arr[index];
-                const backRecipe = arr[index + 1];
+          <div id="book" className={`book ${isMobile ? "mobile" : ""}`}>
+            {isMobile ? (
+              <div className="paper">
+                <div className="frontContent">
+                  <h3>{recipes[currentLocation - 1]?.titulo}</h3>
+                  <h4>Ingredientes:</h4>
+                  <p>{recipes[currentLocation - 1]?.ingredientes}</p>
+                  <h4>Preparación:</h4>
+                  <p>{recipes[currentLocation - 1]?.preparacion}</p>
+                  <h4>Consejos:</h4>
+                  <p>{recipes[currentLocation - 1]?.consejos}</p>
+                </div>
+              </div>
+            ) : (
+              recipes.reduce((acc, _, index, arr) => {
+                if (index % 2 === 0) {
+                  const frontRecipe = arr[index];
+                  const backRecipe = arr[index + 1];
 
-                acc.push(
-                  <div id={`p${Math.floor(index / 2) + 1}`} key={index} className="paper">
-                    <div className="front">
-                      <div className="frontContent">
-                        <h3>{frontRecipe?.titulo}</h3>
-                        <h4>Ingredientes:</h4>
-                        <p>{frontRecipe?.ingredientes}</p>
-                        <h4>Preparación:</h4>
-                        <p>{frontRecipe?.preparacion}</p>
-                        <h4>Consejos:</h4>
-                        <p>{frontRecipe?.consejos}</p>
+                  acc.push(
+                    <div
+                      id={`p${Math.floor(index / 2) + 1}`}
+                      key={index}
+                      className="paper"
+                    >
+                      <div className="front">
+                        <div className="frontContent">
+                          <h3>{frontRecipe?.titulo}</h3>
+                          <h4>Ingredientes:</h4>
+                          <p>{frontRecipe?.ingredientes}</p>
+                          <h4>Preparación:</h4>
+                          <p>{frontRecipe?.preparacion}</p>
+                          <h4>Consejos:</h4>
+                          <p>{frontRecipe?.consejos}</p>
+                        </div>
+                      </div>
+                      <div className="back">
+                        <div className="backContent">
+                          <h3>{backRecipe?.titulo}</h3>
+                          <h4>Ingredientes:</h4>
+                          <p>{backRecipe?.ingredientes}</p>
+                          <h4>Preparación:</h4>
+                          <p>{backRecipe?.preparacion}</p>
+                          <h4>Consejos:</h4>
+                          <p>{backRecipe?.consejos}</p>
+                        </div>
                       </div>
                     </div>
-                    <div className="back">
-                    <div className="backContent">
-                      <h3>{backRecipe?.titulo}</h3>
-                      <h4>Ingredientes:</h4>
-                      <p>{backRecipe?.ingredientes}</p>
-                      <h4>Preparación:</h4>
-                      <p>{backRecipe?.preparacion}</p>
-                      <h4>Consejos:</h4>
-                      <p>{backRecipe?.consejos}</p>
-                    </div>
-                    </div>
-                  </div>
-                );
-              }
-              return acc;
-            }, [])}
+                  );
+                }
+                return acc;
+              }, [])
+            )}
           </div>
-
 
           <button id="next-btn" onClick={goNextPage}>
             <i className="fa-solid fa-circle-arrow-right"></i>
@@ -183,4 +217,3 @@ const Book = ({ isModalOpen,
 };
 
 export default Book;
-
