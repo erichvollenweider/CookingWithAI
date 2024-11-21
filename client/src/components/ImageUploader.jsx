@@ -13,7 +13,7 @@ const ImageUploader = () => {
     const formData = new FormData();
     formData.append('image', image);
 
-    fetch('http://192.168.100.5:5000/upload', {
+    fetch(`${backendUrl}/upload`, {
       method: 'POST',
       body: formData,
     })

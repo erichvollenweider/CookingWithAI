@@ -43,6 +43,29 @@ body {
   border: 5px solid #E0E0E0; /* Borde del logo */
 }
 
+/* Media query para pantallas pequeñas (móviles) */
+@media (max-width: 768px) {
+  .chatContainer {
+    padding: 10px; /* Reducir el espaciado */
+  }
+
+  .chatContainer h1 {
+    font-size: 50px; 
+    margin-top: 15px; 
+  }
+
+  .chatContainer h2 {
+    font-size: 30px; /* Reducir el tamaño del subtítulo */
+  }
+
+  .chatContainer img {
+    width: 150px; /* Reducir el tamaño de la imagen */
+    height: 150px;
+    margin-bottom: 20px; /* Reducir el margen inferior */
+  }
+}
+
+
 /* Mensajes de error */
 .errorMessage {
   color: red;
@@ -87,183 +110,174 @@ body {
 }
 
 .bottomButton {
-  margin-top: 195px;
+  position: fixed;
+  bottom: 4%;
+  left: 3%;
+}
+
+.recipeDownload {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.recipeDownload button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  width: 75%;
+  max-width: 75%;
+  border: none;
+  background-color: transparent;
+  margin-top: 0.5cm;
+}
+
+.recipeDownload .content {
+  display: flex;
+  align-items: center;
+}
+
+.recipeDownload img {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.recipeDownload p {
+  margin: 0;
+  font-size: 16px;
+  color: rgb(19, 18, 18);
 }
 
 .recipeBookButton {
   display: flex;
   justify-content: center;
-  align-items: center;
   width: 100%;
-  margin-top: 20px;
 }
 
 .recipeBookButton button {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  padding: 0;
+  padding: 10px;
   cursor: pointer;
-  font-size: 8px;
-  width: 80%;
-  max-width: 80%;
+  font-size: 14px;
+  width: 75%;
+  max-width: 75%;
+  border: none;
+  background-color: transparent;
+  margin-top: 0.5cm;
+}
+
+.recipeBookButton .content {
+  display: flex;
+  align-items: center;
 }
 
 .recipeBookButton img {
-  width: 60px;
-  height: auto;
-  background-color: transparent;
-  margin-bottom: -65px;
-  margin-right: 120px;
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
 }
 
-.recipeBookButton h2 {
+.recipeBookButton p {
   margin: 0;
-  padding: 8px 0;
+  font-size: 16px;
   color: rgb(19, 18, 18);
 }
 
-.modalOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
+
+@media (max-width: 768px) {
+  
+  .errorMessage {
+    font-size: 14px; 
+    margin-top: 5px;
+  }
+
+  
+  .aiResponse {
+    font-size: 14px; 
+  }
+
+  
+  .recipeContainer {
+    border-radius: 10px;
+    padding: 10px; 
+    margin: 10px 0; 
+  }
+
+  .recipeContainer h2 {
+    font-size: 18px;
+  }
+
+  
+  .cleanList li {
+    font-size: 14px; 
+    margin: 5px 0;
+  }
+
+  .bulletList {
+    padding: 10px;
+  }
+  
+  .recipeBookButton button {
+    font-size: 16px;
+    width: 90%; 
+    max-width: 90%;
+  }
+
+  .recipeBookButton img {
+    width: 50px; 
+    margin-bottom: -50px;
+    margin-right: 120px;
+  }
+
+  .recipeBookButton h2 {
+    font-size: 16px; 
+    padding: 5px 0; 
+  }
 }
 
-.modalContent {
-  background-color: #fff;
-  padding: 30px; 
-  border-radius: 8px;
-  max-width: 60%;  
-  max-height: 80%; 
-  width: 100%;
-  height: 80vh;    
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  overflow-y: auto;
-  text-align: center;
-  color: #333333;
-}
+@media (max-width: 768px) {
+  .modalContent {
+    padding: 15px;
+    max-width: 90%;
+    height: auto;
+    max-height: 90%;
+  }
 
-.modalOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+  .bookContainer {
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+  }
 
-.modalContent {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  width: 400px;
-  max-width: 90%;
-  text-align: center;
-}
+  .book {
+    width: 230px;
+    height: 330px;
+  }
 
-.bookContainer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 20px;
-}
+  .paper {
+    width: 100%;
+    height: 100%;
+  }
 
-.book {
-  position: relative;
-  width: 350px;
-  height: 500px;
-  transition: transform 0.5s;
-  perspective: 1500px;
-}
+  .front,
+  .back {
+    border-left: 2px solid powderblue;
+  }
 
-.paper {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  transition: transform 0.5s;
-}
+  button {
+    font-size: 18px;
+    margin: 0px;
+  }
 
-.front,
-.back {
-  background-color: white;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  transform-origin: left;
-  transition: transform 0.5s;
-}
-
-.front {
-  z-index: 1;
-  backface-visibility: hidden;
-  border-left: 3px solid powderblue;
-}
-
-.back {
-  z-index: 0;
-}
-
-.frontContent,
-.backContent {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.backContent {
-  transform: rotateY(180deg);
-}
-
-.flipped .front,
-.flipped .back {
-  transform: rotateY(-180deg);
-}
-
-button {
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-  margin: 10px;
-  font-size: 24px;
-  transition: transform 0.5s;
-}
-
-button:focus {
-  outline: none;
-}
-
-button:hover {
-  color: #636363;
-}
-
-#p1 {
-  z-index: 3;
-}
-
-#p2 {
-  z-index: 2;
-}
-
-#p3 {
-  z-index: 1;
+  #p1, #p2, #p3 {
+    font-size: 18px;
+  }
 }
 
 /* Botones */
@@ -276,10 +290,12 @@ button:hover {
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-family: inherit;  
+  font-weight: bold;
   background-color: #94C9A9;
   color: #333333;
   cursor: pointer;
   transition: border-color 0.25s;
+  margin-top: 5px;
 }
 
 .logoutButton:hover {
@@ -400,13 +416,75 @@ button:hover {
   color: #333333;
   font-size: 10px;
   text-wrap: nowrap;
-  background-color: #000;
+  background-color: white;
   padding: 6px 10px;
   border: 1px solid #E0E0E0;
   border-radius: 5px;
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.596);
   transition: all 0.3s;
 }
+
+/* Media Query para pantallas más pequeñas (móviles) */
+@media (max-width: 768px) {
+
+  .logoutButton {
+    display: inline-flex;  
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    font-size: 1em;
+    font-family: inherit;  
+    background-color: #94C9A9;
+    color: #333333;
+    cursor: pointer;
+    transition: border-color 0.25s;
+  }
+
+  /* Contenedor de mensaje */
+  .messageBox {
+    height: 50px; /* Reducir la altura del contenedor */
+    padding: 0 10px; /* Reducir padding */
+  }
+
+  /* Entrada de mensaje */
+  .messageInput {
+    min-height: 40px; /* Reducir altura mínima */
+    padding-left: 8px; /* Reducir padding */
+  }
+
+  /* Botón de envío */
+  .sendButton {
+    width: 30px; /* Reducir tamaño del botón */
+    height: 30px; /* Reducir tamaño */
+  }
+
+  .sendButton svg {
+    height: 16px; /* Reducir el tamaño del icono */
+  }
+
+  /* Contenedor de archivo */
+  .fileUploadWrapper {
+    width: 30px; /* Reducir ancho */
+  }
+
+  .fileUploadWrapper label {
+    width: 30px; /* Reducir tamaño del área clickeable */
+    height: 30px;
+  }
+
+  .fileUploadWrapper label svg {
+    height: 16px; /* Reducir tamaño del icono */
+  }
+
+  /* Tooltip */
+  .tooltip {
+    font-size: 8px; /* Reducir tamaño de fuente del tooltip */
+    padding: 5px 8px; /* Reducir padding */
+    top: -35px; /* Ajustar la posición */
+  }
+}
+
 /* Contenedor de imagen previa */
 .imagePreviewContainer {
   display: flex;
@@ -455,7 +533,7 @@ button:hover {
   margin-left: 42%;
   height: 50px;
   width: max-content;
-  font-size: 18px;
+  font-size: 25px;
   font-weight: 600;
   font-family: monospace;
   letter-spacing: 1em;
@@ -511,6 +589,39 @@ button:hover {
   }
  }
 
+ @media (max-width: 768px) {
+  .imagePreviewContainer {
+    gap: 8px; 
+  }
+
+  /* Estilos para imágenes previas */
+  .imagePreviewContainer img {
+    width: 80px; 
+    height: 80px;
+    margin-top: 10px; 
+  }
+
+
+  .removeButton {
+    top: 10px; 
+    right: 5px; 
+    width: 18px; 
+    height: 18px;
+    font-size: 12px; 
+  }
+
+  .spinner {
+    margin-top: 100px; 
+    margin-left: 15%; 
+    height: 40px; 
+    font-size: 16px;
+  }
+
+  .spinner span {
+    animation: loading6454 1.5s ease infinite; /* Ajustar la animación */
+  }
+}
+
 /* Transición suave para header */
 .header {
   display: flex;
@@ -519,7 +630,7 @@ button:hover {
   gap: 10px;
   transition: all 0.3s ease;
   position: relative;
-  margin-top: 40px; /* Posición inicial */
+  margin-top: 40px; 
 }
 
 /* Logo y título (estado inicial) */
@@ -593,9 +704,11 @@ button:hover {
 /* Estilo de Títulos y Párrafos */
 .sidebar h1 {
   font-size: 2rem;
+  margin-top: 25px;
   margin-bottom: 10px;
-  color: #333333;
-  margin-bottom: 100px;
+  color: #E6B800;
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
 .sidebar h4 {
@@ -609,7 +722,46 @@ button:hover {
   margin-bottom: -10px;
 }
 
-/* Lista de Navegación */
+@media (max-width: 768px) {
+  .header {
+    align-items: start;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 10px;
+  }
+
+  .header img {
+    width: 80px; 
+    height: 80px;
+  }
+
+  .header h2 {
+    font-size: 35px; 
+    margin-left: 15%;
+  }
+
+  .headerLetters h3 {
+    font-size: 14px; 
+    margin-left: 15%;
+  }
+
+  .sidebar {
+    width: 50px;
+  }
+
+  .sidebar.open {
+    width: 200px; 
+  }
+
+  .sidebar h1 {
+    font-size: 1.5rem; 
+  }
+
+  .sidebar h4, .sidebar h5 {
+    font-size: 14px; 
+  }
+}
+
 .sidebar ul {
   list-style: none;
   padding: 0;
@@ -630,9 +782,7 @@ button:hover {
   color: #f1f1f1;
 }
 
-/* Botón para Cerrar Sesión */
 .sidebar button {
-  margin-top: auto; /* Empuja el botón hacia el final */
   padding: 10px 15px;
   background-color: #E6B800;
   color: #333333;
@@ -646,12 +796,12 @@ button:hover {
   background-color: #F4E8D9;
 }
 
-/* Checkbox Oculto para Controlar la Barra */
+
 .toggleCheckbox {
   display: none;
 }
 
-/* Botón Hamburguesa */
+
 .hamburger {
   cursor: pointer;
   display: flex;
@@ -704,6 +854,7 @@ button:hover {
 
 .confirmSave {
   display: inline-flex;
+  margin-left: 50px;
   align-items: center;
   justify-content: center;
   width: 150px;
@@ -748,6 +899,7 @@ button:hover {
   color: #4caf50;
   font-weight: bold;
   margin-top: 10px;
+  margin-left: 25px;
   animation: fadeIn 0.5s ease;
 }
 
@@ -757,5 +909,261 @@ button:hover {
   }
   to {
     opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .sidebar {
+    width: 0;
+    transition: width 0.3s ease-in-out;
+    visibility: hidden; 
+  }
+
+  .sidebar.open {
+    width: 200px; 
+    visibility: visible; 
+  }
+
+  .sidebar ul {
+    padding: 20px 10px; 
+  }
+
+  .sidebar li {
+    padding: 8px 15px;
+    font-size: 16px; 
+  }
+
+  .sidebar button {
+    width: 90%; 
+    padding: 5px;
+  }
+
+  .hamburger {
+    width: 25px;
+    height: 20px;
+    margin-top: 10px;
+  }
+
+  .hamburger .bar {
+    height: 3px;
+  }
+  
+  .confirmSave {
+    width: 100%; 
+    padding: 12px;
+    font-size: 1.1em; 
+    margin-bottom: 10px;
+  }
+
+  
+  .confirmSave:active {
+    animation: none; 
+  }
+}
+
+
+.qrButton {
+  background-color: transparent;
+  color: #5c5a5a;
+  border: none;
+  padding: 5px 10px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.qrButton:hover {
+  color: #191818;
+}
+
+@media (max-width: 768px) {
+  .qrButton {
+    display: none; 
+  }
+}
+
+.qrContainer {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.qrContainer p {
+  font-size: 16px;
+  color: #333;
+}
+
+.ingredientsContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  height: 100%;
+}
+
+.ingredientsReceived {
+  flex-grow: 1;
+}
+
+.ingredientsContainer .submitsPost {
+  justify-content: end;
+  margin-bottom: 0;
+}
+
+.ingredientButtons {
+  text-transform: uppercase;
+  border-radius: 10px;
+  font-weight: bolder;
+}
+
+.confirmIngredients {
+  margin-top: 25px;
+  padding: 10px;
+  background-color: #E6B800;
+  color: #333333;
+  border-radius: 10px;
+  font-weight: bolder;
+}
+
+.toggleContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.toggleContainer span {
+  font-weight: bold;
+}
+
+.toggleSwitch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.toggleSwitch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 24px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #E6B800;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+.modalOverlayQR {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContentQR {
+  background: #F4E8D9;
+  width: 50%;
+  max-width: 500px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  position: relative;
+}
+
+.closeButtonQR {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+}
+
+.closeButtonQR:hover {
+  color: #ff0000;
+}
+
+.modalContentQR p {
+  margin-top: 15px;
+  font-size: 16px;
+  color: #555;
+}
+
+.frontContent,
+.backContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Asegura que los elementos estén alineados arriba */
+  height: 100%; /* Para asegurar que el contenido ocupe todo el espacio disponible */
+  width: 89%;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.recipeTitle {
+  font-size: 30px; /* Tamaño del título */
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 10px;
+  margin-top: 5px;
+}
+
+.recipeDescription {
+  font-size: 15px;
+  color: #555;
+  line-height: 1.5;
+  text-align: justify;
+}
+
+@media (max-width: 768px) {
+  .backContent {
+    padding: 15px;
+  }
+
+  .recipeTitle {
+    font-size: 1.8rem;
+  }
+
+  .recipeDescription {
+    font-size: 0.95rem;
   }
 }

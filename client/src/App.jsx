@@ -5,6 +5,7 @@ import LoginModal from "./components/LoginModal";
 import RegisterModal from "./components/RegisterModal";
 import ImageUploader from "./components/ImageUploader";
 import { backendUrl } from './config';
+import '@fortawesome/fontawesome-free/css/all.css';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -46,7 +47,7 @@ function App() {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch("http://192.168.100.5:5000//logout", {
+      const response = await fetch(`${backendUrl}/logout`, {
         method: "POST",
         credentials: "include",
       });

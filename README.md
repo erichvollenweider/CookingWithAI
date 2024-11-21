@@ -1,76 +1,138 @@
-# <h1 style="text-align: center"> :cake: Cooking With IA </h1>
+# 🍰 **Cooking With AI** 
 
-> [!NOTE]
-> ¡El proyecto NO ha sido finalizado en su totalidad!, se esperan proximas actualizaciones al mismo.
+> 🚧 **Proyecto en desarrollo**  
+> Este proyecto **NO** está finalizado en su totalidad. ¡Mantente al tanto para futuras actualizaciones y mejoras! 
 
-- **Integrantes** 
-  - Bavera, Guillermo
-  - Bricco, Matias
-  - Conti, Bruno
-  - Gonzalez, Juan Cruz
-  - Mezzano, Joaquin
-  - Vollenweider, Erich
+---
 
-- **Descripción:** Este proyecto utiliza inteligencia artificial para analizar imágenes de ingredientes alimenticios, identificarlos y generar recetas basadas en ellos. A través del procesamiento de imágenes y modelos de lenguaje entrenados específicamente, el sistema es capaz de reconocer ingredientes en una foto y sugerir una variedad de recetas que utilizan esos ingredientes, facilitando la creación de platos variados y adaptados a los ingredientes disponibles.
+## 👥 **Equipo de desarrollo**
+- **Bavera, Guillermo**
+- **Bricco, Matias**
+- **Conti, Bruno**
+- **Gonzalez, Juan Cruz**
+- **Mezzano, Joaquin**
+- **Vollenweider, Erich**
 
-- **Motivación:** Este proyecto surge de la necesidad de facilitar la planificación de comidas y la reducción del desperdicio alimentario. Muchas personas tienen ingredientes en casa pero no saben cómo combinarlos o aprovecharlos. A través de esta aplicación, se simplifica el proceso de creación de recetas, promoviendo una alimentación más creativa y evitando que alimentos se desperdicien por falta de ideas para su uso.
+---
 
-- **Objetivo:** El objetivo del proyecto es desarrollar una aplicación que permita a los usuarios obtener sugerencias de recetas a partir de los ingredientes detectados en imágenes, utilizando técnicas de IA como el reconocimiento de imágenes.
+## 📖 **Descripción**
+Cooking With AI utiliza **inteligencia artificial** para analizar imágenes de ingredientes alimenticios, identificarlos y generar recetas basadas en ellos. A través del procesamiento de imágenes y modelos de lenguaje, el sistema puede reconocer ingredientes en una foto y sugerir recetas que los incluyan. ¡Así, puedes crear platos deliciosos y adaptados a los ingredientes que ya tienes en casa! 🥕🍅🍲
 
-- **Tecnologias utilizadas** 
-    - Ollama (IA)
-    - Python3 
-    - Flask (Microframework de python)
-    - SQLAlchemy (Base de datos)
-    - JavaScript
-    - React (Framework de JavaScript)
-    - NodeJS (Se encarga de ejecutar Vite con el comando npm)
-    - Vite (Encargado de compilar el código JSX a JavaScript para que el navegador pueda entenderlo)
-    - CSS (Estilos)
+## 💡 **Motivación**
+Este proyecto surge de la necesidad de:
+- **Facilitar la planificación de comidas**
+- **Reducir el desperdicio alimentario**  
 
-## Proceso de instalación (Solo Linux) 
-Aclaracion: todos los pasos siguientes se ejecutan en la terminal
+Muchas personas tienen ingredientes en casa, pero no siempre saben cómo combinarlos. Esta aplicación simplifica la creación de recetas, promoviendo una alimentación creativa y evitando que los alimentos se desperdicien. ♻️
 
-1. Actualizar el sistema:
-	`sudo apt update`
-	`sudo apt upgrade`
+## 🎯 **Objetivo**
+El objetivo de Cooking With AI es desarrollar una aplicación que permita a los usuarios:
+- **Obtener sugerencias de recetas** a partir de los ingredientes detectados en imágenes
+- **Aprovechar técnicas de IA** como el reconocimiento de imágenes para ofrecer soluciones prácticas
 
-2. Instalar todas las dependencias necesarias
-	`curl -fsSL https://ollama.com/install.sh | sh` Ollama
-	`sudo apt install python3 python3-venv python3-pip` Python3 y sus dependencias
-	`curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -` Repositorio de Node
-	`sudo apt install -y nodejs`
+## 🔧 **Tecnologías utilizadas**
+- [Ollama](https://ollama.com) 🧠
+- [Python3](https://www.python.org/) 🐍
+- [Flask](https://flask.palletsprojects.com/en/stable/) 🌐
+- [React](https://es.react.dev/) ⚛️
 
-3. Bajamos el modelo a utilizar (Gemma2)
-	`ollama pull gemma2:2b` Se instala el modelo gemma2
+---
 
-4. Bajamos el repositorio en la ruta que deseamos
-	`git clone https://github.com/erichvollenweider/CookingWithAI.git`
+## 🚀 **Instalación (Linux)**
+> **Nota**: todos los pasos siguientes deben ejecutarse en la terminal.
 
-5. Creamos el entorno
-	`cd /tu_ruta/CookingWithAI/server` 
-	`python3 -m venv venv` Creacion del entorno virtual
+### 1. Actualizar el sistema
+```bash
+sudo apt update && sudo apt upgrade
+```
 
-6. Accedemos al entorno para configurarlo por primera vez
-	`source venv/bin/activate` Activacion del entorno virtual 
-	`pip install -r requirements.txt` Instalando requerimientos necesarios para correr la aplicacion
-	`deactivate` Salida del entorno virtual.
+### 2. Instalar las dependencias necesarias
+#### 🧰 Ollama
+```bash
+curl -fsSL https://ollama.com/install.sh | sh
+```
 
-7. Accedemos en otra terminal nueva (terminal2) a la parte del cliente
-	`cd /tu_ruta/CookingWithAI/client`
-	`npm install` Instalando dependencias de NodeJS
-	`npm install qrcode` Instalando dependencias para utilizar Códigos QR.
+#### 🐍 Python
+```bash
+sudo apt install python3 python3-venv python3-pip
+```
 
-## Proceso de ejecución (Una vez instalado)
-1. Abrimos el servidor de Ollama y lo dejamos abierto (Si es que no se abre automaticamente, ver configuración de cada computadora)
-	`ollama serve`
+#### 📦 Node.js
+```bash
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+sudo apt install -y nodejs
+```
 
-2. Abrimos el servidor de python en terminal1
-	`source venv/bin/activate`
-	`python3 app.py` Ejecucion
+### 3. Instalar el modelo Gemma2 de Ollama
+```bash
+ollama pull gemma2:2b
+```
 
-3. Abrimos parte del frontend en terminal2
-	`npm run dev` Ejecucion solo en localhost. 
-	`npm run dev -- --host` Ejecucion local y network. 
+### 4. Clonar el repositorio
+#### Elige la ubicación donde deseas el proyecto y ejecuta:
+```bash
+git clone https://github.com/erichvollenweider/CookingWithAI.git
+```
+### 5. Crear el entorno virtual
+```bash
+cd /ruta/CookingWithAI/server
+python3 -m venv .venv
+```
 
-4. Entramos a la dirección IP que nos provee en la consola NPM (terminal2), utilizando el navegador. Estamos en la aplicacion!
+### 6. Configurar el entorno virtual
+```bash
+source .venv/bin/activate
+pip install -r requirements.txt
+deactivate  # Salida del entorno virtual
+```
+
+### 7. Instalar dependencias del cliente (React)
+#### En otra terminal, accede al cliente:
+```bash
+cd /ruta/CookingWithAI/client
+npm install
+```
+
+## 🏁 **Ejecucción del Proyecto**
+
+### 1. Iniciar el servidor de Ollama
+#### Deja esta terminal abierta:
+```bash
+ollama serve
+```
+
+### 2. Iniciar el servidor de Python
+#### En otra terminal:
+```bash
+source .venv/bin/activate
+python3 app.py
+```
+> 💡 **¿Deseas habilitar el RAG?** Ve a la seccion ***Habilitar RAG*** para activar esta funcionalidad y luego regresa a este paso para continuar con la ejecución estándar.
+
+### 3. Iniciar el servidor de React
+#### En una tercera termina, ejecuta el cliente:
+```bash
+npm run dev  # Ejecución en localhost
+npm run dev -- --host  # Ejecución en localhost y red
+```
+
+## 🌐 **Acceder a la aplicacción**
+Abre tu navegador e ingresa la dirección IP proporcionada en la consola de NPM. ¡Estás listo para explorar Cooking With AI! 🎉
+
+## 🔎 **Habilitar RAG**
+El **RAG (Retrieval-Augmented Generation)** permite integrar capacidades avanzadas de recuperación de información para enriquecer las respuestas de Gemma2 con datos específicos, en este caso para dar recetas argentinas.  
+
+### Pasos para activar el RAG:
+#### 1. Descargar el modelo adicional de embeddings:
+```bash
+ollama pull nomic-embed-text
+```
+
+#### 2. Ejecutar el archivo encargado de generar la base de datos con los embeddings:
+```bash
+python3 gemma2_rag.py
+```
+
+#### 3. Regresa a la seccion ***Iniciar el servidor de Python*** para continuar con la configuración estándar.
+
+
